@@ -19,22 +19,30 @@
               <div class="Scriptcontent">
 
 <div class="feedback">
-<form method="post" action="/signup">
-<h1>Login to the PackReview Portal
-</h1>
-    <hr class="survey-hr">
-        <label for="m_3189847521540640526commentText">Username</label><br/><br/>
-        <input type="text" cols="75" name="username" rows="5" style="100%" size = "80%" required></input><br>
-    <br>
 
-    <hr class="survey-hr">
-        <label for="m_3189847521540640526commentText">Password</label><br/><br/>
-        <input type="password" cols="75" name="password" rows="5" style="100%" size = "80%" required></input><br>
-    <br>
+    <!-- Flash messages section -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class="flashes">
+        {% for category, message in messages %}
+          <li class="{{ category }}">{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
 
-   
-      <div class="clear"></div>
-    <input style="background:#43a7d5;color:#fff;padding:12px;border:0" type="submit" value="Login">&nbsp;
+    <form method="post" action="/login">  <!-- Form action points to /login -->
+        <h1>Login to the PackReview Portal</h1>
+        <hr class="survey-hr">
+        <label for="username">Username</label><br/><br/>
+        <input type="text" name="username" style="width: 100%;" required /><br><br>
+
+        <hr class="survey-hr">
+        <label for="password">Password</label><br/><br/>
+        <input type="password" name="password" style="width: 100%;" required /><br><br>
+
+        <div class="clear"></div>
+        <input style="background:#43a7d5;color:#fff;padding:12px;border:0" type="submit" value="Login">&nbsp;
     </form>
 </div>
 </div>

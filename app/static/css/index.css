@@ -80,3 +80,33 @@ body{
   top: 0;
   width: 100%;
 }
+/* Flash Message Styles */
+.flash-message {
+    position: fixed; /* Keeps it on top */
+    top: 20px; /* Space from the top */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Adjust to perfectly center */
+    z-index: 1000; /* Ensure it’s on top */
+    width: auto; /* Adjust width if needed */
+    max-width: 500px; /* Limit the maximum width */
+    text-align: center; /* Center text */
+    margin: 0 auto; /* Center in the container */
+}
+
+.alert {
+    margin-bottom: 20px; /* Space below alerts */
+    font-family: 'Raleway', sans-serif; /* Use your chosen font for flash messages */
+    font-weight: 700; /* Set the boldness for flash messages */
+    /* Add any additional styles you want, such as padding or border-radius */
+}
+
+/* Customize alert styles */
+.alert-success {
+    background-color: #d4edda; /* Light green background */
+    color: #155724; /* Dark green text */
+}
+
+.alert-danger {
+    background-color: #f8d7da; /* Light red background */
+    color: #721c24; /* Dark red text */
+}
