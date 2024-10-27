@@ -1,6 +1,6 @@
 body {
   background: url('overlay.png'), url('Wolfplaza.jpg');
-  /* background-size:contain; */
+  background-size:cover; 
   background-attachment: fixed;
   background-repeat: no-repeat;
   color: black;
