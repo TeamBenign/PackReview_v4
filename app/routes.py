@@ -1,9 +1,10 @@
-from flask import render_template, request, redirect, session
+from flask import render_template, request, redirect, session, flash,url_for
 from flask_restful import Resource, reqparse
 from flask_paginate import Pagination, get_page_args
 from app import app, db
 from app.models import Reviews
 from utils import get_DB
+import time
 
 jobsDB = None
 usersDb = None
@@ -48,8 +49,11 @@ def review():
     An API for the user review page, which helps the user to add reviews
     """
     intializeDB()
-    if not ('username' in session.keys() and session['username']):
-        return redirect("/")
+    if 'username' not in session or not session['username']:
+        flash('Please log in first to add a review.',"danger")
+        return redirect('/login')
+    # if not ('username' in session.keys() and session['username']):
+    #     return redirect("/")
     entries = get_all_jobs()
     return render_template('review-page.html', entries=entries)
 
@@ -199,7 +203,8 @@ def home():
 @app.route('/add', methods=['POST'])
 def add():
     """An API to help users add their reviews and store it in the database"""
-
+    
+    
     intializeDB()
     user = usersDb.find_one({"username": session['username']})
     if user == None:
@@ -245,19 +250,23 @@ def logout():
 def login():
     """An API to help users login"""
     intializeDB()
+    
+    # Check if user is already logged in
     if 'username' in session.keys() and session['username']:
         return redirect("/")
-
+    
     if request.method == "POST":
         username = request.form.get("username")
         user = usersDb.find_one({"username": username})
         passw = request.form.get("password")
 
+        # Check if user exists and password matches
         if user and user["password"] == passw:
             session["username"] = username
             return redirect("/")
         else:
-            return redirect("/")
+            flash("Invalid username or password.","danger")  # Provide specific error message
+            return redirect("/login")  # Redirect back to the login page
 
     return render_template("login.html")
 
@@ -266,26 +275,36 @@ def login():
 def signup():
     """An API to help users signup"""
     intializeDB()
+    
     if 'username' in session.keys() and session['username']:
         print("User ", session['username'], " already logged in")
         return redirect("/")
 
     if request.method == "POST":
         username = request.form.get("username")
-        user = usersDb.find_one({"username": username})
-        passw = request.form.get("password")
+        password = request.form.get("password")
+        confirm_password = request.form.get("confirm_password")  # Get the confirmed password
 
-        # new user
+        user = usersDb.find_one({"username": username})
+
+        # Check if passwords match
+        if password != confirm_password:
+            flash("Passwords do not match!","danger")  # Show an error message
+            return render_template("signup.html")
+
+        # New user
         if not user:
             user = {
                 "username": username,
-                "password": passw,
+                "password": password,  # Consider hashing this password before storing
                 "reviews": list()
             }
             usersDb.insert_one(user)
+            session["username"] = username  # Log in the user after signing up
+            return redirect("/")
 
-        session["username"] = username
-        return redirect("/")
+        flash("Username already exists! please login or use different username","danger")  # Show an error message if username is taken
+        return render_template("signup.html")
 
     return render_template("signup.html")
 
