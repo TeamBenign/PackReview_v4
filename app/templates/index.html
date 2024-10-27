@@ -1,70 +1,79 @@
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="utf-8">
-      <meta name="viewreport" content="width=device-width, initial-scale=1.0">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> -->
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-      <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
-      <title>
-        NCSU Campus Job
-      </title>
-      <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
-      <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet" />
-      <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='/css/index.css')}}" />
-    </head>
-      <body scroll = "no" style="overflow: hidden">
-    <div class="container-fluid banner">
-        <div class="row">
-    <div class="col-md-12">
-      <nav class="navbar navbar-md">
-        <div class="navbar-brand">PackReview - Jobs Portal</div>
-        <ul class="nav">
-            <li class="nav-item">
-                <a class="nav-link" href="/">Home</a>
-            </li>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewreport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
+  <title>
+    NCSU Campus Job
+  </title>
+  <link rel="stylesheet" type="text/css"
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='/css/index.css')}}" />
+</head>
+
+<body scroll="no" style="overflow: hidden">
+  <div class="container-fluid banner">
+    <div class="row">
+      <div class="col-md-12">
+        <nav class="navbar navbar-md">
+          <div class="navbar-brand">PackReview - Jobs Portal</div>
+          <ul class="nav">
             {% if session['username'] %}
             <li class="nav-item">
-                <a class="nav-link" href="#">Hello, {{ session['username'] }}</a>
+              <a class="nav-link" href="#">Hello, {{ session['username'] }}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/myjobs">My Jobs</a>
+              <a class="nav-link" href="/">Home</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/logout">Logout</a>
+              <a class="nav-link" href="/myjobs">My Jobs</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/logout">Logout</a>
             </li>
             {% else %}
             <li class="nav-item">
-                <a class="nav-link" href="/login">Login</a>
+              <a class="nav-link" href="/">Home</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/signup">Sign Up</a>
+              <a class="nav-link" href="/login">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/signup">Sign Up</a>
             </li>
             {% endif %}
-            
-        </ul>
-    </nav>
-    </div>
-    <div class="container-fluid banner2">
+
+          </ul>
+        </nav>
+      </div>
+      <div class="container-fluid banner2">
         <div class="col-md-8 offset-md-2 info">
           <div class="container">
-              <div class="row">
-                <div class="col">
-                  <h1 class="text-center">NC State Job Review Portal</h1>
-                </div>
-              </div>
-              <div class = "d-flex justify-content-around text-center addPadding">
-                  <button type="submit" class="btn btn-danger btn-lg" onclick="window.location.href='/review';">Add Reviews</button>
-              
-                  <button type="submit" class="btn btn-danger btn-lg" onclick="window.location.href='/pageContent';">View Reviews</button>
+            <div class="row">
+              <div class="col">
+                <h1 class="text-center">NC State Job Review Portal</h1>
               </div>
             </div>
+            <div class="d-flex justify-content-around text-center addPadding">
+              <button type="submit" class="btn btn-danger btn-lg" onclick="window.location.href='/review';">Add
+                Reviews</button>
+
+              <button type="submit" class="btn btn-danger btn-lg" onclick="window.location.href='/pageContent';">View
+                Reviews</button>
+            </div>
+          </div>
+        </div>
+
       </div>
-
-  </div>
-  </div>
+    </div>
   </div>
 
-    </body>
-    </html>
+</body>
+
+</html>
