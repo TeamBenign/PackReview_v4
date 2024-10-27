@@ -2,197 +2,103 @@
 {% block content %}
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="{{url_for('static', filename='/css/page_content.css')}}"/>
+<link rel="stylesheet" href="{{url_for('static', filename='/css/page_content.css')}}" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" />
 <script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
 
-<style>
-    .clickable-row{
-        cursor: pointer;
-    }
-    label {
-    background-color:black;
-    border: 1px #dadada solid;
-    color:white;
-    font-family: Consolas, Baskerville, 'Segoe UI', sans-serif;
-}
-
-    .multiselect {
-  width: 200px;
-}
-
-.selectBox {
-  position: relative;
-}
-
-.selectBox select {
-  width: 100%;
-  font-weight: bold;
-}
-
-.overSelect {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-}
-
-#checkboxes {
-  display: none;
-  border: 1px #dadada solid;
-}
-
-#checkboxes label {
-  display: block;
-}
-
-#checkboxes label:hover {
-  background-color: #1e90ff;
-}
-</style>
 <script>
-    jQuery(document).ready(function($) {
-    $(".clickable-row").click(function() {
-        window.location = $(this).data("href");
+  jQuery(document).ready(function ($) {
+    $(".clickable-row").click(function () {
+      window.location = $(this).data("href");
     });
-});
+  });
 
-var expanded = false;
+  var expanded = false;
 
-function showCheckboxes() {
-  var checkboxes = document.getElementById("checkboxes");
-  if (!expanded) {
-    checkboxes.style.display = "block";
-    expanded = true;
-  } else {
-    checkboxes.style.display = "none";
-    expanded = false;
+  function showCheckboxes() {
+    var checkboxes = document.getElementById("checkboxes");
+    if (!expanded) {
+      checkboxes.style.display = "block";
+      expanded = true;
+    } else {
+      checkboxes.style.display = "none";
+      expanded = false;
+    }
   }
-}
 </script>
 
-        <form class="filter" action="/pageContentPost" method="post">
-          <input type="text" placeholder="Search.." name="search">
-          <button type="submit"><i class="fa fa-search"></i></button>
-            
-            <div style="display:block;">
-    <div class="multiselect">-->
-    <div class="selectBox" onclick="showCheckboxes()">
+<form class="filter" action="/pageContentPost" method="post">
+  <input type="text" placeholder="Search.." name="search">
+  <button type="submit"><i class="fa fa-search"></i></button>
+
+  <div style="display:block;">
+    <div class="multiselect">
+      <div class="selectBox" onclick="showCheckboxes()">
         <select>
-            <option>Location</option>
+          <option>Location</option>
         </select>
-            <input type="checkbox" name= "location_filter" value="Raleigh, NC"><label> Raleigh, NC</label><br>
-        <input type="checkbox" name= "location_filter" value="California"><label> California</label>
+        <input type="checkbox" name="location_filter" value="Raleigh, NC"><label> Raleigh, NC</label><br>
+        <input type="checkbox" name="location_filter" value="California"><label> California</label>
 
 
         <select>
-            <option>Company</option>
+          <option>Company</option>
 
-       </select>
+        </select>
         {% for entry in company_filter_entries %}
-        <input type="checkbox" name= "company_filter" value="{{entry}}"> <label>{{entry}}</label><br>
-                {% endfor %}
+        <input type="checkbox" name="company_filter" value="{{entry}}"> <label>{{entry}}</label><br>
+        {% endfor %}
 
-   </div>
+      </div>
     </div>
-</div>
-
-            
-            
-<!--            <div style="display:block">-->
-<!--            <div class="multiselect">-->
-<!--    <div class="selectBox" onclick="showCheckboxes()">-->
-<!--      <select>-->
-<!--        <option>Location</option>-->
-<!--      </select>-->
-<!--      <div class="overSelect"></div>-->
-<!--    </div>-->
-<!--    <div id="checkboxes">-->
-
-<!--    <div id="checkboxes2">-->
-
-<!--    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-
-
-<div style="display:block;">
+  </div>
+  <div style="display:block;">
     <div class="multiselect">
       <div class="container">
         HERE!!! {{pagination.links}}
       </div>
-   
-   </div>
+
     </div>
+  </div>
+  </div>
+</form>
+<br><br>
+<div style="background-color: white;">
+  <table class="sortable table table-hover">
+    <thead>
+      <tr>
+        <th>Job Title</th>
+        <th>Company</th>
+        <th>Job Description</th>
+        <th>Department</th>
+        <th>Location(s)</th>
+        <th>Hourly Pay</th>
+        <th>Employee Benefits</th>
+        <th>Review</th>
+        <th>Rating</th>
+        <th>Recommendation</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for entry in entries %}
+
+      <tr class='clickable-row' data-href="/view/{{ entry.id }}">
+        <td><strong>{{ entry.title }}</strong></td>
+        <td><strong>{{ entry.company }}</strong></td>
+        <td>{{ entry.description }}</td>
+        <td>{{ entry.department }}</td>
+        <td>{{ entry.locations }}</td>
+        <td>{{ entry.hourly_pay }}$</td>
+        <td>{{ entry.benefits }}</td>
+        <td>{{ entry.review }}</td>
+        <td>{{ entry.rating }}/5</td>
+        <td>{{ entry.recommendation }}/10</td>
+        {% endfor %}
+    </tbody>
+  </table>
 </div>
-
-<!--            <div>-->
-<!--                {% for entry in location_filter_entries %}-->
-<!--                <input type="checkbox" name= "location_filter" value="{{entry}}"> {{entry}}-->
-<!--                {% endfor %}-->
-<!--            </div>-->
-
-<!--            <div>-->
-<!--                {% for entry in title_filter_entries %}-->
-<!--                <input type="checkbox" name= "title_filter" value="{{entry}}"> {{entry}}-->
-<!--                {% endfor %}-->
-<!--            </div>-->
-
-
-        </form>
-        <br><br>
-        <div style="background-color: white;">
-            <table class="sortable table table-hover">
-                <thead>
-                    <tr>
-                        <th>Job Title</th>
-                        <th>Company</th>
-                        <th>Job Description</th>
-                        <th>Department</th>
-                        <th>Location(s)</th>
-                        <th>Hourly Pay</th>
-                        <th>Employee Benefits</th>
-                        <th>Review</th>
-                        <th>Rating</th>
-                        <th>Recommendation</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for entry in entries %}
-
-                    <tr class='clickable-row' data-href="/view/{{ entry.id }}">
-                        <td><strong>{{ entry.title }}</strong></td>
-                        <td><strong>{{ entry.company }}</strong></td>
-                        <td>{{ entry.description }}</td>
-                        <td>{{ entry.department }}</td>
-                        <td>{{ entry.locations }}</td>
-                        <td>{{ entry.hourly_pay }}$</td>
-                        <td>{{ entry.benefits }}</td>
-                        <td>{{ entry.review }}</td>
-                        <td>{{ entry.rating }}/5</td>
-                        <td>{{ entry.recommendation }}/10</td>
-<!--                         <td>-->
-<!--                            <a class="{{ 'btn btn-success' if entry.status else 'btn btn-dark'}}"-->
-<!--                               href="/turn/{{ entry.id }}">-->
-<!--                                Turn Status-->
-<!--                            </a>-->
-<!--                            <a class="btn btn-danger"-->
-<!--                               href="/delete/{{ entry.id }}">-->
-<!--                                Delete-->
-<!--                            </a>-->
-<!--                            <a class="btn btn-info"-->
-<!--                               href="/update/{{ entry.id }}">-->
-<!--                                Edit-->
-<!--                            </a>-->
-<!--                        </td>-->
-<!--                    </tr>-->
-                    {% endfor %}
-                    </tbody>
-            </table>
-        </div>
 
 {% endblock %}

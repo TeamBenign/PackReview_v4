@@ -10,11 +10,12 @@
                 <div class="card-body">
                     <form action="/update/{{ entry.id }}" method="post">
                         <div class="form-group">
-                            <input class="form-control" type="text" name="title" placeholder="Title" value="{{ entry.job_title }}" required>
+                            <input class="form-control" type="text" name="title" placeholder="Title"
+                                value="{{ entry.job_title }}" required>
                         </div>
                         <div class="form-group">
-                            <textarea class="form-control" name="description" cols="100"
-                                      placeholder="Add a Description" required> {{ entry.job_description }} </textarea>
+                            <textarea class="form-control" name="description" cols="100" placeholder="Add a Description"
+                                required> {{ entry.job_description }} </textarea>
                         </div>
                         <button class="btn btn-primary" type="submit">
                             Update
@@ -27,8 +28,3 @@
 </div>
 
 {% endblock %}
-
-
-
-
-

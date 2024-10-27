@@ -1,78 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewreport" content="width=device-width, initial-scale=1.0">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <title>NCSU Campus Job</title>
-    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
     <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}" />
 </head>
+
 <body>
 
-<div class="container-fluid banner">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="navbar">
-                <nav class="navbar navbar-md">
-                    <div class="navbar-brand">PackReview - Jobs Portal</div>
-                    <ul class="nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/">Home</a>
-                        </li>
-                        {% if session['username'] %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Hello, {{ session['username'] }}</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/myjobs">My Jobs</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/logout">Logout</a>
-                        </li>
-                        {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="/login">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/signup">Sign Up</a>
-                        </li>
-                        {% endif %}
-                    </ul>
-                </nav>
-            </div>
+    <div class="container-fluid banner">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="navbar">
+                    <nav class="navbar navbar-md">
+                        <div class="navbar-brand">PackReview - Jobs Portal</div>
+                        <ul class="nav">
+                            {% if session['username'] %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Hello, {{ session['username'] }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/myjobs">My Jobs</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/logout">Logout</a>
+                            </li>
+                            {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/login">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/signup">Sign Up</a>
+                            </li>
+                            {% endif %}
 
-            <!-- Flash Messages Section -->
-            <div class="container mt-3">
-                {% with messages = get_flashed_messages(with_categories=True) %}
+                        </ul>
+                    </nav>
+                </div>
+
+                <!-- Flash Messages Section -->
+                <div class="container mt-3">
+                    {% with messages = get_flashed_messages(with_categories=True) %}
                     {% if messages %}
-                        <div class="row justify-content-center">  <!-- Center the row -->
-                            <div class="col-md-8">  <!-- Control width of alert -->
-                                <div class="alert alert-dismissible fade show text-center" role="alert">  <!-- Added text-center class -->
-                                    {% for category, message in messages %}
-                                        <div class="alert alert-{{ category }}">{{ message }}</div>
-                                    {% endfor %}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
+                    <div class="row justify-content-center"> <!-- Center the row -->
+                        <div class="col-md-8"> <!-- Control width of alert -->
+                            <div class="alert alert-dismissible fade show text-center" role="alert">
+                                <!-- Added text-center class -->
+                                {% for category, message in messages %}
+                                <div class="alert alert-{{ category }}">{{ message }}</div>
+                                {% endfor %}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
                             </div>
                         </div>
+                    </div>
                     {% endif %}
-                {% endwith %}
-            </div>
+                    {% endwith %}
+                </div>
 
 
 
-            <div class="main">
-                {% block content %}{% endblock %}
+                <div class="main">
+                    {% block content %}{% endblock %}
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
