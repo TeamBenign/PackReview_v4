@@ -1,3 +1,4 @@
+from bson import ObjectId
 from flask import render_template, request, redirect, session, flash,url_for
 from flask_restful import Resource, reqparse
 from flask_paginate import Pagination, get_page_args
@@ -8,14 +9,16 @@ import time
 
 jobsDB = None
 usersDb = None
+forumDB = None
 db = None
 
 
 def intializeDB():
-    global jobsDB, db, usersDb
+    global jobsDB, db, usersDb, forumDB
     db = get_DB()
     usersDb = db.Users
     jobsDB = db.Jobs
+    forumDB = db.Forum
 
 
 def process_jobs(job_list):
@@ -92,6 +95,34 @@ def page_content():
     # return render_template('page_content.html', entries=pagination_entries, page=page, per_page=per_page, pagination=pagination)
     return render_template('page_content.html', entries=pagination_entries, page=page, per_page=per_page, pagination=pagination, dept_filter_entries=dept_filter_entries, location_filter_entries=location_filter_entries, company_filter_entries=company_filter_entries)
 
+@app.route('/forum')
+def forum():
+    intializeDB()
+    topics = forumDB.find()
+    return render_template('forum.html', topics=topics)
+
+@app.route('/forum/new', methods=['GET', 'POST'])
+def new_topic():
+    intializeDB()
+    if request.method == 'POST':
+        title = request.form['title']
+        content = request.form['content']
+        forumDB.insert_one({'title': title, 'content': content, 'comments': []})
+        return redirect(url_for('forum'))
+    return render_template('new_topic.html')
+
+@app.route('/forum/<topic_id>', methods=['GET', 'POST'])
+def view_topic(topic_id):
+    intializeDB()
+    topic = forumDB.find_one({'_id': ObjectId(topic_id)})
+    if request.method == 'POST':
+        comment = request.form['comment']
+        forumDB.update_one(
+            {'_id': ObjectId(topic_id)},
+            {'$push': {'comments': comment}}
+        )
+        return redirect(url_for('view_topic', topic_id=topic_id))
+    return render_template('view_topic.html', topic=topic)
 
 # view all
 @app.route('/myjobs')
