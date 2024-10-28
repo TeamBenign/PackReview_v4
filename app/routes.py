@@ -11,11 +11,15 @@ jobsDB = None
 usersDb = None
 forumDB = None
 db = None
+isTest = False
 
+def setTest(test):
+    global isTest
+    isTest = test
 
 def intializeDB():
     global jobsDB, db, usersDb, forumDB
-    db = get_DB()
+    db = get_DB(isTest)
     usersDb = db.Users
     jobsDB = db.Jobs
     forumDB = db.Forum
