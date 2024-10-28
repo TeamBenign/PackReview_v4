@@ -120,8 +120,13 @@ def myjobs():
 @app.route('/top_jobs')
 def top_jobs():
     intializeDB()
-    topJobs = list(jobsDB.find().sort("recommendation", -1).limit(10))
-    topJobs = process_jobs(topJobs)
+    jobs = get_all_jobs()
+    # Sort jobs by sum of recommendation and rating
+    topJobs = sorted(
+        jobs, 
+        key=lambda job: job.get("recommendation", 0) + job.get("rating", 0), 
+        reverse=True
+    )[:10]
     return render_template('top_jobs.html', jobs=topJobs)
 
 # search
