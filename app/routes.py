@@ -116,6 +116,13 @@ def myjobs():
 
     return render_template('myjobs.html', entries=pagination_entries, page=page, per_page=per_page, pagination=pagination)
 
+#Get the top jobs
+@app.route('/top_jobs')
+def top_jobs():
+    intializeDB()
+    topJobs = list(jobsDB.find().sort("recommendation", -1).limit(10))
+    topJobs = process_jobs(topJobs)
+    return render_template('top_jobs.html', jobs=topJobs)
 
 # search
 @app.route('/pageContentPost', methods=['POST'])
@@ -142,22 +149,6 @@ def page_content_post():
         location_filter_title = form.getlist("location_filter")
         title_filter_title = form.getlist("title_filter")
         company_filter_title = form.getlist("company_filter")
-        # li={"department":dept_filter_title,"locations":location_filter_title,"title":title_filter_title,"company": company_filter_title}
-        # for k,v in li.items():
-        #     if v not null:
-        #         entries = process_jobs(jobsDB.find({k:{"$in":v}))
-        # header_dict={}
-        # if title_filter_title:
-        #     header_dict["title"]:"{$in: title_filter_title}"
-        # if company_filter_title:
-        #     header_dict["company"]:"{$in: company_filter_title}"
-        # if dept_filter_title:
-        #     header_dict["department"]:"{$in: dept_filter_title}"
-        # if location_filter_title:
-        #     header_dict["locations"]:"{$in: location_filter_title}"
-        # entries=process_jobs(jobsDB.find(header_dict))
-        # if title_filter_title:
-        #     entries = process_jobs(jobsDB.find({"title": {"$in": title_filter_title}}))
 
         if company_filter_title and dept_filter_title:
             print("dept filter is", dept_filter_title)
