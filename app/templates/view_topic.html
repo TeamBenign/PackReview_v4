@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='/css/style.css')}}" />
+</head>
+
+<body>
+    <div class="banner2">
+        <div class="addPadding">
+            <div class="container">
+                <h1>{{ topic['title'] }}</h1>
+                <p>{{ topic['content'] }}</p>
+
+                <h2>Comments</h2>
+                <div class="feedback" style="background: rgba(0, 0, 0, 0.1);">
+                    <ul>
+                        {% for comment in topic['comments'] %}
+                            <li>{{ comment }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <form action="{{ url_for('view_topic', topic_id=topic['_id']) }}" method="POST">
+                    <div class="form-group">
+                        <label for="comment">Add a Comment:</label>
+                        <textarea name="comment" id="comment" rows="4" required class="form-control"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+{% endblock %}
