@@ -177,7 +177,7 @@ def top_jobs():
     # Sort jobs by sum of recommendation and rating
     top_job = sorted(
         jobs,
-        key=lambda job: job.get("recommendation", 0) + job.get("rating", 0),
+        key=lambda job: int(job.get("recommendation", 0) or 0) + int(job.get("rating", 0) or 0),
         reverse=True
     )[:10]
     return render_template('top_jobs.html', jobs=top_job)
@@ -370,7 +370,7 @@ def signup():
 
 
 @app.route('/view/<id>')
-def view():
+def view(id):
     """An API to help view review information"""
     intialize_db()
     job_review = JOBS_DB.find_one({"_id": id})
@@ -379,7 +379,7 @@ def view():
 
 
 @app.route('/upvote/<id>')
-def upvote():
+def upvote(id):
     """An API to update upvote information"""
     intialize_db()
     job_review = JOBS_DB.find_one({"_id": id})
@@ -390,7 +390,7 @@ def upvote():
 
 
 @app.route('/downvote/<id>')
-def downvote():
+def downvote(id):
     """An API to update upvote information"""
     intialize_db()
     job_review = JOBS_DB.find_one({"_id": id})
@@ -401,7 +401,7 @@ def downvote():
 
 
 @app.route('/delete/<id>')
-def delete():
+def delete(id):
     """An API to help delete a review"""
     intialize_db()
     user = USERS_DB.find_one({"username": session['username']})
