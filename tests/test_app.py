@@ -20,8 +20,7 @@ import unittest
 from unittest.mock import patch, MagicMock
 from bson import ObjectId
 from app import app
-from app.routes import intializeDB, setTest
-
+from app.routes import DB, intialize_db, set_test
 
 class FlaskAppTests(unittest.TestCase):
     """
@@ -74,10 +73,10 @@ class FlaskAppTests(unittest.TestCase):
         app.config['TESTING'] = True
         app.config['WTF_CSRF_ENABLED'] = False
         self.client = app.test_client()
-        setTest(True)
+        set_test(True)
         # Initialize mock database
         self.mock_db = patch('app.db', MagicMock()).start()
-        intializeDB()  # Initialize DB with mock
+        intialize_db()  # Initialize DB with mock
 
         # Signup two users for testing
         self.client.post('/signup', data={
@@ -93,7 +92,7 @@ class FlaskAppTests(unittest.TestCase):
 
     def tearDown(self):
         """Tear down test case, stop all patches."""
-        setTest(False)
+        set_test(False)
         patch.stopall()
 
     def test_home_page(self):

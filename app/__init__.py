@@ -6,14 +6,14 @@ from flask_session import Session
 
 app = Flask(__name__)
 app.config.from_object(Config)
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
+DB = SQLAlchemy(app)
+migrate = Migrate(app, DB)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 @app.before_first_request
 def create_table():
-    db.create_all()
+    DB.create_all()
 
 from app import routes, models
