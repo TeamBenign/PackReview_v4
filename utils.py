@@ -1,15 +1,43 @@
+"""
+utils.py
+
+This module provides utility functions for interacting with a MongoDB database.
+
+Functions:
+- get_db(is_test=False): Connects to the MongoDB database and returns the appropriate 
+  database instance based on the test flag.
+
+Usage:
+    Call `get_db()` to retrieve the main project database, or `get_db(is_test=True)` to retrieve the
+    test database. The MongoDB password should be stored in a configuration file named `config.ini`
+    located in the same directory as this script.
+
+Notes:
+    Ensure that the `config.ini` file contains the correct password for the MongoDB connection.
+"""
+
 import os
 import sys
 from pymongo import MongoClient
 
 
-def get_DB(isTest=False):
-    with open(os.path.join(sys.path[0], "config.ini"), "r") as f:
-        content = f.readlines()
-    client = MongoClient("mongodb+srv://anishd1910:" +
-                         content[0]+"@cluster0.oagwk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+def get_db(is_test=False):
+    """Connect to the MongoDB database and return the appropriate database based on the test flag.
 
-    if (isTest):
-        return client.SETestProj
-    else:
-        return client.SEProj2
+    Args:
+        is_test (bool): If True, return the test database. Defaults to False.
+
+    Returns:
+        Database: The MongoDB database instance.
+    """
+    with open(os.path.join(sys.path[0], "config.ini"), "r", encoding="utf-8") as f:
+        content = f.readlines()
+
+    mongo_uri = (
+        "mongodb+srv://anishd1910:"
+        f"{content[0].strip()}@cluster0.oagwk.mongodb.net/"
+        "?retryWrites=true&w=majority&appName=Cluster0"
+    )
+    client = MongoClient(mongo_uri)
+
+    return client.SETestProj if is_test else client.SEProj2
