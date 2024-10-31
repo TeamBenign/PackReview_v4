@@ -75,7 +75,7 @@ class FlaskAppTests(unittest.TestCase):
         self.client = app.test_client()
         set_test(True)
         # Initialize mock database
-        self.mock_db = patch('app.db', MagicMock()).start()
+        self.mock_db = patch('app.DB', MagicMock()).start()
         intialize_db()  # Initialize DB with mock
 
         # Signup two users for testing
