@@ -1,4 +1,4 @@
-# Contributing to PackReview_Part2
+# Contributing to PackReview_V3
 
 :+1::tada: Kudos! Thanks for your time and effort in contributing to PackReview_Part2! :tada::+1:
 
