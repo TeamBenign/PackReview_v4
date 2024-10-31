@@ -1,6 +1,5 @@
 import unittest
 from unittest.mock import patch, MagicMock
-from bson import ObjectId
 from app import app
 from app.routes import db, intializeDB, setTest
 
