@@ -396,7 +396,7 @@ def signup():
 
 
 @app.route('/view/<id>')
-def view():
+def view(id):
     """An API to help view review information"""
     intialize_db()
     job_review = JOBS_DB.find_one({"_id": id})
@@ -405,7 +405,7 @@ def view():
 
 
 @app.route('/upvote/<id>')
-def upvote():
+def upvote(id):
     """An API to update upvote information"""
     intialize_db()
     job_review = JOBS_DB.find_one({"_id": id})
@@ -416,7 +416,7 @@ def upvote():
 
 
 @app.route('/downvote/<id>')
-def downvote():
+def downvote(id):
     """An API to update upvote information"""
     intialize_db()
     job_review = JOBS_DB.find_one({"_id": id})
@@ -427,7 +427,7 @@ def downvote():
 
 
 @app.route('/delete/<id>')
-def delete():
+def delete(id):
     """An API to help delete a review"""
     intialize_db()
     user = USERS_DB.find_one({"username": session['username']})
