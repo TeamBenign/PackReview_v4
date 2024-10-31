@@ -48,6 +48,12 @@ jobs:
           # Exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
+      - name: Create config.ini from secret
+        env:
+          CONFIG_INI: ${{ secrets.CONFIG_INI }}
+        run: |
+          echo "$CONFIG_INI" > config.ini
+          
       - name: Run Unit Tests with unittest
         run: |
           python -m unittest discover tests -p "test_app.py"  # Change 'tests' to your test directory if different
