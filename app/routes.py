@@ -4,7 +4,7 @@ from flask_restful import Resource, reqparse
 from flask_paginate import Pagination, get_page_args
 from app import app, db
 from app.models import Reviews
-from utils import get_DB
+from utils import get_db
 import time
 
 jobsDB = None
@@ -19,7 +19,7 @@ def setTest(test):
 
 def intializeDB():
     global jobsDB, db, usersDb, forumDB
-    db = get_DB(isTest)
+    db = get_db(isTest)
     usersDb = db.Users
     jobsDB = db.Jobs
     forumDB = db.Forum
