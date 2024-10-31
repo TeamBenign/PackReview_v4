@@ -52,8 +52,8 @@ jobs:
         env:
           CONFIG_INI: ${{ secrets.CONFIG_INI }}
         run: |
-          echo "$CONFIG_INI" > config.ini
-          
+          echo "$CONFIG_INI" > tests/config.ini
+
       - name: Run Unit Tests with unittest
         run: |
           python -m unittest discover tests -p "test_app.py"  # Change 'tests' to your test directory if different
