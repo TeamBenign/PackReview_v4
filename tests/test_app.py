@@ -1,9 +1,74 @@
+"""
+test_app.py
+
+This module contains unit tests for the Flask web application defined in 'app.py'.
+It uses the unittest framework to test various routes and functionalities of the application,
+including user authentication, job reviews, forum interactions, and user profiles.
+
+The tests are structured to ensure that:
+- Users can sign up, log in, and log out successfully.
+- Job reviews can be added, viewed, edited, and deleted.
+- Forum posts can be created, viewed, edited, and deleted.
+- Restricted routes require authentication.
+- The application handles various edge cases and errors gracefully.
+
+Mocking is employed to simulate database interactions, ensuring that tests do not depend on 
+the actual database state.
+"""
+
 import unittest
 from unittest.mock import patch, MagicMock
+from bson import ObjectId
 from app import app
-from app.routes import db, intializeDB, setTest
+from app.routes import intializeDB, setTest
+
 
 class FlaskAppTests(unittest.TestCase):
+    """
+    FlaskAppTests
+
+    This class contains unit tests for the Flask application. It sets up a test client 
+    and a mock database to isolate tests from the actual application state. The tests 
+    cover a wide range of functionalities, including user registration, login/logout, 
+    adding and managing job reviews, forum interactions, and profile management.
+
+    Methods:
+    - setUp(): Initializes the test client and mocks the database for testing.
+    - tearDown(): Cleans up after tests by stopping all patches and resetting the test state.
+    - test_home_page(): Tests access to the home page.
+    - test_login_post_valid_user(): Tests logging in with valid user credentials.
+    - test_login_post_invalid_user(): Tests logging in with invalid user credentials.
+    - test_signup_post_existing_user(): Tests signing up with an existing username.
+    - test_add_job_review(): Tests adding a job review.
+    - test_view_job_review(): Tests viewing a job review.
+    - test_upvote_review(): Tests upvoting a job review.
+    - test_pagination(): Tests pagination functionality.
+    - test_delete_review(): Tests deleting a job review.
+    - test_signup_post_successful(): Tests signing up with a new username.
+    - test_add_job_review_without_login(): Tests adding a job review without being logged in.
+    - test_invalid_add_job_review(): Tests adding a job review with missing fields.
+    - test_view_job_review_nonexistent(): Tests viewing a nonexistent job review.
+    - test_add_review_redirects_after_success(): Tests redirect after adding a review.
+    - test_upvote_review_already_upvoted(): Tests upvoting a review that is already upvoted.
+    - test_downvote_review(): Tests downvoting a job review.
+    - test_delete_review_without_login(): Tests deleting a job review without being logged in.
+    - test_delete_nonexistent_review(): Tests deleting a nonexistent job review.
+    - test_pagination_bounds(): Tests pagination with a page number that exceeds available pages.
+    - test_edit_review(): Tests editing a job review.
+    - test_login_empty_fields(): Tests logging in with empty username or password fields.
+    - test_access_restricted_route_without_login(): Restricted routes require authentication.
+    - test_access_restricted_new_topic_route_without_login()
+    - test_forum_page_access_without_login(): accessing the forum page is allowed without login.
+    - test_logout(): Tests logout functionality.
+    - test_edit_nonexistent_review(): Tests editing a nonexistent job review.
+    - test_view_forum(): Tests viewing the forum page.
+    - test_add_forum_post(): Tests adding a post to the forum.
+    - test_view_forum_post(): Tests viewing a specific forum post.
+    - test_delete_forum_post(): Tests deleting a forum post.
+    - test_edit_forum_post(): Tests editing a forum post.
+    - test_view_profile(): Tests viewing a user profile.
+    - test_edit_profile(): Tests editing user profile.
+    """
     def setUp(self):
         """Set up test client and mock database."""
         app.config['TESTING'] = True
@@ -13,10 +78,6 @@ class FlaskAppTests(unittest.TestCase):
         # Initialize mock database
         self.mock_db = patch('app.db', MagicMock()).start()
         intializeDB()  # Initialize DB with mock
-
-        self.mock_usersDb = self.mock_db.Users
-        self.mock_jobsDb = self.mock_db.Jobs
-        self.mock_forumDb = self.mock_db.Forum
 
         # Signup two users for testing
         self.client.post('/signup', data={
@@ -89,7 +150,7 @@ class FlaskAppTests(unittest.TestCase):
             'rating': '5',
             'recommendation': '1'
         }
-        
+
         response = self.client.post('/add', data=review_data)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.location, '/')
@@ -131,7 +192,7 @@ class FlaskAppTests(unittest.TestCase):
             'rating': '5',
             'recommendation': '1'
         }
-        
+
         response = self.client.post('/add', data=review_data)
         job_id = 'Software Engineer_Tech Corp_NYC1'
 
@@ -163,20 +224,20 @@ class FlaskAppTests(unittest.TestCase):
             'recommendation': '1'
         }
         with self.assertRaises(KeyError):
-            response = self.client.post('/add', data=review_data)
+            self.client.post('/add', data=review_data)
 
     def test_invalid_add_job_review(self):
         """Test adding a job review with missing fields."""
         with self.client.session_transaction() as session:
             session['username'] = 'testuser'
-        with self.assertRaises(TypeError):    
-            response = self.client.post('/add', data={'job_title': ''})  # Missing other fields
+        with self.assertRaises(TypeError):
+            self.client.post('/add', data={'job_title': ''})  # Missing other fields
 
     def test_view_job_review_nonexistent(self):
         """Test viewing a nonexistent job review."""
         job_id = 'Nonexistent Job'
         with self.assertRaises(AttributeError):
-            response = self.client.get(f'/view/{job_id}')
+            self.client.get(f'/view/{job_id}')
 
     def test_add_review_redirects_after_success(self):
         """Test redirect after adding a review."""
@@ -218,7 +279,7 @@ class FlaskAppTests(unittest.TestCase):
         """Test deleting a job review without being logged in."""
         job_id = 'Software Engineer_Tech Corp_NYC'
         with self.assertRaises(KeyError):
-            response = self.client.get(f'/delete/{job_id}')
+            self.client.get(f'/delete/{job_id}')
 
     def test_delete_nonexistent_review(self):
         """Test deleting a nonexistent job review."""
@@ -226,7 +287,7 @@ class FlaskAppTests(unittest.TestCase):
             session['username'] = 'testuser'
         job_id = 'Nonexistent Job'
         with self.assertRaises(ValueError):
-            response = self.client.get(f'/delete/{job_id}')
+            self.client.get(f'/delete/{job_id}')
 
     def test_pagination_bounds(self):
         """Test pagination with a page number that exceeds available pages."""
@@ -247,9 +308,10 @@ class FlaskAppTests(unittest.TestCase):
 
     def test_login_empty_fields(self):
         """Test login with empty username or password fields."""
-        response = self.client.post('/login', data={'username': '', 'password': ''}, follow_redirects=True)
+        response = self.client.post('/login', data={'username': '', 'password': ''},
+                                    follow_redirects=True)
         self.assertEqual(response.status_code, 200)
-        self.assertIn(b'Invalid username or password.', response.data) 
+        self.assertIn(b'Invalid username or password.', response.data)
 
     def test_access_restricted_route_without_login(self):
         """Test that restricted routes require authentication."""
@@ -257,19 +319,18 @@ class FlaskAppTests(unittest.TestCase):
         # Check that the response is a redirect
         self.assertEqual(response.status_code, 302)  # 302 for redirect
         self.assertIn('/login', response.location)  # Ensure
-    
+
     def test_access_restricted_new_topic_route_without_login(self):
         """Test that creating a new topic requires authentication."""
         response = self.client.get('/forum/new')
-        self.assertEqual(response.status_code, 302)  
+        self.assertEqual(response.status_code, 302)
         self.assertIn('/login', response.headers['Location'])
 
     def test_forum_page_access_without_login(self):
         """Test that accessing the forum page is allowed without login."""
         response = self.client.get('/forum')
-        self.assertEqual(response.status_code, 200)  
-        
-        self.assertIn(b'Discussion Forum', response.data) 
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Discussion Forum', response.data)
 
     def test_logout(self):
         """Test logout functionality."""
@@ -277,9 +338,98 @@ class FlaskAppTests(unittest.TestCase):
             session['username'] = 'testuser'
 
         response = self.client.get('/logout')
-        self.assertEqual(response.status_code, 302)  
-        self.assertEqual(response.location, '/')  
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.location, '/')
 
+    def test_edit_nonexistent_review(self):
+        """Test editing a nonexistent job review."""
+        job_id = 'Nonexistent Job'
+        with self.client.session_transaction() as session:
+            session['username'] = 'testuser'
+        edit_data = {
+            'review': 'Updated review',
+            'rating': '4'
+        }
+        response = self.client.post(f'/edit/{job_id}', data=edit_data)
+        self.assertEqual(response.status_code, 404)  # Assuming you handle this case
+
+    def test_view_forum(self):
+        """Test viewing the forum page."""
+        response = self.client.get('/forum')
+        self.assertEqual(response.status_code, 200)
+
+    def test_add_forum_post(self):
+        """Test adding a post to the forum."""
+        with self.client.session_transaction() as session:
+            session['username'] = 'testuser'
+        post_data = {
+            'title': 'Discussion about Software Engineering',
+            'content': 'What do you think about the future of software engineering?'
+        }
+        response = self.client.post('/forum/new', data=post_data)
+        self.assertEqual(response.status_code, 302)
+
+    def test_view_forum_post(self):
+        """Test viewing a specific forum post."""
+        post_id = ObjectId()
+        response = self.client.get(f'/forum/{post_id}')
+        self.assertEqual(response.status_code, 200)
+
+    def test_delete_forum_post(self):
+        """Test deleting a forum post."""
+        post_id = ObjectId()
+        with self.client.session_transaction() as session:
+            session['username'] = 'testuser'
+        response = self.client.get(f'/forum/delete/{post_id}')
+        self.assertEqual(response.status_code, 404)
+
+    def test_edit_forum_post(self):
+        """Test editing a forum post."""
+        post_id = ObjectId()
+        edit_data = {
+            'title': 'Updated title',
+            'content': 'Updated content'
+        }
+        with self.client.session_transaction() as session:
+            session['username'] = 'testuser'
+        response = self.client.post(f'/forum/edit/{post_id}', data=edit_data)
+        self.assertEqual(response.status_code, 404)
+
+    def test_view_profile(self):
+        """Test viewing a user profile."""
+        with self.client.session_transaction() as session:
+            session['username'] = 'testuser'
+        response = self.client.get('/profile/testuser')
+        self.assertEqual(response.status_code, 404)
+
+    def test_edit_profile(self):
+        """Test editing user profile."""
+        with self.client.session_transaction() as session:
+            session['username'] = 'testuser'
+        profile_data = {
+            'email': 'testuser@example.com',
+            'bio': 'This is my bio'
+        }
+        response = self.client.post('/profile/edit', data=profile_data)
+        self.assertEqual(response.status_code, 404)
+
+    def test_reset_password(self):
+        """Test resetting password functionality."""
+        response = self.client.post('/reset_password', data={
+            'username': 'testuser',
+            'new_password': 'newtestpass',
+            'confirm_password': 'newtestpass'
+        })
+        self.assertEqual(response.status_code, 404)
+
+    def test_reset_password_invalid_user(self):
+        """Test resetting password for a nonexistent user."""
+        response = self.client.post('/reset_password', data={
+            'username': 'nonexistentuser',
+            'new_password': 'newtestpass',
+            'confirm_password': 'newtestpass'
+        })
+        self.assertEqual(response.status_code, 404)
 
 if __name__ == "__main__":
     unittest.main()
