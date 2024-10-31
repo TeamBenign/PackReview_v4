@@ -4,7 +4,13 @@ This is a Flask App for the NCSU Campus Job Review System with a MongoDB databas
 
 ![alt text](https://github.com/ashishjoshi2605/ncsu-campus-jobs-review-system/blob/main/app/static/ProjectUI.png)
 
-Badges
+New Badges
+
+[![Pylint](https://github.com/NCSU-SE-2024/PackReview_v3/actions/workflows/pylint.yml/badge.svg)](https://github.com/NCSU-SE-2024/PackReview_v3/actions/workflows/pylint.yml)
+[![Python Flask Application](https://github.com/NCSU-SE-2024/PackReview_v3/actions/workflows/test-app.yml/badge.svg)](https://github.com/NCSU-SE-2024/PackReview_v3/actions/workflows/test-app.yml)
+[![Run tests and upload coverage](https://github.com/NCSU-SE-2024/PackReview_v3/actions/workflows/codecov.yml/badge.svg)](https://github.com/NCSU-SE-2024/PackReview_v3/actions/workflows/codecov.yml)
+
+Old Badges
 
 [![Test Coverage](https://github.com/NCSU-SE-2024/PackReview_v3/actions/workflows/test-app.yml/badge.svg)](https://github.com/NCSU-SE-2024/PackReview_v3/actions/workflows/test-app.yml)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7402242.svg)](https://doi.org/10.5281/zenodo.7402242)
