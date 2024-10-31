@@ -23,7 +23,7 @@ python --version
 git clone https://github.com/NCSU-SE-2024/PackReview_v3.git
 ```
 ```
-cd PackReview_Part2/
+cd PackReview_v3/
 ```
 ```
 python -m venv venv
