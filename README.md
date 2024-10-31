@@ -1,15 +1,12 @@
  # NC State Jobs Review System
  
-This is a Flask App for NCSU Campus Job Review System with SQL database for storage. Here students from NCSU can view reviews on all different jobs that are available on campus. The aim of the portal is to help students get a closer understanding of the job description and the work, as experienced by fellow students. The website allows the students to upload reviews for others to view. The anonymity of the students is maintained to let them upload honest reviews.
+This is a Flask App for the NCSU Campus Job Review System with a MongoDB database for storage. Here, students from NCSU can view reviews on all the different jobs that are available on campus. The portal aims to help students better understand the job description and the work experienced by fellow students. The website allows the students to upload reviews for others to view. The anonymity of the students is maintained to allow them to upload honest reviews.
 
 ![alt text](https://github.com/ashishjoshi2605/ncsu-campus-jobs-review-system/blob/main/app/static/ProjectUI.png)
 
-New Badges
+Badges
 
 [![Test Coverage](https://github.com/NCSU-SE-2024/PackReview_v3/actions/workflows/test-app.yml/badge.svg)](https://github.com/NCSU-SE-2024/PackReview_v3/actions/workflows/test-app.yml)
-
-Old Badges
-
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7402242.svg)](https://doi.org/10.5281/zenodo.7402242)
 <a href="https://github.com/kunalshah03/PackReview_Part2/graphs/contributors" alt="Contributors"><img src = "https://img.shields.io/github/contributors/kunalshah03/PackReview_Part2"/></a>
 ![Lint Python](https://github.com/amisha-w/PackTravel/actions/workflows/pylint.yml/badge.svg)
@@ -33,7 +30,7 @@ To check whether you have python installed or not, you can open CMD or a Termina
 
 If this is not the case, then you need to download python installer package from [Python Installers](https://www.python.org/downloads/) based on your system's operating system and install it and you can further clone this repository to execute the scripts.
 
-You can refer [INSTALL.md](https://github.com/kunalshah03/PackReview_Part2/blob/main/install.md) for the complete installation steps based on your OS.
+You can refer [INSTALL.md](https://github.com/NCSU-SE-2024/PackReview_v3/blob/main/install.md) for the complete installation steps based on your OS.
 
 ## Poster
 ![alt text](https://github.com/kunalshah03/PackReview_Part2/blob/main/app/static/Poster.jpg)
@@ -41,8 +38,7 @@ You can refer [INSTALL.md](https://github.com/kunalshah03/PackReview_Part2/blob/
 ## Contribution Code of Conduct
 
 The rules listed below are to be followed by the ones who will be contributing to the code in the repository:
-  
-  - All the branches used to merge any code into the main branch should start with "KAPSS-".
+
   - Atleast one review/approval is required from any other contributors of the project to merge a commit to the main branch.
   - It is recommended to delete the branch as soon as it is merged to the main branch to avoid stale branches in the repository.
   - It is encouraged to add name tags such as "feature-" or "patch-" in the branches if it is used to add code-patches or features in the project.
@@ -56,28 +52,36 @@ The rules listed below are to be followed by the ones who will be contributing t
 
 ![WhatsApp Image 2022-12-05 at 9 05 34 PM](https://user-images.githubusercontent.com/111834635/205791376-6dc27993-f39e-4737-b5b8-2219ac74df60.jpeg)
 
-
-### Video demonstrating the existing functionalities
-https://user-images.githubusercontent.com/60925790/205466046-2b583692-3d3e-428d-b13f-aa0da9a51bce.mp4
-
-### Video demonstarting the new functionalities
+### Video demonstrating the old functionalities
 https://user-images.githubusercontent.com/60925790/205790268-41892a26-7dfa-4d52-a326-848212b1e4fe.mp4
 
-# Quick look to the newly added features
+### Video demonstrating the new functionalities
+Add video here
 
-## A Potential Game Changer
-* Comprehensive Filters for Customized View: The reviews are distinctly filtered out based on the categories of location and company which enhances the user experience in viewing the desired reviews. The advanced search filter provides tightly-focused and incredibly faster means to zone in on their choices.
-* Optimized the server processing performance using Pagination feature: The significant server traffic control and latency is constrained in limits using the pagination strategies. Effective pagination strategies have been devised to smoothly render the data from the dense database which could potentially return millions and billions.
-* Powerful Querying and Analytics using MongoDB: The MongoDB query facilitates to query deep into documents and performs complex analytics pipelines with minimal resources. It's flexible document schema integrated with rapid query operations offer a significant performance boost when compared to the previously used traditional databases.
-* Scaled to serve diverse groups: The application is made versatitle by many folds to cater to all purposes of job search. It provides an extensive and anonymous job review platform to all the career communities in addition to NCSU enterprises.
+# Quick look at the newly added features
+
+* Top Job Picks for Enhanced Discovery: Users can now explore a curated list of the most highly rated job opportunities based on reviews and recommendations. This feature guides users toward top-rated positions, providing an efficient way to discover high-quality job opportunities at a glance.
+
+* Discussion Forum for Open Career Conversations:
+A fully interactive discussion forum allows users to create topics, share insights, and discuss various job-related subjects. This platform enriches the community by enabling users to exchange ideas, seek advice, and build networks directly within the application.
+
+* Advanced Review Updating for Accurate Job Reflections:
+Users now have the flexibility to update their job reviews to reflect current experiences and insights. This ensures that job reviews remain relevant and up-to-date, contributing to a more accurate resource for job seekers.
+
+* Enhanced User Experience with Dynamic Warning Messages:
+Dynamic warning messages are now integrated in the app, offering real-time feedback on actions. This prevents errors, ensures clarity, and provides a smoother user journey by instantly notifying users of any potential issues.
+
+* Bug Fixes for Seamless Navigation and Consistency:
+Numerous bugs, such as issues with pagination, inconsistent page transitions, and absent warning notifications, have been resolved. These fixes improve app stability, ensuring a consistently smooth and reliable user experience.
+
+
 
 ## Roadmap
-* [List of Roadmap and their corresponding open issues](https://github.com/kunalshah03/PackReview_Part2/issues)
+* [List of Roadmap and their corresponding open issues](https://github.com/NCSU-SE-2024/PackReview_v3/issues)
+  
 ## Team Members - Project 2
-* Amisha Waghela
-* Ameya Chavan
-* Aoishi Das
-* Kunal Shah
-* Swarnamalya M
+* Anish Dhage
+* Gaurav Sheth
+* Soham Gundewar
 
 
