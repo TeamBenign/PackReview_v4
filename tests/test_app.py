@@ -19,12 +19,13 @@ class FlaskAppTests(unittest.TestCase):
         self.mock_jobsDb = self.mock_db.Jobs
         self.mock_forumDb = self.mock_db.Forum
 
-        response = self.client.post('/signup', data={
+        # Signup two users for testing
+        self.client.post('/signup', data={
             'username': 'testuser',
             'password': 'testpass',
             'confirm_password': 'testpass'
         })
-        response = self.client.post('/signup', data={
+        self.client.post('/signup', data={
             'username': 'existinguser',
             'password': 'password123',
             'confirm_password': 'password123'
@@ -138,6 +139,44 @@ class FlaskAppTests(unittest.TestCase):
         response = self.client.get(f'/delete/{job_id}')
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.location, '/myjobs')
+
+    def test_login_empty_fields(self):
+        """Test login with empty username or password fields."""
+        response = self.client.post('/login', data={'username': '', 'password': ''}, follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Invalid username or password.', response.data) 
+
+    def test_access_restricted_route_without_login(self):
+        """Test that restricted routes require authentication."""
+        response = self.client.get('/myjobs')
+        # Check that the response is a redirect
+        self.assertEqual(response.status_code, 302)  # 302 for redirect
+        self.assertIn('/login', response.location)  # Ensure
+    
+    def test_access_restricted_new_topic_route_without_login(self):
+        """Test that creating a new topic requires authentication."""
+        response = self.client.get('/forum/new')
+        self.assertEqual(response.status_code, 302)  
+        self.assertIn('/login', response.headers['Location'])
+
+    def test_forum_page_access_without_login(self):
+        """Test that accessing the forum page is allowed without login."""
+        response = self.client.get('/forum')
+        self.assertEqual(response.status_code, 200)  
+        
+        self.assertIn(b'Discussion Forum', response.data) 
+
+
+
+    def test_logout(self):
+        """Test logout functionality."""
+        with self.client.session_transaction() as session:
+            session['username'] = 'testuser'
+
+        response = self.client.get('/logout')
+        self.assertEqual(response.status_code, 302)  
+        self.assertEqual(response.location, '/')  
+
 
 if __name__ == "__main__":
     unittest.main()
