@@ -38,6 +38,6 @@ def get_db(is_test=False):
         f"{content[0].strip()}@cluster0.oagwk.mongodb.net/"
         "?retryWrites=true&w=majority&appName=Cluster0"
     )
-    client = MongoClient(mongo_uri)
-
-    return client.SETestProj if is_test else client.SEProj2
+    with MongoClient(mongo_uri) as client:
+        client = MongoClient(mongo_uri)
+        return client.SETestProj if is_test else client.SEProj2
