@@ -20,6 +20,7 @@ and company.
 """
 from bson import ObjectId
 from flask import render_template, request, redirect, session, flash,url_for, jsonify
+from flask_restful import Resource, reqparse
 from flask_paginate import Pagination, get_page_args
 from app import app, DB
 from utils import get_db
@@ -85,8 +86,8 @@ def review():
         return redirect('/login')
     # if not ('username' in session.keys() and session['username']):
     #     return redirect("/")
-    entries = get_all_jobs()
-    return render_template('review-page.html', entries=entries)
+    # entries = get_all_jobs()
+    return render_template('review-page.html', entry='')
 
 
 # view all
@@ -441,3 +442,24 @@ def delete(delete_id):
 
     JOBS_DB.delete_one({"_id": delete_id})
     return redirect("/myjobs")
+
+@app.route('/api/getUser')
+def getUser():
+    try:
+        if 'username' in session.keys() and session['username']:
+            return jsonify(session['username'])
+        else:
+            return jsonify('')
+    except Exception as e:
+        print("Error: ", e)
+
+@app.route('/api/updateReview')
+def updateReview():
+    try:
+        id = request.args.get('id')
+        intializeDB()
+        jobReview = jobsDB.find_one({"_id": id})
+        jobReview['id'] = jobReview.pop('_id')
+        return render_template("review-page.html", entry=jobReview)
+    except Exception as e:
+        print("Error: ", e)

@@ -10,10 +10,24 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="{{url_for('static', filename='/css/style.css')}}" />
+  <!-- <script>
+    async function updateReview() {
+      if('{{ entry }}'!='') {
+        document.getElementById("job_title").value = "{{ entry.title }}";
+        document.getElementById("company").value = "{{ entry.company }}";
+        document.getElementById("department").value = "{{ entry.department }}";
+        document.getElementById("locations").value = "{{ entry.locations }}";
+        document.getElementById("job_description").value = "{{ entry.description }}";
+        document.getElementById("hourly_pay").value = "{{ entry.hourly_pay }}";
+        document.getElementById("benefits").value = "{{ entry.benefits }}";
+        document.getElementById("recommendation").value = "{{ entry.recommendation }}";
+        document.getElementById("review").value = "{{ entry.review }}";
+      }
+    }
+  </script> -->
 </head>
 
 <body>
-
   <section>
     <div class="rt-container">
       <div class="col-rt-12">
@@ -25,49 +39,49 @@
               </h1>
               <hr class="survey-hr">
               <label for="m_3189847521540640526commentText">What is your job position?</label><br /><br />
-              <input type="text" cols="75" name="job_title" rows="5" style="100%" size="80%" required></input><br>
+              <input type="text" cols="75" name="job_title" id="job_title" rows="5" style="100%" size="80%" value="{{ entry.title if entry else '' }}" required></input><br>
               <br>
 
               <hr class="survey-hr">
               <label for="m_3189847521540640526commentText">Where do you work?</label><br /><br />
-              <input type="text" cols="75" name="company" rows="5" style="100%" size="80%" required></input><br>
+              <input type="text" cols="75" name="company" id="company" rows="5" style="100%" size="80%" value="{{ entry.company if entry else '' }}" required></input><br>
               <br>
 
               <hr class="survey-hr">
               <label for="m_3189847521540640526commentText">In which department do you work in?</label><br /><br />
-              <input type="text" cols="75" name="department" rows="5" style="100% required" size="80%"
-                required></input><br>
+              <input type="text" cols="75" name="department" id="department" rows="5" style="100% required" size="80%"
+              value="{{ entry.department if entry else '' }}" required></input><br>
               <br>
 
               <hr class="survey-hr">
               <label for="m_3189847521540640526commentText">What was your job location?</label><br /><br />
-              <input type="text" cols="75" name="locations" rows="5" style="100%" size="80%" required></input><br>
+              <input type="text" cols="75" name="locations" id="locations" rows="5" style="100%" size="80%" value="{{ entry.locations if entry else '' }}" required></input><br>
               <br>
 
               <hr class="survey-hr">
               <label for="m_3189847521540640526commentText">What all tasks do you work on?</label><br /><br />
-              <input type="text" cols="75" name="job_description" rows="5" style="100%" size="80%" required></input><br>
+              <input type="text" cols="75" name="job_description" id="job_description" rows="5" style="100%" size="80%" value="{{ entry.description if entry else '' }}" required></input><br>
               <br>
 
               <hr class="survey-hr">
               <label for="m_3189847521540640526commentText">What is your hourly pay rate?</label><br /><br />
-              <input type="text" cols="75" name="hourly_pay" rows="5" style="100%" size="80%" required></input><br>
+              <input type="text" cols="75" name="hourly_pay" id="hourly_pay" rows="5" style="100%" size="80%" value="{{ entry.hourly_pay if entry else '' }}" required></input><br>
               <br>
 
               <hr class="survey-hr">
               <label for="m_3189847521540640526commentText">Do you get any other benefits other than your salary? If
                 yes, please specify.</label><br /><br />
-              <input type="text" cols="75" name="benefits" rows="5" style="100%" size="80%" required></input><br>
+              <input type="text" cols="75" name="benefits" id="benefits" rows="5" style="100%" size="80%" value="{{ entry.benefits if entry else '' }}" required></input><br>
               <br>
 
               <label>Your overall experience with your job ?</label><br>
 
               <span class="star-rating">
-                <input type="radio" name="rating" value="1"><i></i>
-                <input type="radio" name="rating" value="2"><i></i>
-                <input type="radio" name="rating" value="3"><i></i>
-                <input type="radio" name="rating" value="4"><i></i>
-                <input type="radio" name="rating" value="5"><i></i>
+                <input type="radio" name="rating" id="rating" value="1" {% if entry.rating == 1 %} checked {% endif %}><i></i>
+                <input type="radio" name="rating" id="rating" value="2" {% if entry.rating == 2 %} checked {% endif %}><i></i>
+                <input type="radio" name="rating" id="rating" value="3" {% if entry.rating == 3 %} checked {% endif %}><i></i>
+                <input type="radio" name="rating" id="rating" value="4" {% if entry.rating == 4 %} checked {% endif %}><i></i>
+                <input type="radio" name="rating" id="rating" value="5" {% if entry.rating == 5 %} checked {% endif %}><i></i>
               </span>
               <div class="clear"></div>
 
@@ -85,43 +99,43 @@
               </div>
               <span class="scale-rating">
                 <label value="1">
-                  <input type="radio" name="recommendation" value="1">
+                  <input type="radio" name="recommendation" id="recommendation" value="1" {% if entry.recommendation == 1 %} checked {% endif %}>
                   <label style="width:100%;"></label>
                 </label>
                 <label value="2">
-                  <input type="radio" name="recommendation" value="2">
+                  <input type="radio" name="recommendation" id="recommendation" value="2" {% if entry.recommendation == 2 %} checked {% endif %}>
                   <label style="width:100%;"></label>
                 </label>
                 <label value="3">
-                  <input type="radio" name="recommendation" value="3">
+                  <input type="radio" name="recommendation" id="recommendation" value="3" {% if entry.recommendation == 3 %} checked {% endif %}>
                   <label style="width:100%;"></label>
                 </label>
                 <label value="4">
-                  <input type="radio" name="recommendation" value="4">
+                  <input type="radio" name="recommendation" id="recommendation" value="4" {% if entry.recommendation == 4 %} checked {% endif %}>
                   <label style="width:100%;"></label>
                 </label>
                 <label value="5">
-                  <input type="radio" name="recommendation" value="5">
+                  <input type="radio" name="recommendation" id="recommendation" value="5" {% if entry.recommendation == 5 %} checked {% endif %}>
                   <label style="width:100%;"></label>
                 </label>
                 <label value="6">
-                  <input type="radio" name="recommendation" value="6">
+                  <input type="radio" name="recommendation" id="recommendation" value="6" {% if entry.recommendation == 6 %} checked {% endif %}>
                   <label style="width:100%;"></label>
                 </label>
                 <label value="7">
-                  <input type="radio" name="recommendation" value="7">
+                  <input type="radio" name="recommendation" id="recommendation" value="7" {% if entry.recommendation == 7 %} checked {% endif %}>
                   <label style="width:100%;"></label>
                 </label>
                 <label value="8">
-                  <input type="radio" name="recommendation" value="8">
+                  <input type="radio" name="recommendation" id="recommendation" value="8" {% if entry.recommendation == 8 %} checked {% endif %}>
                   <label style="width:100%;"></label>
                 </label>
                 <label value="9">
-                  <input type="radio" name="recommendation" value="9">
+                  <input type="radio" name="recommendation" id="recommendation" value="9" {% if entry.recommendation == 9 %} checked {% endif %}>
                   <label style="width:100%;"></label>
                 </label>
                 <label value="10">
-                  <input type="radio" name="recommendation" value="10">
+                  <input type="radio" name="recommendation" id="recommendation" value="10" {% if entry.recommendation == 10 %} checked {% endif %}>
                   <label style="width:100%;"></label>
                 </label>
               </span>
@@ -130,7 +144,7 @@
               <hr class="survey-hr">
               <label for="m_3189847521540640526commentText">Can you describe more about the job in
                 detail?</label><br /><br />
-              <textarea cols="75" name="review" rows="5" required></textarea><br>
+              <textarea cols="75" name="review" id="review" rows="5" required>{{ entry.review if entry else '' }}</textarea><br>
               <br>
               <div class="clear"></div>
               <input style="background:#43a7d5;color:#fff;padding:12px;border:0" type="submit"
