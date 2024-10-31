@@ -20,7 +20,7 @@ To check python version, run this command in your CMD or Terminal:
 python --version
 ```
 ```
-git clone https://github.com/kunalshah03/PackReview_Part2.git
+git clone https://github.com/NCSU-SE-2024/PackReview_v3.git
 ```
 ```
 cd PackReview_Part2/
