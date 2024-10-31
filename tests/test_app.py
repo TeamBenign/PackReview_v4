@@ -272,8 +272,6 @@ class FlaskAppTests(unittest.TestCase):
         
         self.assertIn(b'Discussion Forum', response.data) 
 
-
-
     def test_logout(self):
         """Test logout functionality."""
         with self.client.session_transaction() as session:
