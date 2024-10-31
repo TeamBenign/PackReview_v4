@@ -8,8 +8,8 @@ def get_DB(isTest=False):
         content = f.readlines()
     client = MongoClient("mongodb+srv://anishd1910:" +
                          content[0]+"@cluster0.oagwk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
-                             ssl=True,
-                                ssl_cert_reqs=ssl.CERT_NONE)
+                                 tls=True,  # Enable TLS (SSL)
+                                     tlsAllowInvalidCertificates=True)
 
     if (isTest):
         return client.SETestProj
