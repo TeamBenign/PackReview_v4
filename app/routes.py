@@ -101,13 +101,19 @@ def page_content():
 
 @app.route('/forum')
 def forum():
+    """API for viewing all forum topics"""
     intializeDB()
     topics = forumDB.find()
     return render_template('forum.html', topics=topics)
 
 @app.route('/forum/new', methods=['GET', 'POST'])
 def new_topic():
+    """API for creating a new forum topic"""
     intializeDB()
+    # Check if 'username' is in session
+    if 'username' not in session:
+        return redirect('/login')  # Redirect to login if not authenticated
+
     if request.method == 'POST':
         title = request.form['title']
         content = request.form['content']
@@ -117,22 +123,35 @@ def new_topic():
 
 @app.route('/forum/<topic_id>', methods=['GET', 'POST'])
 def view_topic(topic_id):
+    """API for viewing a specific forum topic"""
     intializeDB()
     topic = forumDB.find_one({'_id': ObjectId(topic_id)})
+    
     if request.method == 'POST':
+        # Check if 'username' is in session before allowing comments
+        if 'username' not in session:
+            return redirect('/login')  # Redirect to login if not authenticated
+            
         comment = request.form['comment']
         forumDB.update_one(
             {'_id': ObjectId(topic_id)},
             {'$push': {'comments': comment}}
         )
         return redirect(url_for('view_topic', topic_id=topic_id))
+    
     return render_template('view_topic.html', topic=topic)
+
 
 # view all
 @app.route('/myjobs')
 def myjobs():
     """An API for the user to view all the reviews created by them"""
     intializeDB()
+
+    # Check if 'username' is in session
+    if 'username' not in session:
+        return redirect('/login')  # Redirect to login if not authenticated
+
     entries = get_my_jobs(session['username'])
     page, per_page, offset = get_page_args(
         page_parameter="page", per_page_parameter="per_page")
@@ -141,15 +160,15 @@ def myjobs():
     if not page or not per_page:
         offset = 0
         per_page = 10
-        pagination_entries = entries[offset: offset+per_page]
+        pagination_entries = entries[offset: offset + per_page]
     else:
-        pagination_entries = entries[offset: offset+per_page]
-        # print("ELSE!!!")
+        pagination_entries = entries[offset: offset + per_page]
 
     pagination = Pagination(page=page, per_page=per_page,
                             total=total, css_framework='bootstrap4')
 
     return render_template('myjobs.html', entries=pagination_entries, page=page, per_page=per_page, pagination=pagination)
+
 
 #Get the top jobs
 @app.route('/top_jobs')
@@ -239,11 +258,19 @@ def add():
     intializeDB()
     user = usersDb.find_one({"username": session['username']})
     if user == None:
-        pass
+        flash('User not found. Please log in again.', 'error')
+        return redirect('/login')  # Redirect to a login page or wherever appropriate
+
     reviews = user['reviews']
 
     if request.method == 'POST':
-        form = request.form
+        form = request.form        
+        # Validate required fields
+        required_fields = ['job_title', 'company', 'locations', 'job_description', 'department', 'hourly_pay', 'benefits', 'review', 'rating', 'recommendation']
+        missing_fields = [field for field in required_fields if not form.get(field)]
+
+        if missing_fields:
+            flash('Please fill out the fields.', 'error')
 
         job = {
             "_id": form.get('job_title') + "_" + form.get('company') + "_" + form.get('locations'),
