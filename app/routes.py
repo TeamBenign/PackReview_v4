@@ -1,3 +1,23 @@
+"""
+This module implements a Flask-based web application that handles
+user authentication, job review submissions,
+forum discussions, and pagination of content. It provides the
+following functionality:
+
+- User Authentication: Users can log in, sign up, and log out.
+- Job Reviews: Users can add, view, and filter job reviews, with reviews
+being stored in a MongoDB database.
+- Forums: Users can create and participate in discussions on different
+topics in a forum section.
+- Pagination: Displays job reviews and forum topics in a paginated manner,
+ using Flask-Paginate.
+- Database Handling: The application uses MongoDB to manage job reviews, user
+ data, and forum topics, with separate
+  collections for each (Jobs, Users, Forum).
+- Search and Filter: The job reviews can be filtered by department, location,
+and company.
+- Top Jobs: Provides a view of the top jobs sorted by user ratings and recommendations.
+"""
 from bson import ObjectId
 from flask import render_template, request, redirect, session, flash,url_for, jsonify
 from flask_paginate import Pagination, get_page_args
@@ -11,11 +31,13 @@ DB = None
 IS_TEST = False
 
 def set_test(test):
+    """A method to set tests"""
     global IS_TEST
     IS_TEST = test
     return IS_TEST
 
 def intialize_db():
+    """A method to initialize database"""
     global JOBS_DB, DB, USERS_DB, FORUM_DB
     DB = get_db(IS_TEST)
     USERS_DB = DB.Users
@@ -25,6 +47,7 @@ def intialize_db():
 
 
 def process_jobs(job_list):
+    """A method to process all jobs"""
     processed = []
     for job in job_list:
         job['id'] = job.pop('_id')
@@ -33,11 +56,13 @@ def process_jobs(job_list):
 
 
 def get_all_jobs():
+    """A method to get all jobs for required user"""
     all_jobs = list(JOBS_DB.find())
     return process_jobs(all_jobs)
 
 
 def get_my_jobs(username):
+    """A method to get all jobs for required user"""
     intialize_db()
     user = USERS_DB.find_one({"username": username})
     if user is None:
@@ -172,6 +197,7 @@ def myjobs():
 #Get the top jobs
 @app.route('/top_jobs')
 def top_jobs():
+    """An API to get Top Jobs"""
     intialize_db()
     jobs = get_all_jobs()
     # Sort jobs by sum of recommendation and rating
@@ -370,7 +396,7 @@ def signup():
 
 
 @app.route('/view/<id>')
-def view(id):
+def view():
     """An API to help view review information"""
     intialize_db()
     job_review = JOBS_DB.find_one({"_id": id})
@@ -379,18 +405,18 @@ def view(id):
 
 
 @app.route('/upvote/<id>')
-def upvote(id):
+def upvote():
     """An API to update upvote information"""
     intialize_db()
     job_review = JOBS_DB.find_one({"_id": id})
     up_vote = job_review['upvote']
     up_vote += 1
     JOBS_DB.update_one({"_id": id}, {"$set": {"upvote": up_vote}})
-    return redirect("/view/"+id)
+    return redirect("/view/" + id)
 
 
 @app.route('/downvote/<id>')
-def downvote(id):
+def downvote():
     """An API to update upvote information"""
     intialize_db()
     job_review = JOBS_DB.find_one({"_id": id})
@@ -401,7 +427,7 @@ def downvote(id):
 
 
 @app.route('/delete/<id>')
-def delete(id):
+def delete():
     """An API to help delete a review"""
     intialize_db()
     user = USERS_DB.find_one({"username": session['username']})
