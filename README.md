@@ -45,8 +45,11 @@ The rules listed below are to be followed by the ones who will be contributing t
   
 ### Code Coverage Screenshot
 
-![alt text](https://github.com/kunalshah03/PackReview_Part2/blob/main/Data/codecov.png)
+![alt text](https://github.com/NCSU-SE-2024/PackReview_v3/blob/main/Data/v3/CoverageReport.png)
 
+### Test Run Screenshot
+
+![alt text](https://github.com/NCSU-SE-2024/PackReview_v3/blob/main/Data/v3/TestRun.png)
 
 ### Slack Channel Screenshot
 
