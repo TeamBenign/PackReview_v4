@@ -1,3 +1,14 @@
+"""
+This module configures and runs database migrations using Alembic.
+
+It handles both 'offline' and 'online' migration modes:
+- In 'offline' mode, migrations are run with a database URL without connecting to a database engine.
+- In 'online' mode, migrations are run using a database engine.
+
+The module retrieves the database URL from the Flask application instance, sets up logging,
+and checks for schema changes before running migrations. It also defines the target metadata 
+based on the application's database models for autogenerate support in migrations.
+"""
 from __future__ import with_statement
 
 import logging

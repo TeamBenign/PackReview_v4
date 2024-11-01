@@ -1,8 +1,13 @@
+"""
+This module sets up the Flask application, configures it, initializes the database and session,
+and includes the logic to create all necessary database tables upon the first request.
+"""
+
 from flask import Flask
-from app.config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_session import Session
+from app.config import Config
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -14,6 +19,8 @@ Session(app)
 
 @app.before_first_request
 def create_table():
+    """
+    Creates all database tables defined in the application models
+    before the first request is processed.
+    """
     DB.create_all()
-
-from app import routes, models
