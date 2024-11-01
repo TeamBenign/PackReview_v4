@@ -31,11 +31,13 @@ FORUM_DB = None
 DB = None
 IS_TEST = False
 
+
 def set_test(test):
     """A method to set tests"""
     global IS_TEST
     IS_TEST = test
     return IS_TEST
+
 
 def intialize_db():
     """A method to initialize database"""
@@ -82,7 +84,7 @@ def review():
     """
     intialize_db()
     if 'username' not in session or not session['username']:
-        flash('Please log in first to add a review.',"danger")
+        flash('Please log in first to add a review.', "danger")
         return redirect('/login')
     # if not ('username' in session.keys() and session['username']):
     #     return redirect("/")
@@ -111,17 +113,20 @@ def page_content():
     if not page or not per_page:
         offset = 0
         per_page = 10
-        pagination_entries = entries[offset: offset+per_page]
+        pagination_entries = entries[offset: offset + per_page]
     else:
-        pagination_entries = entries[offset: offset+per_page]
+        pagination_entries = entries[offset: offset + per_page]
         # print("ELSE!!!")
 
     pagination = Pagination(page=page, per_page=per_page,
                             total=total, css_framework='bootstrap4')
 
     return render_template('page_content.html', entries=pagination_entries, page=page,
-    per_page=per_page, pagination=pagination, dept_filter_entries=dept_filter_entries,
-    location_filter_entries=location_filter_entries, company_filter_entries=company_filter_entries)
+                           per_page=per_page, pagination=pagination,
+                           dept_filter_entries=dept_filter_entries,
+                           location_filter_entries=location_filter_entries,
+                           company_filter_entries=company_filter_entries)
+
 
 @app.route('/forum')
 def forum():
@@ -129,6 +134,7 @@ def forum():
     intialize_db()
     topics = FORUM_DB.find()
     return render_template('forum.html', topics=topics)
+
 
 @app.route('/forum/new', methods=['GET', 'POST'])
 def new_topic():
@@ -141,9 +147,11 @@ def new_topic():
     if request.method == 'POST':
         title = request.form['title']
         content = request.form['content']
-        FORUM_DB.insert_one({'title': title, 'content': content, 'comments': []})
+        FORUM_DB.insert_one(
+            {'title': title, 'content': content, 'comments': []})
         return redirect(url_for('forum'))
     return render_template('new_topic.html')
+
 
 @app.route('/forum/<topic_id>', methods=['GET', 'POST'])
 def view_topic(topic_id):
@@ -192,10 +200,10 @@ def myjobs():
                             total=total, css_framework='bootstrap4')
 
     return render_template('myjobs.html', entries=pagination_entries, page=page,
-    per_page=per_page, pagination=pagination)
+                           per_page=per_page, pagination=pagination)
 
 
-#Get the top jobs
+# Get the top jobs
 @app.route('/top_jobs')
 def top_jobs():
     """An API to get Top Jobs"""
@@ -204,12 +212,15 @@ def top_jobs():
     # Sort jobs by sum of recommendation and rating
     top_job = sorted(
         jobs,
-        key=lambda job: int(job.get("recommendation", 0) or 0) + int(job.get("rating", 0) or 0),
+        key=lambda job: int(job.get("recommendation", 0)
+                            or 0) + int(job.get("rating", 0) or 0),
         reverse=True
     )[:10]
     return render_template('top_jobs.html', jobs=top_job)
 
 # search
+
+
 @app.route('/pageContentPost', methods=['POST'])
 def page_content_post():
     """An API for the user to view specific reviews depending on the job title"""
@@ -224,7 +235,7 @@ def page_content_post():
         else:
             print("s entered")
             entries = process_jobs(JOBS_DB.find(
-                {"title": "/"+search_title+"/"}))
+                {"title": "/" + search_title + "/"}))
         dept_filter_entries = JOBS_DB.distinct("department")
         location_filter_entries = JOBS_DB.distinct("locations")
         # title_filter_entries = JOBS_DB.distinct("title")
@@ -237,16 +248,16 @@ def page_content_post():
 
         if company_filter_title and dept_filter_title:
             print("dept filter is", dept_filter_title)
-            entries = process_jobs(JOBS_DB.find({"company":  {
-            "$in": company_filter_title}, "department":  {"$in": dept_filter_title}}))
+            entries = process_jobs(JOBS_DB.find({"company": {
+                "$in": company_filter_title}, "department": {"$in": dept_filter_title}}))
         elif dept_filter_title and not company_filter_title:
             print("location filter is", dept_filter_title)
             entries = process_jobs(JOBS_DB.find(
-                {"department":  {"$in": dept_filter_title}}))
+                {"department": {"$in": dept_filter_title}}))
         elif company_filter_title and not dept_filter_title:
             print("company filter is", company_filter_title)
             entries = process_jobs(JOBS_DB.find(
-                {"company":  {"$in": company_filter_title}}))
+                {"company": {"$in": company_filter_title}}))
         page, per_page, offset = get_page_args(
             page_parameter="page", per_page_parameter="per_page")
         total = len(entries)
@@ -254,9 +265,9 @@ def page_content_post():
         if not page or not per_page:
             offset = 0
             per_page = 10
-            pagination_entries = entries[offset: offset+per_page]
+            pagination_entries = entries[offset: offset + per_page]
         else:
-            pagination_entries = entries[offset: offset+per_page]
+            pagination_entries = entries[offset: offset + per_page]
             # print("ELSE!!!")
 
         pagination = Pagination(page=page, per_page=per_page,
@@ -282,21 +293,23 @@ def home():
 def add():
     """An API to help users add their reviews and store it in the database"""
 
-
     intialize_db()
     user = USERS_DB.find_one({"username": session['username']})
     if user is None:
         flash('User not found. Please log in again.', 'error')
-        return redirect('/login')  # Redirect to a login page or wherever appropriate
+        # Redirect to a login page or wherever appropriate
+        return redirect('/login')
 
     reviews = user['reviews']
 
     if request.method == 'POST':
         form = request.form
         # Validate required fields
-        required_fields = ['job_title', 'company', 'locations', 'job_description',
-        'department', 'hourly_pay', 'benefits', 'review', 'rating', 'recommendation']
-        missing_fields = [field for field in required_fields if not form.get(field)]
+        required_fields = ['job_title', 'company', 'locations',
+                           'job_description', 'department', 'hourly_pay',
+                           'benefits', 'review', 'rating', 'recommendation']
+        missing_fields = [
+            field for field in required_fields if not form.get(field)]
 
         if missing_fields:
             flash('Please fill out the fields.', 'error')
@@ -308,7 +321,7 @@ def add():
             "description": form.get('job_description'),
             "locations": form.get('locations'),
             "department": form.get('department'),
-            "hourly_pay":   form.get('hourly_pay'),
+            "hourly_pay": form.get('hourly_pay'),
             "benefits": form.get('benefits'),
             "review": form.get('review'),
             "rating": form.get('rating'),
@@ -360,7 +373,8 @@ def login():
         if user and user["password"] == passw:
             session["username"] = username
             return redirect("/")
-        flash("Invalid username or password.","danger")  # Provide specific error message
+        # Provide specific error message
+        flash("Invalid username or password.", "danger")
         return redirect("/login")  # Redirect back to the login page
 
     return render_template("login.html")
@@ -378,13 +392,14 @@ def signup():
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
-        confirm_password = request.form.get("confirm_password")  # Get the confirmed password
+        confirm_password = request.form.get(
+            "confirm_password")  # Get the confirmed password
 
         user = USERS_DB.find_one({"username": username})
 
         # Check if passwords match
         if password != confirm_password:
-            flash("Passwords do not match!","danger")  # Show an error message
+            flash("Passwords do not match!", "danger")  # Show an error message
             return render_template("signup.html")
 
         # New user
@@ -399,7 +414,9 @@ def signup():
             return redirect("/")
 
         # Show an error message if username is taken
-        flash("Username already exists! please login or use different username","danger")
+        flash(
+            "Username already exists! please login or use different username",
+            "danger")
         return render_template("signup.html")
 
     return render_template("signup.html")
@@ -433,7 +450,7 @@ def downvote(downvote_id):
     down_vote = job_review['upvote']
     down_vote -= 1
     JOBS_DB.update_one({"_id": downvote_id}, {"$set": {"upvote": down_vote}})
-    return redirect("/view/"+downvote_id)
+    return redirect("/view/" + downvote_id)
 
 
 @app.route('/delete/<delete_id>')
@@ -447,7 +464,7 @@ def delete(delete_id):
     reviews = user['reviews']
     reviews.remove(delete_id)
     USERS_DB.update_one({"username": session['username']}, {
-                       "$set": {"reviews": reviews}})
+        "$set": {"reviews": reviews}})
 
     JOBS_DB.delete_one({"_id": delete_id})
     return redirect("/myjobs")

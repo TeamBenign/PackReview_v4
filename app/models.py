@@ -7,6 +7,7 @@ Each review is represented as a row in the Reviews table within the database.
 """
 from app import DB
 
+
 class Reviews(DB.Model):
     """Model which stores the information of the reviews submitted"""
     id = DB.Column(DB.Integer, primary_key=True)

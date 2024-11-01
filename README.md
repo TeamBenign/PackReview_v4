@@ -12,6 +12,8 @@ New Badges
 [![Run tests and upload coverage](https://github.com/NCSU-SE-2024/PackReview_v3/actions/workflows/codecov.yml/badge.svg)](https://codecov.io/gh/NCSU-SE-2024/PackReview_v3)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14026707.svg)](https://doi.org/10.5281/zenodo.14026707)
 <a href="https://github.com/NCSU-SE-2024/PackReview_v3/graphs/contributors" alt="Contributors"><img src = "https://img.shields.io/github/contributors/NCSU-SE-2024/PackReview_v3"/></a>
+[![Python Style Checker|autopep8](https://github.com/NCSU-SE-2024/PackReview_v3/actions/workflows/autopep8.yml/badge.svg)](https://github.com/NCSU-SE-2024/PackReview_v3/actions/workflows/autopep8.yml)
+
 
 
 Old Badges

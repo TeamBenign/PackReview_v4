@@ -7,6 +7,7 @@ This module contains configuration settings for the application.
 import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 
+
 class Config:
     """Configuration settings for the database connection."""
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \

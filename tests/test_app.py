@@ -12,7 +12,7 @@ The tests are structured to ensure that:
 - Restricted routes require authentication.
 - The application handles various edge cases and errors gracefully.
 
-Mocking is employed to simulate database interactions, ensuring that tests do not depend on 
+Mocking is employed to simulate database interactions, ensuring that tests do not depend on
 the actual database state.
 """
 
@@ -21,13 +21,14 @@ from unittest.mock import patch, MagicMock
 from app import app
 from app.routes import intialize_db, set_test
 
+
 class FlaskAppTests(unittest.TestCase):
     """
     FlaskAppTests
 
-    This class contains unit tests for the Flask application. It sets up a test client 
-    and a mock database to isolate tests from the actual application state. The tests 
-    cover a wide range of functionalities, including user registration, login/logout, 
+    This class contains unit tests for the Flask application. It sets up a test client
+    and a mock database to isolate tests from the actual application state. The tests
+    cover a wide range of functionalities, including user registration, login/logout,
     adding and managing job reviews, forum interactions, and profile management.
 
     Methods:
@@ -67,6 +68,7 @@ class FlaskAppTests(unittest.TestCase):
     - test_view_profile(): Tests viewing a user profile.
     - test_edit_profile(): Tests editing user profile.
     """
+
     def setUp(self):
         """Set up test client and mock database."""
         app.config['TESTING'] = True
@@ -119,7 +121,9 @@ class FlaskAppTests(unittest.TestCase):
             'password': 'fakepass'
         })
         self.assertEqual(response.status_code, 302)
-        self.assertIn(b'You should be redirected automatically to the target URL:', response.data)
+        self.assertIn(
+            b'You should be redirected automatically to the target URL:',
+            response.data)
 
     def test_signup_post_existing_user(self):
         """Test signup with an existing username."""
@@ -229,7 +233,8 @@ class FlaskAppTests(unittest.TestCase):
         with self.client.session_transaction() as session:
             session['username'] = 'testuser'
         with self.assertRaises(TypeError):
-            self.client.post('/add', data={'job_title': ''})  # Missing other fields
+            # Missing other fields
+            self.client.post('/add', data={'job_title': ''})
 
     def test_view_job_review_nonexistent(self):
         """Test viewing a nonexistent job review."""
@@ -290,7 +295,8 @@ class FlaskAppTests(unittest.TestCase):
     def test_pagination_bounds(self):
         """Test pagination with a page number that exceeds available pages."""
         response = self.client.get('/pageContent?page=999&per_page=10')
-        self.assertEqual(response.status_code, 200)  # Assuming you handle this case
+        # Assuming you handle this case
+        self.assertEqual(response.status_code, 200)
 
     def test_edit_review(self):
         """Test editing a job review."""
@@ -349,7 +355,8 @@ class FlaskAppTests(unittest.TestCase):
             'rating': '4'
         }
         response = self.client.post(f'/edit/{job_id}', data=edit_data)
-        self.assertEqual(response.status_code, 404)  # Assuming you handle this case
+        # Assuming you handle this case
+        self.assertEqual(response.status_code, 404)
 
     def test_view_forum(self):
         """Test viewing the forum page."""
@@ -436,15 +443,18 @@ class FlaskAppTests(unittest.TestCase):
 
     def test_page_content_route(self):
         """
-        Test the page content route with a POST request to verify successful 
+        Test the page content route with a POST request to verify successful
         response (status code 200) for valid data.
         """
-        response = self.client.post('/pageContentPost', data={"search": "Setup"})
+        response = self.client.post(
+            '/pageContentPost',
+            data={
+                "search": "Setup"})
         assert response.status_code == 200
 
     def test_add_post_route(self):
         """
-        Test the add post route with a POST request to ensure the submission 
+        Test the add post route with a POST request to ensure the submission
         of a new job post is successful (status code 200).
         """
         response = self.client.post('/pageContentPost', data={
@@ -483,7 +493,6 @@ class FlaskAppTests(unittest.TestCase):
         """Test the review route for successful access (status code 200)."""
         response = self.client.get('/pageContent')
         assert response.status_code == 200
-
 
 
 if __name__ == "__main__":
