@@ -5,7 +5,7 @@ name: Python Flask Application
 
 on:
   push:
-    branches: [ "main", "codecov-yml-upd" ]
+    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
