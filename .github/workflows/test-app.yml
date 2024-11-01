@@ -40,6 +40,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install flake8 pytest  # Include flake8 for linting and pytest if needed
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install coverage codecov
 
       - name: Lint with flake8
         run: |
@@ -54,6 +55,18 @@ jobs:
         run: |
           echo "$CONFIG_INI" > tests/config.ini
 
-      - name: Run Unit Tests with unittest
+      # - name: Run Unit Tests with unittest
+      #   run: |
+      #     python -m unittest discover tests -p "test_app.py"  # Change 'tests' to your test directory if different
+
+      - name: Run tests and collect coverage
         run: |
-          python -m unittest discover tests -p "test_app.py"  # Change 'tests' to your test directory if different
+          coverage run -m unittest discover tests/test_app.py
+          coverage xml
+
+      - name: Upload results to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          verbose: true
+        env:
+          CODECOV_TOKEN: 8bc01886-e417-46b9-aa8d-cda6cd0ff54a
