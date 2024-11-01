@@ -93,57 +93,57 @@ Dynamic warning messages are now integrated in the app, offering real-time feedb
 * Bug Fixes for Seamless Navigation and Consistency:
 Numerous bugs, such as issues with pagination, inconsistent page transitions, and absent warning notifications, have been resolved. These fixes improve app stability, ensuring a consistently smooth and reliable user experience.
 
-Use Cases: 
-* Use Case 1: Viewing Job Reviews
-    Actor: NCSU Student
-    Goal: View reviews for campus jobs to help in selecting a suitable job.
-    Steps:
-      The student logs into the system.
-      They browse or search for a specific job by title or department.
-      The system displays a list of reviews for the selected job.
-      The student reads the reviews, focusing on job experiences, workload, and compensation.
-    Outcome: The student gains insights from past employees' reviews, aiding in their decision-making process for applying to on-campus jobs.
+# Use Cases: 
+1. Viewing Job Reviews
+    * Actor: NCSU Student
+    * Goal: View reviews for campus jobs to help in selecting a suitable job.
+    * Steps:
+      - The student logs into the system.
+      - They browse or search for a specific job by title or department.
+      - The system displays a list of reviews for the selected job.
+      - The student reads the reviews, focusing on job experiences, workload, and compensation.
+    * Outcome: The student gains insights from past employees' reviews, aiding in their decision-making process for applying to on-campus jobs.
 
-* Use Case 2: Submitting a Job Review
-    Actor: NCSU Student
-    Goal: Submit an anonymous review for a job they previously worked on campus.
-    Steps:
-      The student logs into the system.
-      They navigate to the "Submit Review" section.
-      The student selects the job they worked at and fills out the review form, including comments on job responsibilities, work environment, and compensation.
-      The system ensures anonymity by masking the student's identity.
-      The student submits the review.
-    Outcome: The review is stored in the system and becomes visible to other students looking for job information.
+2. Submitting a Job Review
+    * Actor: NCSU Student
+    * Goal: Submit an anonymous review for a job they previously worked on campus.
+    * Steps:
+      - The student logs into the system.
+      - They navigate to the "Submit Review" section.
+      - The student selects the job they worked at and fills out the review form, including comments on job responsibilities, work environment, and compensation.
+      - The system ensures anonymity by masking the student's identity.
+      - The student submits the review.
+    * Outcome: The review is stored in the system and becomes visible to other students looking for job information.
 
-* Use Case 3: Updating a Job Review
-    Actor: NCSU Student
-    Goal: Update a previously submitted review with new information.
-    Steps:
-      The student logs into the system and navigates to their profile.
-      They view their previously submitted reviews and select one to update.
-      The student edits the review to reflect new experiences or correct past feedback.
-      The updated review is submitted and replaces the old version in the system.
-    Outcome: The review is updated, providing other students with current and accurate job insights
+3. Updating a Job Review
+    * Actor: NCSU Student
+    * Goal: Update a previously submitted review with new information.
+    * Steps:
+      - The student logs into the system and navigates to their profile.
+      - They view their previously submitted reviews and select one to update.
+      - The student edits the review to reflect new experiences or correct past feedback.
+      - The updated review is submitted and replaces the old version in the system.
+    * Outcome: The review is updated, providing other students with current and accurate job insights
 
-* Use Case 4: Exploring Top Job Picks
-    Actor: NCSU Student
-    Goal: Discover top-rated campus jobs.
-    Steps:
-      The student logs into the system.
-      They navigate to the "Top Job Picks" section.
-      The system displays a curated list of highly rated jobs based on student reviews.
-      The student clicks on any job for detailed reviews and insights.
-    Outcome: The student quickly identifies popular and highly rated jobs, saving time in their search process.
+4. Exploring Top Job Picks
+    * Actor: NCSU Student
+    * Goal: Discover top-rated campus jobs.
+    * Steps:
+      - The student logs into the system.
+      - They navigate to the "Top Job Picks" section.
+      - The system displays a curated list of highly rated jobs based on student reviews.
+      - The student clicks on any job for detailed reviews and insights.
+    * Outcome: The student quickly identifies popular and highly rated jobs, saving time in their search process.
 
-* Use Case 5: Participating in the Discussion Forum
-    Actor: NCSU Student
-    Goal: Engage in discussions about campus jobs.
-    Steps:
-      The student logs into the system.
-      They access the "Discussion Forum" and browse through existing topics.
-      The student participates by commenting on an existing thread or creating a new topic.
-      The system updates the discussion thread in real-time.
-    Outcome: The student gains knowledge from peer discussions or shares their own experiences, fostering a collaborative community.
+5. Participating in the Discussion Forum
+    * Actor: NCSU Student
+    * Goal: Engage in discussions about campus jobs.
+    * Steps:
+      - The student logs into the system.
+      - They access the "Discussion Forum" and browse through existing topics.
+      - The student participates by commenting on an existing thread or creating a new topic.
+      - The system updates the discussion thread in real-time.
+    * Outcome: The student gains knowledge from peer discussions or shares their own experiences, fostering a collaborative community.
 
 ## Roadmap
 * [List of Roadmap and their corresponding open issues](https://github.com/NCSU-SE-2024/PackReview_v3/issues)
