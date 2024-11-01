@@ -1,7 +1,7 @@
 # This workflow will install Python dependencies, run tests and lint with a single version of Python
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
 
-name: Python Flask Application
+name: codecov
 
 on:
   push:
@@ -40,13 +40,23 @@ jobs:
           python -m pip install --upgrade pip
           pip install flake8 pytest  # Include flake8 for linting and pytest if needed
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install coverage codecov
 
       - name: Create config.ini from secret
         env:
           CONFIG_INI: ${{ secrets.CONFIG_INI }}
         run: |
-          echo "$CONFIG_INI" > tests/config.ini
+          echo "$CONFIG_INI" > config.ini
 
-      - name: Run Unit Tests with unittest
+      - name: Run tests and collect coverage
         run: |
-          python -m unittest discover tests -p "test_app.py"  # Change 'tests' to your test directory if different
+          coverage run -m unittest tests/test_app.py
+          coverage report
+          coverage xml
+
+      - name: Upload results to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          verbose: true
+        env:
+          CODECOV_TOKEN: 8bc01886-e417-46b9-aa8d-cda6cd0ff54a
