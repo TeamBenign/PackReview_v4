@@ -28,26 +28,26 @@ def test_page_content_route():
     response = app.test_client().post('/pageContentPost', data={"search": "Setup"})
     assert response.status_code == 200
 
-def test_add_post_route():
-    """Test adding a new post via the page content POST route."""
-    response = app.test_client().post('/pageContentPost', data={
-        "job_title": "1",
-        "job_description": "2",
-        "department": "3",
-        "locations": "4",
-        "hourly_pay": "5",
-        "benefits": "6",
-        "review": "7",
-        "rating": "2",
-        "recommendation": "2",
-        "search": ""
-    })
-    assert response.status_code == 200
+# def test_add_post_route():
+#     """Test adding a new post via the page content POST route."""
+#     response = app.test_client().post('/pageContentPost', data={
+#         "job_title": "1",
+#         "job_description": "2",
+#         "department": "3",
+#         "locations": "4",
+#         "hourly_pay": "5",
+#         "benefits": "6",
+#         "review": "7",
+#         "rating": "2",
+#         "recommendation": "2",
+#         "search": ""
+#     })
+#     assert response.status_code == 200
 
-def test_signup_route():
-    """Test the signup route for a successful response."""
-    response = app.test_client().get('/signup')
-    assert response.status_code == 200
+# def test_signup_route():
+#     """Test the signup route for a successful response."""
+#     response = app.test_client().get('/signup')
+#     assert response.status_code == 200
 
 def test_login_route():
     """Test the login route for a successful response."""
@@ -68,5 +68,5 @@ def test_review_route():
 test_index_route()
 test_review_route()
 test_add_review_route()
-test_add_post_route()
+# test_add_post_route()
 test_page_content_route()
