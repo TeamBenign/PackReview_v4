@@ -400,7 +400,7 @@ def view(view_id):
     """An API to help view review information"""
     intialize_db()
     job_review = JOBS_DB.find_one({"_id": view_id})
-    job_review['view_id'] = job_review.pop('_id')
+    job_review['id'] = job_review.pop('_id')
     return render_template("view.html", entry=job_review)
 
 
