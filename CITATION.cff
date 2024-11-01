@@ -8,6 +8,6 @@ authors:
     given-names: Anish
   - family-names: Gundewar
     given-names: Soham
-version: "3.0.0"
+version: "3.0.1"
 date-released: "11/01/2024"
-doi: 10.5281/zenodo.14026645
+doi: 10.5281/zenodo.14026707
