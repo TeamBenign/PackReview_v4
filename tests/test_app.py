@@ -502,7 +502,7 @@ class FlaskAppTests(unittest.TestCase):
             "dept_filter": "Engineering",
             "company_filter": "TechCorp"
         })
-        assert response.status_code == 200 
+        assert response.status_code == 200
 
     def test_view_forum_topic_route(self):
         """Test viewing a specific forum topic."""
@@ -520,20 +520,23 @@ class FlaskAppTests(unittest.TestCase):
             assert response.status_code == 200
 
     def test_get_user_logged_in(self):
+        """Test for logging in users."""
         with self.client as client:
             with client.session_transaction() as session:
                 session['username'] = 'testuser'
             response = client.get('/api/getUser')
             assert response.status_code == 200
             assert response.json == 'testuser'
-    
+
     def test_get_user_not_logged_in(self):
+        """Test for wgat if user not logged in."""
         with self.client as client:
             response = client.get('/api/getUser')
             assert response.status_code == 200
             assert response.json == ''
 
     def test_get_user_session_key_none(self):
+        """Test for None user."""
         with self.client as client:
             with client.session_transaction() as session:
                 session['username'] = None
