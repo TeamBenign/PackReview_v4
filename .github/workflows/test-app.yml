@@ -55,9 +55,9 @@ jobs:
         run: |
           echo "$CONFIG_INI" > tests/config.ini
 
-      - name: Run Unit Tests with unittest
-        run: |
-          python -m unittest discover tests -p "test_app.py"  # Change 'tests' to your test directory if different
+      # - name: Run Unit Tests with unittest
+      #   run: |
+      #     python -m unittest discover tests -p "test_app.py"  # Change 'tests' to your test directory if different
 
       - name: Run tests and collect coverage
         run: |
