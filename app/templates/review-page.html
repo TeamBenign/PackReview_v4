@@ -77,11 +77,11 @@
               <label>Your overall experience with your job ?</label><br>
 
               <span class="star-rating">
-                <input type="radio" name="rating" id="rating" value="1" {% if entry.rating == 1 %} checked {% endif %}><i></i>
-                <input type="radio" name="rating" id="rating" value="2" {% if entry.rating == 2 %} checked {% endif %}><i></i>
-                <input type="radio" name="rating" id="rating" value="3" {% if entry.rating == 3 %} checked {% endif %}><i></i>
-                <input type="radio" name="rating" id="rating" value="4" {% if entry.rating == 4 %} checked {% endif %}><i></i>
-                <input type="radio" name="rating" id="rating" value="5" {% if entry.rating == 5 %} checked {% endif %}><i></i>
+                <input type="radio" name="rating" id="rating" value="1" {% if entry and entry.rating == '1' %}checked{% endif %}><i></i>
+                <input type="radio" name="rating" id="rating" value="2" {% if entry and entry.rating == '2' %}checked{% endif %}><i></i>
+                <input type="radio" name="rating" id="rating" value="3" {% if entry and entry.rating == '3' %}checked{% endif %}><i></i>
+                <input type="radio" name="rating" id="rating" value="4" {% if entry and entry.rating == '4' %}checked{% endif %}><i></i>
+                <input type="radio" name="rating" id="rating" value="5" {% if entry and entry.rating == '5' %}checked{% endif %}><i></i>
               </span>
               <div class="clear"></div>
 
@@ -99,43 +99,43 @@
               </div>
               <span class="scale-rating">
                 <label value="1">
-                  <input type="radio" name="recommendation" id="recommendation" value="1" {% if entry.recommendation == 1 %} checked {% endif %}>
+                  <input type="radio" name="recommendation" id="recommendation" value="1" {% if entry and entry.rating == '1' %}checked{% endif %}>
                   <label style="width:100%;"></label>
                 </label>
                 <label value="2">
-                  <input type="radio" name="recommendation" id="recommendation" value="2" {% if entry.recommendation == 2 %} checked {% endif %}>
+                  <input type="radio" name="recommendation" id="recommendation" value="2" {% if entry and entry.rating == '2' %}checked{% endif %}>
                   <label style="width:100%;"></label>
                 </label>
                 <label value="3">
-                  <input type="radio" name="recommendation" id="recommendation" value="3" {% if entry.recommendation == 3 %} checked {% endif %}>
+                  <input type="radio" name="recommendation" id="recommendation" value="3" {% if entry and entry.rating == '3' %}checked{% endif %}>
                   <label style="width:100%;"></label>
                 </label>
                 <label value="4">
-                  <input type="radio" name="recommendation" id="recommendation" value="4" {% if entry.recommendation == 4 %} checked {% endif %}>
+                  <input type="radio" name="recommendation" id="recommendation" value="4" {% if entry and entry.rating == '4' %}checked{% endif %}>
                   <label style="width:100%;"></label>
                 </label>
                 <label value="5">
-                  <input type="radio" name="recommendation" id="recommendation" value="5" {% if entry.recommendation == 5 %} checked {% endif %}>
+                  <input type="radio" name="recommendation" id="recommendation" value="5" {% if entry and entry.rating == '5' %}checked{% endif %}>
                   <label style="width:100%;"></label>
                 </label>
                 <label value="6">
-                  <input type="radio" name="recommendation" id="recommendation" value="6" {% if entry.recommendation == 6 %} checked {% endif %}>
+                  <input type="radio" name="recommendation" id="recommendation" value="6" {% if entry and entry.rating == '6' %}checked{% endif %}>
                   <label style="width:100%;"></label>
                 </label>
                 <label value="7">
-                  <input type="radio" name="recommendation" id="recommendation" value="7" {% if entry.recommendation == 7 %} checked {% endif %}>
+                  <input type="radio" name="recommendation" id="recommendation" value="7" {% if entry and entry.rating == '7' %}checked{% endif %}>
                   <label style="width:100%;"></label>
                 </label>
                 <label value="8">
-                  <input type="radio" name="recommendation" id="recommendation" value="8" {% if entry.recommendation == 8 %} checked {% endif %}>
+                  <input type="radio" name="recommendation" id="recommendation" value="8" {% if entry and entry.rating == '8' %}checked{% endif %}>
                   <label style="width:100%;"></label>
                 </label>
                 <label value="9">
-                  <input type="radio" name="recommendation" id="recommendation" value="9" {% if entry.recommendation == 9 %} checked {% endif %}>
+                  <input type="radio" name="recommendation" id="recommendation" value="9" {% if entry and entry.rating == '9' %}checked{% endif %}>
                   <label style="width:100%;"></label>
                 </label>
                 <label value="10">
-                  <input type="radio" name="recommendation" id="recommendation" value="10" {% if entry.recommendation == 10 %} checked {% endif %}>
+                  <input type="radio" name="recommendation" id="recommendation" value="10" {% if entry and entry.rating == '10' %}checked{% endif %}>
                   <label style="width:100%;"></label>
                 </label>
               </span>
