@@ -396,38 +396,38 @@ def signup():
 
 
 @app.route('/view/<id>')
-def view(id):
+def view(view_id):
     """An API to help view review information"""
     intialize_db()
-    job_review = JOBS_DB.find_one({"_id": id})
-    job_review['id'] = job_review.pop('_id')
+    job_review = JOBS_DB.find_one({"_id": view_id})
+    job_review['view_id'] = job_review.pop('_id')
     return render_template("view.html", entry=job_review)
 
 
 @app.route('/upvote/<id>')
-def upvote(id):
+def upvote(upvote_id):
     """An API to update upvote information"""
     intialize_db()
-    job_review = JOBS_DB.find_one({"_id": id})
+    job_review = JOBS_DB.find_one({"_id": upvote_id})
     up_vote = job_review['upvote']
     up_vote += 1
-    JOBS_DB.update_one({"_id": id}, {"$set": {"upvote": up_vote}})
-    return redirect("/view/" + id)
+    JOBS_DB.update_one({"_id": upvote_id}, {"$set": {"upvote": up_vote}})
+    return redirect("/view/" + upvote_id)
 
 
 @app.route('/downvote/<id>')
-def downvote(id):
+def downvote(downvote_id):
     """An API to update upvote information"""
     intialize_db()
-    job_review = JOBS_DB.find_one({"_id": id})
+    job_review = JOBS_DB.find_one({"_id": downvote_id})
     down_vote = job_review['upvote']
     down_vote -= 1
-    JOBS_DB.update_one({"_id": id}, {"$set": {"upvote": down_vote}})
-    return redirect("/view/"+id)
+    JOBS_DB.update_one({"_id": downvote_id}, {"$set": {"upvote": down_vote}})
+    return redirect("/view/"+downvote_id)
 
 
 @app.route('/delete/<id>')
-def delete(id):
+def delete(delete_id):
     """An API to help delete a review"""
     intialize_db()
     user = USERS_DB.find_one({"username": session['username']})
@@ -435,9 +435,9 @@ def delete(id):
         pass
 
     reviews = user['reviews']
-    reviews.remove(id)
+    reviews.remove(delete_id)
     USERS_DB.update_one({"username": session['username']}, {
                        "$set": {"reviews": reviews}})
 
-    JOBS_DB.delete_one({"_id": id})
+    JOBS_DB.delete_one({"_id": delete_id})
     return redirect("/myjobs")

@@ -20,7 +20,7 @@ import unittest
 from unittest.mock import patch, MagicMock
 from bson import ObjectId
 from app import app
-from app.routes import DB, intialize_db, set_test
+from app.routes import intialize_db, set_test
 
 class FlaskAppTests(unittest.TestCase):
     """
@@ -429,6 +429,45 @@ class FlaskAppTests(unittest.TestCase):
             'confirm_password': 'newtestpass'
         })
         self.assertEqual(response.status_code, 404)
+    # def test_index_route(self):
+    #     response = self.client.get('/')
+    #     assert response.status_code == 200
+
+    # def test_page_content_route(self):
+    #     response = self.client.post('/pageContentPost',data={"search":"Setup"})
+    #     assert response.status_code == 200
+
+    # def test_add_post_route(self):
+    #     response = self.client.post('/pageContentPost',data=
+    #     {"job_title":"1",
+    #     "job_description":"2",
+    #     "department":"3",
+    #     "locations":"4",
+    #     "hourly_pay":"5",
+    #     "benefits":"6",
+    #     "review":"7",
+    #     "rating":"2",
+    #     "recommendation":"2",
+    #     "search":""
+    #     })
+    #     assert response.status_code == 200
+
+    # def test_signup_route(self):
+    #     response = self.client.get('/signup')
+    #     assert response.status_code == 200
+
+    # def test_login_route(self):
+    #     response = self.client.get('/login')
+    #     assert response.status_code == 200
+
+    # def test_add_review_route(self):
+    #     response = self.client.get('/review')
+    #     assert response.status_code == 302
+
+    # def test_review_route(self):
+    #     response = self.client.get('/pageContent')
+    #     assert response.status_code == 200
+
 
 if __name__ == "__main__":
     unittest.main()

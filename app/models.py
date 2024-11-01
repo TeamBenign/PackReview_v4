@@ -1,3 +1,10 @@
+"""
+This module defines the database models for the application.
+
+It includes the Reviews model, which stores information about job reviews submitted
+by users, including department, location, job details, compensation, benefits, and ratings.
+Each review is represented as a row in the Reviews table within the database.
+"""
 from app import DB
 
 class Reviews(DB.Model):
