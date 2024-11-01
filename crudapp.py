@@ -6,5 +6,5 @@ is used to start the application server for handling CRUD operations
 related to job reviews.
 """
 from app import app
-def __init__():
+if __name__ == '__main__':
     app.run(debug=True)

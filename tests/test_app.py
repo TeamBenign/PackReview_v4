@@ -18,7 +18,6 @@ the actual database state.
 
 import unittest
 from unittest.mock import patch, MagicMock
-from bson import ObjectId
 from app import app
 from app.routes import intialize_db, set_test
 

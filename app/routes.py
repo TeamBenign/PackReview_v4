@@ -20,6 +20,7 @@ and company.
 """
 from bson import ObjectId
 from flask import render_template, request, redirect, session, flash,url_for, jsonify
+from flask_restful import Resource, reqparse
 from flask_paginate import Pagination, get_page_args
 from app import app, DB
 from utils import get_db
@@ -85,8 +86,8 @@ def review():
         return redirect('/login')
     # if not ('username' in session.keys() and session['username']):
     #     return redirect("/")
-    entries = get_all_jobs()
-    return render_template('review-page.html', entries=entries)
+    # entries = get_all_jobs()
+    return render_template('review-page.html', entry='')
 
 
 # view all
@@ -321,6 +322,15 @@ def add():
             reviews.append(job['_id'])
             USERS_DB.update_one({"username": session['username']}, {
                                "$set": {"reviews": reviews}})
+        else:
+            JOBS_DB.update_one(
+            {'_id': job['_id']},
+            {"$set": job}  # Update the job details with the new values
+        )
+
+        if job['_id'] not in reviews:
+            reviews.append(job['_id'])
+            USERS_DB.update_one({"username": session['username']}, {"$set": {"reviews": reviews}})
 
     return redirect('/')
 
@@ -441,3 +451,25 @@ def delete(delete_id):
 
     JOBS_DB.delete_one({"_id": delete_id})
     return redirect("/myjobs")
+
+@app.route('/api/getUser')
+def get_user():
+    try:
+        if 'username' in session.keys() and session['username']:
+            return jsonify(session['username'])
+        else:
+            return jsonify('')
+    except Exception as e:
+        print("Error: ", e)
+
+@app.route('/api/updateReview')
+def update_review():
+    try:
+        id = request.args.get('id')
+        print(id)
+        intialize_db()
+        job_review = JOBS_DB.find_one({"_id": id})
+        job_review['id'] = job_review.pop('_id')
+        return render_template("review-page.html", entry=job_review)
+    except Exception as e:
+        print("Error: ", e)

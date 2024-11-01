@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="{{url_for('static', filename='/css/page_content.css')}}" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 <script>
   jQuery(document).ready(function ($) {
@@ -15,6 +15,29 @@
     $("#downvoteBtn").click(function () {
       window.location = $(this).data("href");
     });
+
+    isUserOwner();
+  });
+  async function isUserOwner() {
+    const author = "{{ entry.author }}";
+    const response = await fetch('/api/getUser');
+    const user = await response.json();
+    if(user!='') {
+      if (user==author) {
+        document.getElementById("updateBtn").style.display = "block";
+      } else {
+        document.getElementById("updateBtn").style.display = "none";
+      }
+    }
+  }
+  document.addEventListener("DOMContentLoaded", function () {
+    const updateBtn = document.getElementById("updateBtn");
+    if (updateBtn) {
+      updateBtn.addEventListener("click", function() {
+        const reviewId = "{{ entry.id }}";  // Replace with the actual ID
+        window.location.href = `/api/updateReview?id=${reviewId}`;  // Redirect to Flask route
+      });
+    }
   });
 </script>
 
@@ -75,6 +98,7 @@
       </tr>
     </tbody>
   </table>
+  <button id="updateBtn" style="display: none;">Update</button>
 
 
   <br>
