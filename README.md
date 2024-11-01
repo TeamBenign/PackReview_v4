@@ -2,7 +2,7 @@
  
 This is a Flask App for the NCSU Campus Job Review System with a MongoDB database for storage. Here, students from NCSU can view reviews on all the different jobs that are available on campus. The portal aims to help students better understand the job description and the work experienced by fellow students. The website allows the students to upload reviews for others to view. The anonymity of the students is maintained to allow them to upload honest reviews.
 
-![alt text](https://github.com/ashishjoshi2605/ncsu-campus-jobs-review-system/blob/main/app/static/ProjectUI.png)
+![alt text](https://github.com/NCSU-SE-2024/PackReview_v3/blob/main/Data/v3/HomePage.png)
 
 New Badges
 
@@ -19,22 +19,6 @@ New Badges
 ![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/NCSU-SE-2024/PackReview_v3?style=plastic)
 <a href="https://github.com/NCSU-SE-2024/PackReview_v3/actions" alt="Build Status"><img src="https://img.shields.io/github/workflow/status/NCSU-SE-2024/PackReview_v3/Build%20main" /></a>
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/NCSU-SE-2024/PackReview_v3)
-
-Old Badges
-
-[![Test Coverage](https://github.com/NCSU-SE-2024/PackReview_v3/actions/workflows/test-app.yml/badge.svg)](https://github.com/NCSU-SE-2024/PackReview_v3/actions/workflows/test-app.yml)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7402242.svg)](https://doi.org/10.5281/zenodo.7402242)
-<a href="https://github.com/kunalshah03/PackReview_Part2/graphs/contributors" alt="Contributors"><img src = "https://img.shields.io/github/contributors/kunalshah03/PackReview_Part2"/></a>
-![Lint Python](https://github.com/amisha-w/PackTravel/actions/workflows/pylint.yml/badge.svg)
-[![codecov](https://codecov.io/gh/amisha-w/PackTravel/branch/main/graph/badge.svg?token=HRFN97UEB7)](https://codecov.io/gh/amisha-w/PackTravel)
-![Python Style Checker](https://github.com/amisha-w/PackTravel/actions/workflows/python_style_checker.yml/badge.svg)
-<a href="https://github.com/kunalshah03/PackReview_Part2" alt="Repo Size"><img src="https://img.shields.io/github/repo-size/kunalshah03/PackReview_Part2" /></a>
-<a href="https://github.com/kunalshah03/PackReview_Part2/blob/main/LICENSE" alt="License"><img src="https://img.shields.io/github/license/kunalshah03/PackReview_Part2" /></a>
-<a href="https://github.com/kunalshah03/PackReview_Part2/issues" alt="Open Issues"><img src="https://img.shields.io/github/issues-raw/kunalshah03/PackReview_Part2" /></a>
-![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/kunalshah03/PackReview_Part2?style=plastic)
-<a href="https://github.com/kunalshah03/PackReview_Part2/actions" alt="Build Status"><img src="https://img.shields.io/github/workflow/status/kunalshah03/PackReview_Part2/Build%20main" /></a>
-![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/kunalshah03/PackReview_Part2)
-
 
 ## Pre-requisites
 To run these scripts, you will require Python installed on your PC. Please visit [Python Installers](https://www.python.org/downloads/) to download the lastest python version. Apart from that, other requirements can be installed with the help of requirements.txt.
@@ -67,9 +51,8 @@ The rules listed below are to be followed by the ones who will be contributing t
 
 ![alt text](https://github.com/NCSU-SE-2024/PackReview_v3/blob/main/Data/v3/TestRun.png)
 
-### Slack Channel Screenshot
-
-![WhatsApp Image 2022-12-05 at 9 05 34 PM](https://user-images.githubusercontent.com/111834635/205791376-6dc27993-f39e-4737-b5b8-2219ac74df60.jpeg)
+### Discord Channel Screenshot
+![alt_text](https://github.com/NCSU-SE-2024/PackReview_v3/blob/main/Data/v3/DiscordChannel.png)
 
 ### Video demonstrating the old functionalities
 https://user-images.githubusercontent.com/60925790/205790268-41892a26-7dfa-4d52-a326-848212b1e4fe.mp4
