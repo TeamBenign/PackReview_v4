@@ -495,6 +495,51 @@ class FlaskAppTests(unittest.TestCase):
         response = self.client.get('/pageContent')
         assert response.status_code == 200
 
+    def test_filter_jobs_route(self):
+        """Test filtering jobs by department and company."""
+        response = self.client.post('/pageContentPost', data={
+            "search": "Engineer",
+            "dept_filter": "Engineering",
+            "company_filter": "TechCorp"
+        })
+        assert response.status_code == 200 
+
+    def test_view_forum_topic_route(self):
+        """Test viewing a specific forum topic."""
+        topic_id = '672531d244fdeb1ec36c110d'
+        response = self.client.get(f'/forum/{topic_id}')
+        assert response.status_code == 200
+
+    def test_my_jobs_route(self):
+        """Test viewing my jobs."""
+        with self.client as client:
+            with client.session_transaction() as session:
+                session['username'] = 'existinguser'  # Mock the session login
+
+            response = client.get('/myjobs')
+            assert response.status_code == 200
+
+    def test_get_user_logged_in(self):
+        with self.client as client:
+            with client.session_transaction() as session:
+                session['username'] = 'testuser'
+            response = client.get('/api/getUser')
+            assert response.status_code == 200
+            assert response.json == 'testuser'
+    
+    def test_get_user_not_logged_in(self):
+        with self.client as client:
+            response = client.get('/api/getUser')
+            assert response.status_code == 200
+            assert response.json == ''
+
+    def test_get_user_session_key_none(self):
+        with self.client as client:
+            with client.session_transaction() as session:
+                session['username'] = None
+            response = client.get('/api/getUser')
+            assert response.status_code == 200
+            assert response.json == ''
 
 if __name__ == "__main__":
     unittest.main()
