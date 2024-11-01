@@ -10,7 +10,7 @@ New Badges
 [![Pylint](https://github.com/NCSU-SE-2024/PackReview_v3/actions/workflows/pylint.yml/badge.svg)](https://github.com/NCSU-SE-2024/PackReview_v3/actions/workflows/pylint.yml)
 [![Python Flask Application](https://github.com/NCSU-SE-2024/PackReview_v3/actions/workflows/test-app.yml/badge.svg)](https://github.com/NCSU-SE-2024/PackReview_v3/actions/workflows/test-app.yml)
 [![Run tests and upload coverage](https://github.com/NCSU-SE-2024/PackReview_v3/actions/workflows/codecov.yml/badge.svg)](https://codecov.io/gh/NCSU-SE-2024/PackReview_v3)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14026645.svg)](https://doi.org/10.5281/zenodo.14026645)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14026707.svg)](https://doi.org/10.5281/zenodo.14026707)
 
 Old Badges
 
