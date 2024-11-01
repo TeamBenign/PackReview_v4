@@ -22,4 +22,4 @@ jobs:
         pip install pylint
     - name: Analysing the code with pylint
       run: |
-        pylint --disable=global-statement,import-error,cyclic-import,no-member,unbalanced-tuple-unpacking,too-many-public-methods,too-few-public-methods,invalid-name --ignore=migrations  $(git ls-files '*.py')
+        pylint --disable=global-statement,import-error,cyclic-import,no-member,unbalanced-tuple-unpacking,too-many-public-methods,too-few-public-methods,invalid-name  $(git ls-files '*.py' | grep -v '^migrations/')
