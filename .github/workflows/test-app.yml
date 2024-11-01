@@ -5,7 +5,7 @@ name: Python Flask Application
 
 on:
   push:
-    branches: [ "main", "pylint-fix-all-upd" ]
+    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
