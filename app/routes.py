@@ -395,7 +395,7 @@ def signup():
     return render_template("signup.html")
 
 
-@app.route('/view/<id>')
+@app.route('/view/<view_id>')
 def view(view_id):
     """An API to help view review information"""
     intialize_db()
@@ -404,7 +404,7 @@ def view(view_id):
     return render_template("view.html", entry=job_review)
 
 
-@app.route('/upvote/<id>')
+@app.route('/upvote/<upvote_id>')
 def upvote(upvote_id):
     """An API to update upvote information"""
     intialize_db()
@@ -415,7 +415,7 @@ def upvote(upvote_id):
     return redirect("/view/" + upvote_id)
 
 
-@app.route('/downvote/<id>')
+@app.route('/downvote/<downvote_id>')
 def downvote(downvote_id):
     """An API to update upvote information"""
     intialize_db()
@@ -426,7 +426,7 @@ def downvote(downvote_id):
     return redirect("/view/"+downvote_id)
 
 
-@app.route('/delete/<id>')
+@app.route('/delete/<delete_id>')
 def delete(delete_id):
     """An API to help delete a review"""
     intialize_db()
