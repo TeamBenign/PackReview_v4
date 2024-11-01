@@ -19,6 +19,7 @@ New Badges
 ![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/NCSU-SE-2024/PackReview_v3?style=plastic)
 <a href="https://github.com/NCSU-SE-2024/PackReview_v3/actions" alt="Build Status"><img src="https://img.shields.io/github/workflow/status/NCSU-SE-2024/PackReview_v3/Build%20main" /></a>
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/NCSU-SE-2024/PackReview_v3)
+
 Old Badges
 
 [![Test Coverage](https://github.com/NCSU-SE-2024/PackReview_v3/actions/workflows/test-app.yml/badge.svg)](https://github.com/NCSU-SE-2024/PackReview_v3/actions/workflows/test-app.yml)
