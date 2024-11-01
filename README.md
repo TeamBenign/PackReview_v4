@@ -33,7 +33,7 @@ To run these scripts, you will require Python installed on your PC. Please visit
 ## Installation
 Initially you can check whether your system has python pre-installed or not, usually nowadays in most of the systems, be it Windows or MacOS, python is pre-installed. 
 
-To check whether you have python installed or not, you can open CMD or a Terminal and run the command "python --version". If the CMD shows the version such as Python 3.6.7 then your system already has python installed and you just need to clone the repository and run the python scripts. 
+To check whether you have python installed or not, you can open CMD or a Terminal and run the command "python --version". If the CMD shows the version such as Python 3.10 then your system already has python installed and you just need to clone the repository and run the python scripts. 
 
 If this is not the case, then you need to download python installer package from [Python Installers](https://www.python.org/downloads/) based on your system's operating system and install it and you can further clone this repository to execute the scripts.
 
