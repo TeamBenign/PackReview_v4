@@ -20,7 +20,7 @@ import unittest
 from unittest.mock import patch, MagicMock
 from app import app
 from app.routes import intialize_db, set_test
-
+from bson import ObjectId
 
 class FlaskAppTests(unittest.TestCase):
     """

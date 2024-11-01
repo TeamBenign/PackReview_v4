@@ -18,10 +18,9 @@ topics in a forum section.
 and company.
 - Top Jobs: Provides a view of the top jobs sorted by user ratings and recommendations.
 """
-from bson import ObjectId
-from flask import render_template, request, redirect, session, flash,url_for, jsonify
-from flask_restful import Resource, reqparse
+from flask import render_template, request, redirect, session, flash, url_for, jsonify
 from flask_paginate import Pagination, get_page_args
+from bson import ObjectId
 from app import app, DB
 from utils import get_db
 
@@ -334,16 +333,17 @@ def add():
             JOBS_DB.insert_one(job)
             reviews.append(job['_id'])
             USERS_DB.update_one({"username": session['username']}, {
-                               "$set": {"reviews": reviews}})
+                "$set": {"reviews": reviews}})
         else:
             JOBS_DB.update_one(
-            {'_id': job['_id']},
-            {"$set": job}  # Update the job details with the new values
-        )
+                {'_id': job['_id']},
+                {"$set": job}  # Update the job details with the new values
+            )
 
         if job['_id'] not in reviews:
             reviews.append(job['_id'])
-            USERS_DB.update_one({"username": session['username']}, {"$set": {"reviews": reviews}})
+            USERS_DB.update_one({"username": session['username']}, {
+                                "$set": {"reviews": reviews}})
 
     return redirect('/')
 
@@ -469,24 +469,36 @@ def delete(delete_id):
     JOBS_DB.delete_one({"_id": delete_id})
     return redirect("/myjobs")
 
+
 @app.route('/api/getUser')
 def get_user():
+    """Retrieve the username from the session if available."""
     try:
-        if 'username' in session.keys() and session['username']:
+        if 'username' in session and session['username']:
             return jsonify(session['username'])
-        else:
-            return jsonify('')
+        return jsonify('')
+    except KeyError as e:
+        print("KeyError: ", e)
+        return jsonify(''), 500
     except Exception as e:
         print("Error: ", e)
+        return jsonify(''), 500
+
 
 @app.route('/api/updateReview')
 def update_review():
+    """Update a job review by its ID."""
     try:
-        id = request.args.get('id')
-        print(id)
+        review_id = request.args.get('id')
         intialize_db()
-        job_review = JOBS_DB.find_one({"_id": id})
-        job_review['id'] = job_review.pop('_id')
-        return render_template("review-page.html", entry=job_review)
+        job_review = JOBS_DB.find_one({"_id": review_id})
+        if job_review:
+            job_review['id'] = job_review.pop('_id')
+            return render_template("review-page.html", entry=job_review)
+        return "Review not found", 404
+    except KeyError as e:
+        print("KeyError: ", e)
+        return "Invalid ID provided", 400
     except Exception as e:
         print("Error: ", e)
+        return "An error occurred", 500
