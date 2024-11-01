@@ -4,7 +4,7 @@ utils.py
 This module provides utility functions for interacting with a MongoDB database.
 
 Functions:
-- get_db(is_test=False): Connects to the MongoDB database and returns the appropriate 
+- get_db(is_test=False): Connects to the MongoDB database and returns the appropriate
   database instance based on the test flag.
 
 Usage:

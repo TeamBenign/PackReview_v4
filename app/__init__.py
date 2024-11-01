@@ -17,6 +17,7 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
+
 @app.before_first_request
 def create_table():
     """
@@ -25,5 +26,6 @@ def create_table():
     """
     DB.create_all()
 
+
 # Ignore Pylint warning for import position
-from app import routes, models # pylint: disable=wrong-import-position
+from app import routes, models  # pylint: disable=wrong-import-position
