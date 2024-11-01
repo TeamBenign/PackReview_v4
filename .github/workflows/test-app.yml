@@ -52,8 +52,10 @@ jobs:
       - name: Create config.ini from secret
         env:
           CONFIG_INI: ${{ secrets.CONFIG_INI }}
+        # run: |
+        #   # echo "$CONFIG_INI" > tests/config.ini
         run: |
-          echo "$CONFIG_INI" > tests/config.ini
+          echo "$CONFIG_INI" > config.ini
 
       # - name: Run Unit Tests with unittest
       #   run: |
