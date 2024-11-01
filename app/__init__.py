@@ -24,3 +24,6 @@ def create_table():
     before the first request is processed.
     """
     DB.create_all()
+
+# Ignore Pylint warning for import position
+from app import routes, models # pylint: disable=wrong-import-position
