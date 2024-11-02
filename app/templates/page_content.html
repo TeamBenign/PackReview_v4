@@ -38,15 +38,7 @@
     <div class="multiselect">
       <div class="selectBox" onclick="showCheckboxes()">
         <select>
-          <option>Location</option>
-        </select>
-        <input type="checkbox" name="location_filter" value="Raleigh, NC"><label> Raleigh, NC</label><br>
-        <input type="checkbox" name="location_filter" value="California"><label> California</label>
-
-
-        <select>
           <option>Company</option>
-
         </select>
         {% for entry in company_filter_entries %}
         <input type="checkbox" name="company_filter" value="{{entry}}"> <label>{{entry}}</label><br>
