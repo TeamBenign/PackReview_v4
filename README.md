@@ -1,6 +1,18 @@
- # NC State Jobs Review System
+ # NC State Jobs Review System: Empowering Student Voices with a Dash of Fun!
  
-This is a Flask App for the NCSU Campus Job Review System with a MongoDB database for storage. Here, students from NCSU can view reviews on all the different jobs that are available on campus. The portal aims to help students better understand the job description and the work experienced by fellow students. The website allows the students to upload reviews for others to view. The anonymity of the students is maintained to allow them to upload honest reviews.
+Welcome to the NC State Campus Job Review System, your ultimate destination for navigating the wild world of North Carolina State University campus jobs! 🎉 Curious about what it’s really like to work at the campus coffee shop or whether the library is a secret lair of stressful group projects? Well, wonder no more!
+
+Our vibrant platform allows students to discover, share, and explore honest reviews of campus jobs from fellow Wolfpack members. Think of it as Yelp for campus jobs—minus the pretentious food critics! 🍔✨ Whether you want to rave about the best job perks or spill the tea on the not-so-glamorous moments, we’ve got you covered.
+
+Feeling inspired? Dive into a treasure trove of reviews that provide invaluable insights into job responsibilities, work culture, and personal experiences. Your fellow students have been through it all, and now they’re ready to share the good, the bad, and the “did I really just do that?” moments!
+
+And hey, we know that honesty is the best policy, so we’ve got your back with complete anonymity. This means you can share your thoughts candidly, helping others make informed decisions without worrying about your boss finding out you think their coffee-making skills could use some serious help. ☕🤫
+
+Join our quirky community and upload your own review! Whether you want to brag about free snacks or vent about that one time you had to deal with a customer who thought “one pump of vanilla” was just a suggestion, your voice matters here.
+
+Together, let’s empower students to make better career choices on campus while sprinkling a bit of humor into the mix. So, get ready to laugh, learn, and land that perfect campus gig with the NC State Campus Job Review System!
+
+
 
 ![alt text](https://github.com/NCSU-SE-2024/PackReview_v3/blob/main/Data/v3/HomePage.png)
 
@@ -24,7 +36,7 @@ New Badges
 To run these scripts, you will require Python installed on your PC. Please visit [Python Installers](https://www.python.org/downloads/) to download the lastest python version. Apart from that, other requirements can be installed with the help of requirements.txt.
 
 ## Installation
-Initially you can check whether your system has python pre-installed or not, usually nowadays in most of the systems, be it Windows or MacOS, python is pre-installed. 
+Initially, you can check whether your system has Python pre-installed or not, usually nowadays in most of systems, be it Windows or MacOS, python is pre-installed. 
 
 To check whether you have python installed or not, you can open CMD or a Terminal and run the command "python --version". If the CMD shows the version such as Python 3.10 then your system already has python installed and you just need to clone the repository and run the python scripts. 
 
@@ -39,9 +51,9 @@ You can refer [INSTALL.md](https://github.com/NCSU-SE-2024/PackReview_v3/blob/ma
 
 The rules listed below are to be followed by the ones who will be contributing to the code in the repository:
 
-  - Atleast one review/approval is required from any other contributors of the project to merge a commit to the main branch.
+  - At least one review/approval is required from any other contributors of the project to merge a commit to the main branch.
   - It is recommended to delete the branch as soon as it is merged to the main branch to avoid stale branches in the repository.
-  - It is encouraged to add name tags such as "feature-" or "patch-" in the branches if it is used to add code-patches or features in the project.
+  - It is encouraged to add name tags such as "feature-" or "patch-" in the branches if it is used to add code patches or features in the project.
   
 ### Code Coverage Screenshot
 
