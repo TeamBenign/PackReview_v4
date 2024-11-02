@@ -45,7 +45,7 @@ If this is not the case, then you need to download python installer package from
 You can refer [INSTALL.md](https://github.com/NCSU-SE-2024/PackReview_v3/blob/main/install.md) for the complete installation steps based on your OS.
 
 ## Poster
-![alt text](https://github.com/kunalshah03/PackReview_Part2/blob/main/app/static/Poster.jpg)
+![alt text](https://github.com/NCSU-SE-2024/PackReview_v3/blob/main/Data/v3/Group47_Project2_Poster.png)
 
 ## Contribution Code of Conduct
 
