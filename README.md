@@ -54,14 +54,14 @@ The rules listed below are to be followed by the ones who will be contributing t
   - At least one review/approval is required from any other contributors of the project to merge a commit to the main branch.
   - It is recommended to delete the branch as soon as it is merged to the main branch to avoid stale branches in the repository.
   - It is encouraged to add name tags such as "feature-" or "patch-" in the branches if it is used to add code patches or features in the project.
-  
-### Code Coverage Screenshot
-
-![alt text](https://github.com/NCSU-SE-2024/PackReview_v3/blob/main/Data/v3/CoverageReport.png?)
 
 ### Test Run Screenshot
 
-![alt text](https://github.com/NCSU-SE-2024/PackReview_v3/blob/main/Data/v3/TestRun.png?)
+![alt text](https://github.com/NCSU-SE-2024/PackReview_v3/blob/main/Data/v3/TestRun.png)
+
+### Code Coverage Screenshot
+
+![alt text](https://github.com/NCSU-SE-2024/PackReview_v3/blob/main/Data/v3/CoverageReport.png)
 
 ### Discord Channel Screenshot
 ![alt_text](https://github.com/NCSU-SE-2024/PackReview_v3/blob/main/Data/v3/DiscordChannel.png)
