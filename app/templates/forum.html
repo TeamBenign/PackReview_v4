@@ -1,8 +1,6 @@
-
 {% extends "base.html" %}
 
 {% block content %}
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,25 +8,50 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{url_for('static', filename='/css/style.css')}}" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
 </head>
 
 <body>
-    <div class="container">
-        <h1 style="color: white;">Discussion Forum</h1>
-        <a href="{{ url_for('new_topic') }}" class="btn btn-primary">New Topic</a>
+    <section class="section">
+        <div class="container">
+            <h1 class="title has-text-white">Discussion Forum</h1>
 
-        <div style="padding-top:1cm">
-            <ul>
-            {% for topic in topics %}
-                <li>
-                    <a href="{{ url_for('view_topic', topic_id=topic['_id']) }}">{{ topic['title'] }}</a>
-                </li>
-            {% endfor %}
-            </ul>
+            <div class="field is-grouped is-grouped-right">
+                <div class="control">
+                    <a href="{{ url_for('new_topic') }}" class="button is-primary">New Topic</a>
+                </div>
+            </div>
+
+            <div class="columns is-multiline">
+                {% for topic in topics %}
+                    <div class="column is-one-quarter">
+                        <div class="card">
+                            <div class="card-content">
+                                <p class="title is-5">
+                                    <a href="{{ url_for('view_topic', topic_id=topic['_id']) }}">{{ topic['title'] }}</a>
+                                </p>
+                                <p class="content">{{ topic['content'] | truncate(150) }}</p>
+                                <p>Upvotes: {{ topic['upvotes'] }}</p>
+                                <p>Downvotes: {{ topic['downvotes'] }}</p>
+                            </div>
+
+                            <footer class="card-footer">
+                                <!-- Upvote and Downvote buttons -->
+                                <form action="{{ url_for('upvote_post', topic_id=topic['_id']) }}" method="POST" class="card-footer-item">
+                                    <button type="submit" class="button is-small is-primary">Upvote</button>
+                                </form>
+                                <form action="{{ url_for('downvote_post', topic_id=topic['_id']) }}" method="POST" class="card-footer-item">
+                                    <button type="submit" class="button is-small is-danger">Downvote</button>
+                                </form>
+                                <a href="{{ url_for('view_topic', topic_id=topic['_id']) }}" class="card-footer-item">View Topic</a>
+                            </footer>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
-    </div>
+    </section>
 </body>
-</html>
 
+</html>
 {% endblock %}

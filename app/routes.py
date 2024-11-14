@@ -172,6 +172,37 @@ def view_topic(topic_id):
 
     return render_template('view_topic.html', topic=topic)
 
+@app.route('/forum/<topic_id>/upvote_post', methods=['POST'])
+def upvote_post(topic_id):
+    """API for upvoting a specific forum topic"""
+    intialize_db()
+    # Check if 'username' is in session before allowing vote
+    if 'username' not in session:
+        return redirect('/login')
+
+    # Increment the upvote count
+    FORUM_DB.update_one(
+        {'_id': ObjectId(topic_id)},
+        {'$inc': {'upvotes': 1}}
+    )
+    return redirect(url_for('forum'))
+
+
+@app.route('/forum/<topic_id>/downvote_post', methods=['POST'])
+def downvote_post(topic_id):
+    """API for downvoting a specific forum topic"""
+    intialize_db()
+    # Check if 'username' is in session before allowing vote
+    if 'username' not in session:
+        return redirect('/login')
+
+    # Increment the downvote count
+    FORUM_DB.update_one(
+        {'_id': ObjectId(topic_id)},
+        {'$inc': {'downvotes': 1}}
+    )
+    return redirect(url_for('forum'))
+
 
 # view all
 @app.route('/myjobs')
