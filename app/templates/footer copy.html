@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Average Salaries Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .chart-container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="chart-container">
+        <h2 class="text-center">Average Salaries by Location and Position</h2>
+        <canvas id="salaryChart"></canvas>
+    </div>
+
+    <script>
+        // Sample data with some missing positions for specific locations
+        const data = {
+            locations: ['NYC', 'San Francisco', 'Austin'],
+            salaries: {
+                'Software Engineer': [120000, 130000, null], // Austin has no Software Engineer
+                'Data Scientist': [125000, null, 115000],   // San Francisco has no Data Scientist
+                'Product Manager': [118000, 128000, 108000] // All locations have Product Manager
+            }
+        };
+
+        // Handling missing data by replacing null with 0
+        const processedData = {};
+        for (const [position, salaryData] of Object.entries(data.salaries)) {
+            processedData[position] = salaryData.map(value => value === null ? 0 : value);
+        }
+
+        // Preparing data for Chart.js
+        const datasets = [];
+        const colors = ['rgba(54, 162, 235, 0.6)', 'rgba(75, 192, 192, 0.6)', 'rgba(255, 159, 64, 0.6)'];
+        const borderColors = ['rgba(54, 162, 235, 1)', 'rgba(75, 192, 192, 1)', 'rgba(255, 159, 64, 1)'];
+
+        let index = 0;
+        for (const [position, salaryData] of Object.entries(processedData)) {
+            datasets.push({
+                label: position,
+                data: salaryData,
+                backgroundColor: colors[index],
+                borderColor: borderColors[index],
+                borderWidth: 1
+            });
+            index++;
+        }
+
+        // Creating the Chart.js chart
+        const ctx = document.getElementById('salaryChart').getContext('2d');
+        const salaryChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: data.locations,
+                datasets: datasets
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Average Salary (USD)'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Locations'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    },
+                    title: {
+                        display: true,
+                        text: 'Average Salaries by Location and Position'
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

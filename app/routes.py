@@ -223,7 +223,35 @@ def top_jobs():
     )[:10]
     return render_template('top_jobs.html', jobs=top_job)
 
-# search
+
+def get_avgSal_titles_by_locations(jobs):
+    """A method to get average salary by title and location"""
+    locations = list(set([job['locations'] for job in jobs]))
+    titles = list(set([job['title'] for job in jobs]))
+
+    # Preparing the data
+    average_pay = {title: [0] * len(locations) for title in titles}
+    count = {title: [0] * len(locations) for title in titles}
+
+    for job in jobs:
+        location_idx = locations.index(job['locations'])
+        title = job['title']
+        average_pay[title][location_idx] += int(job['hourly_pay'])
+        count[title][location_idx] += 1
+
+    for title in titles:
+        for i in range(len(locations)):
+            if count[title][i] > 0:
+                average_pay[title][i] /= count[title][i]
+    print(average_pay)
+    # Convert the data to JSON for the JavaScript to use
+    data = {
+        "locations": locations,
+        "titles": titles,
+        "average_pay": average_pay
+    }
+    return data
+# dashboard
 @app.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
     """An API to get Top Jobs"""
@@ -253,6 +281,8 @@ def dashboard():
     company_names = list(company_counts.keys())
     company_job_counts = list(company_counts.values())
 
+    data = get_avgSal_titles_by_locations(jobs)
+
     r = [float(job['rating']) for job in jobs]
     web_stat = {
         "total_jobs": len(jobs),
@@ -265,7 +295,9 @@ def dashboard():
     
     return render_template('dashboard.html', 
                            web_stat=web_stat,
+                           data=data,
                            cities=cities, 
+                           locations=locations,
                            job_counts=job_counts,
                            companies=company_names,
                            company_job_counts=company_job_counts,
