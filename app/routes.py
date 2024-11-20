@@ -23,6 +23,7 @@ from flask_paginate import Pagination, get_page_args
 from bson import ObjectId
 from app import app, DB
 from utils import get_db
+from collections import Counter
 
 JOBS_DB = None
 USERS_DB = None
@@ -218,7 +219,42 @@ def top_jobs():
     return render_template('top_jobs.html', jobs=top_job)
 
 # search
+@app.route('/dashboard', methods=['GET', 'POST'])
+def dashboard():
+    """An API to get Top Jobs"""
+    intialize_db()
+    jobs = get_all_jobs()
+   # Extract locations and count occurrences
+    locations = [job['locations'] for job in jobs]
+    location_counts = Counter(locations)
 
+    # Extract companies and count occurrences
+    companies = [job['company'] for job in jobs]
+    company_counts = Counter(companies)
+
+    # Extract hourly pay details
+    titles = [job['title'] for job in jobs]
+    hourly_pays = [job['hourly_pay'] for job in jobs]
+
+    # Extract rating details
+    ratings = [job['rating'] for job in jobs]
+    rating_counts = Counter(ratings)
+
+    # Extract data for plotting
+    cities = list(location_counts.keys())
+    job_counts = list(location_counts.values())
+    company_names = list(company_counts.keys())
+    company_job_counts = list(company_counts.values())
+    
+    return render_template('dashboard.html', 
+                           cities=cities, 
+                           job_counts=job_counts,
+                           companies=company_names,
+                           company_job_counts=company_job_counts,
+                           titles=titles,
+                           hourly_pays=hourly_pays,
+                           ratings=ratings,
+                           rating_counts=rating_counts)
 
 @app.route('/pageContentPost', methods=['POST'])
 def page_content_post():

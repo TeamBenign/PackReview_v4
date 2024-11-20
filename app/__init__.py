@@ -11,6 +11,7 @@ from app.config import Config
 
 app = Flask(__name__)
 app.config.from_object(Config)
+
 DB = SQLAlchemy(app)
 migrate = Migrate(app, DB)
 app.config["SESSION_PERMANENT"] = False
@@ -29,3 +30,7 @@ def create_table():
 
 # Ignore Pylint warning for import position
 from app import routes, models  # pylint: disable=wrong-import-position
+
+# If you want to make the app run on development mode, debug=True will be helpful
+# export FLASK_ENV=development
+# export FLASK_DEBUG=1

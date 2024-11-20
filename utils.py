@@ -19,6 +19,7 @@ Notes:
 import os
 import sys
 from pymongo import MongoClient
+from urllib.parse import quote_plus
 
 
 def get_db(is_test=False):
@@ -32,10 +33,9 @@ def get_db(is_test=False):
     """
     with open(os.path.join(sys.path[0], "config.ini"), "r", encoding="utf-8") as f:
         content = f.readlines()
-
+    password = quote_plus(content[0].strip())
     mongo_uri = (
-        "mongodb+srv://anishd1910:"
-        f"{content[0].strip()}@cluster0.oagwk.mongodb.net/"
+        f"mongodb+srv://root:{password}@cluster0.dqpqx.mongodb.net/"
         "?retryWrites=true&w=majority&appName=Cluster0"
     )
     with MongoClient(mongo_uri) as client:
