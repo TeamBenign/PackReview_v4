@@ -12,8 +12,6 @@
     <link rel="stylesheet" href="{{url_for('static', filename='/css/style.css')}}" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
-
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -37,56 +35,6 @@
     <div style="background-color: white;">
         <div class="container">
             <h1 class="text-center">Job Dashboard</h1>
-
-            <!-- Enhanced Website Statistics Section -->
-            <div class="chart-container">
-                <h2>Website Statistics</h2>
-                <div class="row text-center">
-                    <div class="col-md-4 mb-3">
-                        <div class="stat-box p-4 shadow-sm rounded">
-                            <i class="bi bi-briefcase-fill fa-3x text-primary mb-2"></i>
-                            <h3>{{ web_stat['total_users']}}</h3>
-                            <p>Total users</p>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <div class="stat-box p-4 shadow-sm rounded">
-                            <i class="bi bi-briefcase-fill fa-3x text-primary mb-2"></i>
-                            <h3>{{ web_stat['total_jobs']}}</h3>
-                            <p>Total Job reviews</p>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <div class="stat-box p-4 shadow-sm rounded">
-                            <i class="bi bi-building fa-3x text-success mb-2"></i>
-                            <h3>{{ web_stat['total_companies'] }}</h3>
-                            <p>Total Companies</p>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <div class="stat-box p-4 shadow-sm rounded">
-                            <i class="bi bi-person-badge fa-3x text-warning mb-2"></i>
-                            <h3>{{ web_stat['total_titles'] }}</h3>
-                            <p>Distinct Job Titles</p>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <div class="stat-box p-4 shadow-sm rounded">
-                            <i class="bi bi-geo-alt fa-3x text-danger mb-2"></i>
-                            <h3>{{ web_stat['total_locations'] }}</h3>
-                            <p>Job Locations Covered</p>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <div class="stat-box p-4 shadow-sm rounded">
-                            <i class="bi bi-star-fill fa-3x text-info mb-2"></i>
-                            <h3>{{ web_stat['avg_ratings'] }}</h3>
-                            <p>Average Job Ratings</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
     
             <!-- Location Distribution -->
             <div class="chart-container">

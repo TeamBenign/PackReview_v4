@@ -63,6 +63,11 @@ def get_all_jobs():
     all_jobs = list(JOBS_DB.find())
     return process_jobs(all_jobs)
 
+def get_all_users():
+    """A method to get all jobs for required user"""
+    all_users = list(USERS_DB.find())
+    return process_jobs(all_users)
+
 
 def get_my_jobs(username):
     """A method to get all jobs for required user"""
@@ -224,6 +229,8 @@ def dashboard():
     """An API to get Top Jobs"""
     intialize_db()
     jobs = get_all_jobs()
+    users = get_all_users()
+  
    # Extract locations and count occurrences
     locations = [job['locations'] for job in jobs]
     location_counts = Counter(locations)
@@ -245,8 +252,19 @@ def dashboard():
     job_counts = list(location_counts.values())
     company_names = list(company_counts.keys())
     company_job_counts = list(company_counts.values())
+
+    r = [float(job['rating']) for job in jobs]
+    web_stat = {
+        "total_jobs": len(jobs),
+        "total_companies": len(company_counts),
+        "total_titles": len(Counter(titles)),
+        "total_locations": len(location_counts),
+        'avg_ratings': sum(r) / len(r) if r else 0,
+        'total_users': len(users)
+    }
     
     return render_template('dashboard.html', 
+                           web_stat=web_stat,
                            cities=cities, 
                            job_counts=job_counts,
                            companies=company_names,
