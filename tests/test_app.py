@@ -75,9 +75,22 @@ class FlaskAppTests(unittest.TestCase):
         app.config['TESTING'] = True
         app.config['WTF_CSRF_ENABLED'] = False
         self.client = app.test_client()
-        set_test(True)
-        # Initialize mock database
-        self.mock_db = patch('app.DB', MagicMock()).start()
+        # Mock the get_db function to return a mocked database
+        self.mock_get_db = patch('app.routes.get_db').start()
+        
+        # Create a mock database and mock collections
+        self.mock_db = MagicMock()
+        self.mock_jobs_db = MagicMock()
+        self.mock_users_db = MagicMock()
+        self.mock_forum_db = MagicMock()
+
+        # Set up the mock collections
+        self.mock_db.Users = self.mock_users_db
+        self.mock_db.Jobs = self.mock_jobs_db
+        self.mock_db.Forum = self.mock_forum_db
+
+        # Set the return value of get_db to the mocked database
+        self.mock_get_db.return_value = self.mock_db
         intialize_db()  # Initialize DB with mock
 
         # Signup two users for testing
