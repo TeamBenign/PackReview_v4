@@ -77,7 +77,6 @@ class FlaskAppTests(unittest.TestCase):
         self.client = app.test_client()
         # Mock the get_db function to return a mocked database
         self.mock_get_db = patch('app.routes.get_db').start()
-        
         # Create a mock database and mock collections
         self.mock_db = MagicMock()
         self.mock_jobs_db = MagicMock()
