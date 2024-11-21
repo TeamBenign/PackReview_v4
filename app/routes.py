@@ -18,12 +18,13 @@ topics in a forum section.
 and company.
 - Top Jobs: Provides a view of the top jobs sorted by user ratings and recommendations.
 """
+from collections import Counter
+from pymongo.errors import PyMongoError
 from flask import render_template, request, redirect, session, flash, url_for, jsonify
 from flask_paginate import Pagination, get_page_args
 from bson import ObjectId
 from app import app, DB
 from utils import get_db
-from collections import Counter
 
 JOBS_DB = None
 USERS_DB = None
@@ -224,10 +225,10 @@ def top_jobs():
     return render_template('top_jobs.html', jobs=top_job)
 
 
-def get_avgSal_titles_by_locations(jobs):
+def get_avg_sal_titles_by_locations(jobs):
     """A method to get average salary by title and location"""
-    locations = list(set([job['locations'] for job in jobs]))
-    titles = list(set([job['title'] for job in jobs]))
+    locations = list({job['locations'] for job in jobs})
+    titles = list({job['title'] for job in jobs})
 
     # Preparing the data
     average_pay = {title: [0] * len(locations) for title in titles}
@@ -251,6 +252,45 @@ def get_avgSal_titles_by_locations(jobs):
         "average_pay": average_pay
     }
     return data
+def get_web_statistics(jobs, users):
+    """Extract web statistics from jobs and users."""
+    titles = [job['title'] for job in jobs]
+    locations = [job['locations'] for job in jobs]
+    ratings = [float(job['rating']) for job in jobs if 'rating' in job]
+
+    web_stat = {
+        "total_jobs": len(jobs),
+        "total_companies": len(Counter(job['company'] for job in jobs)),
+        "total_titles": len(Counter(titles)),
+        "total_locations": len(Counter(locations)),
+        'avg_ratings': sum(ratings) / len(ratings) if ratings else 0,
+        'total_users': len(users)
+    }
+    return web_stat
+
+def extract_location_data(jobs):
+    """Extract job location data for plotting."""
+    locations = [job['locations'] for job in jobs]
+    location_counts = Counter(locations)
+    return list(location_counts.keys()), list(location_counts.values())
+
+def extract_company_data(jobs):
+    """Extract company data for plotting."""
+    companies = [job['company'] for job in jobs]
+    company_counts = Counter(companies)
+    return list(company_counts.keys()), list(company_counts.values())
+
+def extract_hourly_pay_data(jobs):
+    """Extract hourly pay details."""
+    titles = [job['title'] for job in jobs]
+    hourly_pays = [job['hourly_pay'] for job in jobs]
+    return titles, hourly_pays
+
+def extract_rating_data(jobs):
+    """Extract job rating details."""
+    ratings = [job['rating'] for job in jobs]
+    rating_counts = Counter(ratings)
+    return ratings, rating_counts
 # dashboard
 @app.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
@@ -258,46 +298,23 @@ def dashboard():
     intialize_db()
     jobs = get_all_jobs()
     users = get_all_users()
-  
-   # Extract locations and count occurrences
-    locations = [job['locations'] for job in jobs]
-    location_counts = Counter(locations)
 
-    # Extract companies and count occurrences
-    companies = [job['company'] for job in jobs]
-    company_counts = Counter(companies)
+    # Extract web statistics
+    web_stat = get_web_statistics(jobs, users)
 
-    # Extract hourly pay details
-    titles = [job['title'] for job in jobs]
-    hourly_pays = [job['hourly_pay'] for job in jobs]
+    # Extract data for charts
+    cities, job_counts = extract_location_data(jobs)
+    company_names, company_job_counts = extract_company_data(jobs)
+    titles, hourly_pays = extract_hourly_pay_data(jobs)
+    ratings, rating_counts = extract_rating_data(jobs)
 
-    # Extract rating details
-    ratings = [job['rating'] for job in jobs]
-    rating_counts = Counter(ratings)
+    # Extract additional data if needed
+    avg_sal_titles_by_locations = get_avg_sal_titles_by_locations(jobs)
 
-    # Extract data for plotting
-    cities = list(location_counts.keys())
-    job_counts = list(location_counts.values())
-    company_names = list(company_counts.keys())
-    company_job_counts = list(company_counts.values())
-
-    data = get_avgSal_titles_by_locations(jobs)
-
-    r = [float(job['rating']) for job in jobs]
-    web_stat = {
-        "total_jobs": len(jobs),
-        "total_companies": len(company_counts),
-        "total_titles": len(Counter(titles)),
-        "total_locations": len(location_counts),
-        'avg_ratings': sum(r) / len(r) if r else 0,
-        'total_users': len(users)
-    }
-    
-    return render_template('dashboard.html', 
+    return render_template('dashboard.html',
                            web_stat=web_stat,
-                           data=data,
-                           cities=cities, 
-                           locations=locations,
+                           data=avg_sal_titles_by_locations,
+                           cities=cities,
                            job_counts=job_counts,
                            companies=company_names,
                            company_job_counts=company_job_counts,
@@ -566,7 +583,7 @@ def get_user():
     except KeyError as e:
         print("KeyError: ", e)
         return jsonify(''), 500
-    except Exception as e:
+    except PyMongoError as e:
         print("Error: ", e)
         return jsonify(''), 500
 
@@ -585,6 +602,6 @@ def update_review():
     except KeyError as e:
         print("KeyError: ", e)
         return "Invalid ID provided", 400
-    except Exception as e:
+    except PyMongoError as e:
         print("Error: ", e)
         return "An error occurred", 500
