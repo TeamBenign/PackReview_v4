@@ -17,18 +17,18 @@ Together, let’s empower students to make better career choices on campus while
 New Badges
 
 [![codecov](https://codecov.io/gh/NCSU-SE-2024/PackReview_v3/graph/badge.svg?token=IAgSDGwaDv)](https://codecov.io/gh/NCSU-SE-2024/PackReview_v3)
-[![Pylint](https://github.com/NCSU-SE-2024/PackReview_v3/actions/workflows/pylint.yml/badge.svg)](https://github.com/NCSU-SE-2024/PackReview_v3/actions/workflows/pylint.yml)
-[![Python Flask Application](https://github.com/NCSU-SE-2024/PackReview_v3/actions/workflows/test-app.yml/badge.svg)](https://github.com/NCSU-SE-2024/PackReview_v3/actions/workflows/test-app.yml)
-[![Run tests and upload coverage](https://github.com/NCSU-SE-2024/PackReview_v3/actions/workflows/codecov.yml/badge.svg)](https://codecov.io/gh/NCSU-SE-2024/PackReview_v3)
+[![Pylint](https://github.com/TeamBenign/PackReview_v4/actions/workflows/pylint.yml/badge.svg)](https://github.com/TeamBenign/PackReview_v4/actions/workflows/pylint.yml)
+[![Python Flask Application](https://github.com/TeamBenign/PackReview_v4/actions/workflows/test-app.yml/badge.svg)](https://github.com/TeamBenign/PackReview_v4/actions/workflows/test-app.yml)
+[![Run tests and upload coverage](https://github.com/TeamBenign/PackReview_v4/actions/workflows/codecov.yml/badge.svg)](https://codecov.io/gh/TeamBenign/PackReview_v4)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14026707.svg)](https://doi.org/10.5281/zenodo.14026707)
-<a href="https://github.com/NCSU-SE-2024/PackReview_v3/graphs/contributors" alt="Contributors"><img src = "https://img.shields.io/github/contributors/NCSU-SE-2024/PackReview_v3"/></a>
-[![Python Style Checker|autopep8](https://github.com/NCSU-SE-2024/PackReview_v3/actions/workflows/autopep8.yml/badge.svg)](https://github.com/NCSU-SE-2024/PackReview_v3/actions/workflows/autopep8.yml)
-<a href="https://github.com/NCSU-SE-2024/PackReview_v3" alt="Repo Size"><img src="https://img.shields.io/github/repo-size/NCSU-SE-2024/PackReview_v3"/></a>
-<a href="https://github.com/NCSU-SE-2024/PackReview_v3/blob/main/LICENSE" alt="License"><img src="https://img.shields.io/github/license/NCSU-SE-2024/PackReview_v3" /></a>
-<a href="https://github.com/NCSU-SE-2024/PackReview_v3/issues" alt="Open Issues"><img src="https://img.shields.io/github/issues-raw/NCSU-SE-2024/PackReview_v3" /></a>
-![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/NCSU-SE-2024/PackReview_v3?style=plastic)
-<a href="https://github.com/NCSU-SE-2024/PackReview_v3/actions" alt="Build Status"><img src="https://img.shields.io/github/workflow/status/NCSU-SE-2024/PackReview_v3/Build%20main" /></a>
-![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/NCSU-SE-2024/PackReview_v3)
+<a href="https://github.com/TeamBenign/PackReview_v4/graphs/contributors" alt="Contributors"><img src = "https://img.shields.io/github/contributors/TeamBenign/PackReview_v4"/></a>
+[![Python Style Checker|autopep8](https://github.com/TeamBenign/PackReview_v4/actions/workflows/autopep8.yml/badge.svg)](https://github.com/TeamBenign/PackReview_v4/actions/workflows/autopep8.yml)
+<a href="https://github.com/TeamBenign/PackReview_v4" alt="Repo Size"><img src="https://img.shields.io/github/repo-size/TeamBenign/PackReview_v4"/></a>
+<a href="https://github.com/TeamBenign/PackReview_v4/blob/main/LICENSE" alt="License"><img src="https://img.shields.io/github/license/TeamBenign/PackReview_v4" /></a>
+<a href="https://github.com/TeamBenign/PackReview_v4/issues" alt="Open Issues"><img src="https://img.shields.io/github/issues-raw/TeamBenign/PackReview_v4" /></a>
+![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/TeamBenign/PackReview_v4?style=plastic)
+<a href="https://github.com/TeamBenign/PackReview_v4/actions" alt="Build Status"><img src="https://img.shields.io/github/workflow/status/TeamBenign/PackReview_v4/Build%20main" /></a>
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/TeamBenign/PackReview_v4)
 
 ## Pre-requisites
 
@@ -42,7 +42,7 @@ To check whether you have python installed or not, you can open CMD or a Termina
 
 If this is not the case, then you need to download python installer package from [Python Installers](https://www.python.org/downloads/) based on your system's operating system and install it and you can further clone this repository to execute the scripts.
 
-You can refer [INSTALL.md](https://github.com/NCSU-SE-2024/PackReview_v3/blob/main/install.md) for the complete installation steps based on your OS.
+You can refer [INSTALL.md](https://github.com/TeamBenign/PackReview_v4/blob/main/install.md) for the complete installation steps based on your OS.
 
 ## Poster
 
@@ -151,13 +151,13 @@ https://user-images.githubusercontent.com/60925790/205790268-41892a26-7dfa-4d52-
 
 ## Roadmap
 
-- [List of Roadmap and their corresponding open issues](https://github.com/NCSU-SE-2024/PackReview_v3/issues)
+- [List of Roadmap and their corresponding open issues](https://github.com/TeamBenign/PackReview_v4/issues)
 
 ## Contributors
 
 <table>
   <tr>
-    <td align="center"><a href="[https://github.com/shonilbhide](https://github.com/nazmul-me)"><img src="https://avatars.githubusercontent.com/u/8447597?v=4" width="75px;" alt=""/><br /><sub><b>Md. Nazmul Haque</b></sub></a></td>
+    <td align="center"><a href="https://github.com/nazmul-me"><img src="https://avatars.githubusercontent.com/u/8447597?v=4" width="75px;" alt=""/><br /><sub><b>Md. Nazmul Haque</b></sub></a></td>
     <td align="center"><a href="https://github.com/KKGanguly"><img src="https://avatars.githubusercontent.com/u/5454452?v=4" width="75px;" alt=""/><br /><sub><b>Kishan Kumar Ganguly</b></sub></a><br /></td>
     <td align="center"><a href="https://github.com/rcb1409"><img src="https://avatars.githubusercontent.com/u/179258991?v=4" width="75px;" alt=""/><br /><sub><b>Ravi Chandu Bollepalli</b></sub></a><br /></td>
   </tr>
