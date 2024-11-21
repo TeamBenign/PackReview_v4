@@ -20,6 +20,7 @@ and company.
 """
 from collections import Counter
 from pymongo.errors import PyMongoError
+from flask import abort
 from flask import render_template, request, redirect, session, flash, url_for, jsonify
 from flask_paginate import Pagination, get_page_args
 from bson import ObjectId
@@ -530,6 +531,8 @@ def view(view_id):
     """An API to help view review information"""
     intialize_db()
     job_review = JOBS_DB.find_one({"_id": view_id})
+    if not job_review:
+        abort(404)
     job_review['id'] = job_review.pop('_id')
     return render_template("view.html", entry=job_review)
 

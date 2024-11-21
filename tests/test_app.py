@@ -252,9 +252,9 @@ class FlaskAppTests(unittest.TestCase):
 
     def test_view_job_review_nonexistent(self):
         """Test viewing a nonexistent job review."""
-        job_id = 'Nonexistent Job'
-        with self.assertRaises(AttributeError):
-            self.client.get(f'/view/{job_id}')
+        job_id = 'NonexistentJobID'  # Example ID that should not exist
+        response = self.client.get(f'/view/{job_id}')
+        self.assertEqual(response.status_code, 404)
 
     def test_add_review_redirects_after_success(self):
         """Test redirect after adding a review."""
