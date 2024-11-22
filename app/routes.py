@@ -18,11 +18,15 @@ topics in a forum section.
 and company.
 - Top Jobs: Provides a view of the top jobs sorted by user ratings and recommendations.
 """
+import csv
+import os
 from flask import render_template, request, redirect, session, flash, url_for, jsonify
 from flask_paginate import Pagination, get_page_args
 from bson import ObjectId
 from app import app, DB
+from app.gemini_chat import get_gemini_feedback
 from utils import get_db
+import textwrap
 
 JOBS_DB = None
 USERS_DB = None
@@ -312,7 +316,7 @@ def add():
 
         if missing_fields:
             flash('Please fill out the fields.', 'error')
-
+        print(form.get('recommendation'))
         job = {
             "_id": form.get('job_title') + "_" + form.get('company') + "_" + form.get('locations'),
             "title": form.get('job_title'),
@@ -502,3 +506,48 @@ def update_review():
     except Exception as e:
         print("Error: ", e)
         return "An error occurred", 500
+
+
+# Function to query Gemini or other AI models
+def query_gemini_model(user_message):
+    """
+    Send the review texts and user message to Gemini and get the response.
+    """
+    tmp_csv_file_for_gemini = os.path.join("tmp", "reviews", "tmp_review.txt")
+    job_reviews = get_all_jobs()
+    dict_to_csv(job_reviews, tmp_csv_file_for_gemini)
+    
+    response_text = get_gemini_feedback(tmp_csv_file_for_gemini, user_message)
+    if response_text is None:
+        return "Error: Couldn't fetch response from Gemini."
+    else:
+        return response_text
+
+# Function to chunk large review texts
+def chunk_text(text, chunk_size=1500):
+    return textwrap.wrap(text, chunk_size)
+
+# Route to handle chat messages
+@app.route('/get_gemini_response', methods=['POST'])
+def get_gemini_response():
+    data = request.get_json()
+    user_message = data.get('message')
+    
+    ai_message = query_gemini_model(user_message)
+    
+    return jsonify({"ai_message": ai_message})
+
+def dict_to_csv(data, csv_path):
+    os.makedirs(os.path.dirname(csv_path), exist_ok=True)
+    print(os.path.dirname(csv_path))
+    # File name for the output CSV
+    output_file = csv_path
+
+    # Writing the dictionary to a CSV file
+    with open(output_file, mode="w", newline="") as file:
+        writer = csv.DictWriter(file, fieldnames=data[0].keys())
+        writer.writeheader()  
+        writer.writerows(data)
+
+    print(f"Data has been written to {output_file}")
+

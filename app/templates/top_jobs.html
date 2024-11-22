@@ -12,14 +12,16 @@
     <!-- Bulma and DataTables CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="{{url_for('static', filename='/css/style.css')}}" />
+
 </head>
 
 <body>
     <section class="section">
         <div class="container" style="background-color: white;">
-            <h1 class="title has-text-centered has-text-primary mb-6" >Top Job Picks</h1>
-
+            <h1 class="title has-text-centered has-text-primary mb-6" >Reviews</h1>
+           
             <!-- Job Table -->
             <div class="table-container">
                 <div class="table-wrapper" style="overflow-x: auto; padding-bottom: 1em;">
@@ -72,12 +74,56 @@
             </div>
         </div>
     </section>
-
+    <!-- Floating Add Review Button -->
+    <div style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
+        <a href="{{ url_for('review') }}" 
+           class="button is-primary is-large is-rounded is-light has-shadow"
+           aria-label="Add Review" 
+           title="Add Review"
+           style="text-decoration: none;">
+            <span class="icon is-medium">
+                <i class="fas fa-plus"></i>
+            </span>
+        </a>
+    </div>
+    <!-- Chat Button (Trigger for Modal) -->
+    <div style="position: fixed; bottom: 100px; right: 20px; z-index: 1000;">
+        <button id="openChatBtn" class="button is-info is-large is-rounded is-light has-shadow">
+            <span class="icon is-medium">
+                <i class="fas fa-comment-dots"></i>
+            </span>
+            Chat with AI
+        </button>
+    </div>
+    <!-- AI Chat Modal -->
+    <div id="chatModal" class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+            <div class="box">
+                <div class="content">
+                    <div id="chatWindow" class="chat-window">
+                        <!-- AI chat messages will appear here -->
+                    </div>
+                    <div class="field has-addons">
+                        <div class="control is-expanded">
+                            <input id="userMessage" class="input" type="text" placeholder="Type a message..." />
+                        </div>
+                        <div class="control">
+                            <button id="sendMessageBtn" class="button is-info">
+                                Send
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="modal-close is-large" aria-label="close"></button>
+    </div>
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bulma.min.js"></script>
-    
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script>
         $(document).ready(function () {
             // Initialize DataTable with column filters and sorting enabled
@@ -104,6 +150,47 @@
                 window.location = $(this).data('href');
             });
         });
+
+        // Open chat modal
+        $("#openChatBtn").click(function () {
+            $("#chatModal").addClass("is-active");
+        });
+
+        // Close chat modal
+        $(".modal-close, .modal-background").click(function () {
+            $("#chatModal").removeClass("is-active");
+        });
+
+        // Handle sending message
+        $("#sendMessageBtn").click(function () {
+            var userMessage = $("#userMessage").val();
+            if (userMessage.trim() !== "") {
+                // Display user message
+                $("#chatWindow").append('<p><strong>You:</strong> ' + userMessage + '</p>');
+
+                // Clear the input field
+                $("#userMessage").val("");
+
+                // Send the user message to the backend and get AI's response
+                $.ajax({
+                    type: 'POST',
+                    url: '/get_gemini_response',  // Backend route for querying Gemini
+                    data: JSON.stringify({ message: userMessage }),  // Send message
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response.ai_message) {
+                            // Append the response from AI to the chat window
+                            $("#chatWindow").append('<p><strong>AI:</strong> ' + response.ai_message + '</p>');
+                        }
+                    },
+                    error: function () {
+                        alert("There was an error communicating with the backend.");
+                    }
+                });
+            }
+        });
+       
     </script>
 </body>
 

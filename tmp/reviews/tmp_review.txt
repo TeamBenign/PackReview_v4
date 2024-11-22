@@ -1,0 +1,4 @@
+title,company,description,locations,department,hourly_pay,benefits,review,rating,recommendation,author,upvote,id
+Web Developer,Oracle,"Software Development, Web Development",VA,Development,40,No,Good!,0,0,kishan,2,Web Developer_Oracle_VA
+System Admin,Google,"system modification, system analysis, migrations",California,Systems,50,Bonus,"This job pays quite well, vacations are good and you dont have to work in the weekends",0,0,kishan,0,System Admin_Google_California
+software engineer,google,"Software Development, Web Development",VA,Development,30,Bonus,No,0,0,kishan,0,software engineer_google_VA

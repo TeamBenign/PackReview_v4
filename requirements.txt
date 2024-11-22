@@ -22,4 +22,5 @@ six==1.16.0
 SQLAlchemy==1.4.36
 Werkzeug==2.1.2
 WTForms==3.0.1
-
+google-generativeai==0.8.3
+numpy==2.1.3
