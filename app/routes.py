@@ -61,11 +61,15 @@ def process_jobs(job_list):
     return processed
 
 
+def get_job_by_id(id):
+    """A method to get all jobs for required user"""
+    all_jobs = list(JOBS_DB.find({"_id": id}))
+    return process_jobs(all_jobs)
+
 def get_all_jobs():
     """A method to get all jobs for required user"""
     all_jobs = list(JOBS_DB.find())
     return process_jobs(all_jobs)
-
 
 def get_my_jobs(username):
     """A method to get all jobs for required user"""
@@ -92,7 +96,17 @@ def review():
     # if not ('username' in session.keys() and session['username']):
     #     return redirect("/")
     # entries = get_all_jobs()
-    return render_template('review-page.html', entry='')
+    print("here")
+    review_id = request.args.get('review_id')
+    
+    if review_id:
+        review_ids = review_id.split(",")
+        print(review_ids)
+        jobs = [get_job_by_id(id.strip()) for id in review_ids]
+        jobs = [job for sublist in jobs for job in sublist]
+    else: jobs = get_all_jobs()
+    print(jobs)
+    return render_template('review-page.html', jobs=jobs)
 
 
 # view all
@@ -533,9 +547,11 @@ def get_gemini_response():
     data = request.get_json()
     user_message = data.get('message')
     
-    ai_message = query_gemini_model(user_message)
-    
-    return jsonify({"ai_message": ai_message})
+    ai_message, ids = query_gemini_model(user_message)
+    print(ids)
+    review_url = url_for('review', review_id=ids)
+    ai_response = f'{ai_message}\n\nClick <a href="{review_url}">here</a> to see the review details.'
+    return jsonify({"ai_message": ai_response})
 
 def dict_to_csv(data, csv_path):
     os.makedirs(os.path.dirname(csv_path), exist_ok=True)

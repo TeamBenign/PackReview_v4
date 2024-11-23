@@ -14,7 +14,25 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bulma.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="{{url_for('static', filename='/css/style.css')}}" />
-
+    <style>
+        .status {
+            font-style: italic;
+            color: gray;
+            animation: blink 1s infinite; /* Blink animation */
+        }
+        
+        @keyframes blink {
+            0% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -170,7 +188,8 @@
 
                 // Clear the input field
                 $("#userMessage").val("");
-
+                const $statusMessage = $('<p class="status"><em>AI is writing...</em></p>');
+                $("#chatWindow").append($statusMessage);
                 // Send the user message to the backend and get AI's response
                 $.ajax({
                     type: 'POST',
@@ -181,7 +200,7 @@
                     success: function (response) {
                         if (response.ai_message) {
                             // Append the response from AI to the chat window
-                            $("#chatWindow").append('<p><strong>AI:</strong> ' + response.ai_message + '</p>');
+                            $statusMessage.removeClass('blinking').css('animation', 'none').html('<p><strong>AI:</strong> ' + response.ai_message + '</p>');
                         }
                     },
                     error: function () {
