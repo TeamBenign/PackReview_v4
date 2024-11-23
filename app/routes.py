@@ -18,6 +18,7 @@ topics in a forum section.
 and company.
 - Top Jobs: Provides a view of the top jobs sorted by user ratings and recommendations.
 """
+from datetime import datetime
 from flask import render_template, request, redirect, session, flash, url_for, jsonify
 from flask_paginate import Pagination, get_page_args
 from bson import ObjectId
@@ -131,7 +132,7 @@ def page_content():
 def forum():
     """API for viewing all forum topics"""
     intialize_db()
-    topics = FORUM_DB.find()
+    topics = list(FORUM_DB.find())
     return render_template('forum.html', topics=topics)
 
 
@@ -146,8 +147,13 @@ def new_topic():
     if request.method == 'POST':
         title = request.form['title']
         content = request.form['content']
+        creator = session['username']  # Get the username of the logged-in user
+        creation_time = datetime.utcnow()
         FORUM_DB.insert_one(
-            {'title': title, 'content': content, 'comments': []})
+            {'title': title, 'content': content, 'comments': [], 'creator': creator,
+            'creation_time': creation_time,
+            'upvotes': 0,
+            'downvotes': 0})
         return redirect(url_for('forum'))
     return render_template('new_topic.html')
 
@@ -164,9 +170,10 @@ def view_topic(topic_id):
             return redirect('/login')  # Redirect to login if not authenticated
 
         comment = request.form['comment']
+        username = session['username']
         FORUM_DB.update_one(
             {'_id': ObjectId(topic_id)},
-            {'$push': {'comments': comment}}
+            {'$push': {'comments': {'username': username, 'comment': comment}}}
         )
         return redirect(url_for('view_topic', topic_id=topic_id))
 
