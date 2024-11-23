@@ -20,6 +20,7 @@ and company.
 """
 from collections import Counter
 from pymongo.errors import PyMongoError
+from datetime import datetime
 from flask import render_template, request, redirect, session, flash, url_for, jsonify
 from flask_paginate import Pagination, get_page_args
 from bson import ObjectId
@@ -138,7 +139,7 @@ def page_content():
 def forum():
     """API for viewing all forum topics"""
     intialize_db()
-    topics = FORUM_DB.find()
+    topics = list(FORUM_DB.find())
     return render_template('forum.html', topics=topics)
 
 
@@ -153,8 +154,13 @@ def new_topic():
     if request.method == 'POST':
         title = request.form['title']
         content = request.form['content']
+        creator = session['username']  # Get the username of the logged-in user
+        creation_time = datetime.utcnow()
         FORUM_DB.insert_one(
-            {'title': title, 'content': content, 'comments': []})
+            {'title': title, 'content': content, 'comments': [], 'creator': creator,
+            'creation_time': creation_time,
+            'upvotes': 0,
+            'downvotes': 0})
         return redirect(url_for('forum'))
     return render_template('new_topic.html')
 
@@ -171,13 +177,45 @@ def view_topic(topic_id):
             return redirect('/login')  # Redirect to login if not authenticated
 
         comment = request.form['comment']
+        username = session['username']
         FORUM_DB.update_one(
             {'_id': ObjectId(topic_id)},
-            {'$push': {'comments': comment}}
+            {'$push': {'comments': {'username': username, 'comment': comment}}}
         )
         return redirect(url_for('view_topic', topic_id=topic_id))
 
     return render_template('view_topic.html', topic=topic)
+
+@app.route('/forum/<topic_id>/upvote_post', methods=['POST'])
+def upvote_post(topic_id):
+    """API for upvoting a specific forum topic"""
+    intialize_db()
+    # Check if 'username' is in session before allowing vote
+    if 'username' not in session:
+        return redirect('/login')
+
+    # Increment the upvote count
+    FORUM_DB.update_one(
+        {'_id': ObjectId(topic_id)},
+        {'$inc': {'upvotes': 1}}
+    )
+    return redirect(url_for('forum'))
+
+
+@app.route('/forum/<topic_id>/downvote_post', methods=['POST'])
+def downvote_post(topic_id):
+    """API for downvoting a specific forum topic"""
+    intialize_db()
+    # Check if 'username' is in session before allowing vote
+    if 'username' not in session:
+        return redirect('/login')
+
+    # Increment the downvote count
+    FORUM_DB.update_one(
+        {'_id': ObjectId(topic_id)},
+        {'$inc': {'downvotes': 1}}
+    )
+    return redirect(url_for('forum'))
 
 
 # view all
