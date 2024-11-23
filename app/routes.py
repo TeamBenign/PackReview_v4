@@ -134,13 +134,112 @@ def page_content():
                            location_filter_entries=location_filter_entries,
                            company_filter_entries=company_filter_entries)
 
+@app.route('/forum/update_reaction', methods=['POST'])
+def update_reaction():
+    """API for creating a new forum topic"""
+    intialize_db()
+    # Check if 'username' is in session
+    if 'username' not in session:
+        return redirect('/login')  # Redirect to login if not authenticated
+
+    if request.method == 'POST':
+        data = request.json
+        topicId, commentId, discussionType, reactionType = data['topicId'], data['commentId'], data['discussionType'], data['reactionType']
+        topic = FORUM_DB.find_one({'_id': ObjectId(topicId)})
+        if discussionType == 'topic':
+            if session['username'] in topic['likes'] or session['username'] in topic['dislikes']:
+                return jsonify({'error': 'You have already reacted this topic'})
+
+            if reactionType == 'like':
+                FORUM_DB.update_one(
+                    {'_id': ObjectId(topicId)},
+                    {'$push': {'likes': session['username']}}
+                )
+                res = FORUM_DB.find_one({'_id': ObjectId(topicId)})
+                cnt = len(res['likes'])
+                return jsonify({'status': 'success', 'data': cnt})
+            else:
+                FORUM_DB.update_one(
+                    {'_id': ObjectId(topicId)},
+                    {'$push': {'dislikes': session['username']}}
+                )
+                res = FORUM_DB.find_one({'_id': ObjectId(topicId)})
+                cnt = len(res['dislikes'])
+                return jsonify({'status': 'success', 'data': cnt})
+        else:
+            comments = topic['comments']
+            comment = [c for c in comments if c['_cid'] == ObjectId(commentId)][0]
+            if session['username'] in comment['likes'] or session['username'] in comment['dislikes']:
+                return jsonify({'error': 'You have already reacted this comment'})
+            if reactionType == 'like':
+                FORUM_DB.update_one(
+                    {'_id': ObjectId(topicId),'comments._cid': ObjectId(commentId)},
+                    {'$addToSet': {'comments.$.likes': session['username']}}
+                )
+                topic = FORUM_DB.find_one({'_id': ObjectId(topicId)})
+                comments = topic['comments']
+                comment = [c for c in comments if c['_cid'] == ObjectId(commentId)][0]
+                cnt = len(comment['likes'])
+                return jsonify({'status': 'success', 'data': cnt})
+            else:
+                FORUM_DB.update_one(
+                    {'_id': ObjectId(topicId),'comments._cid': ObjectId(commentId)},
+                    {'$addToSet': {'comments.$.dislikes': session['username']}}
+                )
+                topic = FORUM_DB.find_one({'_id': ObjectId(topicId)})
+                comments = topic['comments']
+                comment = [c for c in comments if c['_cid'] == ObjectId(commentId)][0]
+                cnt = len(comment['dislikes'])
+                return jsonify({'status': 'success', 'data': cnt})
+
+    return jsonify({'error': 'Invalid request'})
+
+def get_badge(username):
+    """A method to get badge"""
+    Badges = ['NewBie', 'Intermediate', 'Advanced', 'Expert']
+    user = USERS_DB.find_one({"username": username})
+    if user is None:
+        return "Anonymous"
+    total_reviews = len(user['reviews'])
+    if total_reviews < 5:
+        return Badges[0]
+    elif total_reviews < 10:
+        return Badges[1]
+    elif total_reviews < 15:
+        return Badges[2]
+    return Badges[3]
+
+def getRefinedTopics(topics):
+    """A method to refine topics"""
+    for topic in topics:
+        # Add badge for the author
+        topic['author_badge'] = get_badge(topic['author'])
+        topic['timestamp'] = datetime.strptime(topic['timestamp'], "%Y-%m-%d %H:%M:%S").strftime("%A, %B %d, %Y, %I:%M %p")
+        topic['topics_likes'] = len(topic['likes'])
+        topic['topics_dislikes'] = len(topic['dislikes'])
+
+        # Add badges for likes and dislikes
+        topic['likes'] = [{'user': user, 'badge': get_badge(user)} for user in topic['likes']]
+        topic['dislikes'] = [{'user': user, 'badge': get_badge(user)} for user in topic['dislikes']]
+
+        # Process comments
+        for comment in topic['comments']:
+            comment['commenter_badge'] = get_badge(comment['commenter'])
+            comment['timestamp'] = datetime.strptime(comment['timestamp'], "%Y-%m-%d %H:%M:%S").strftime("%A, %B %d, %Y, %I:%M %p")
+            comment['likes'] = [{'user': user, 'badge': get_badge(user)} for user in comment['likes']]
+            comment['dislikes'] = [{'user': user, 'badge': get_badge(user)} for user in comment['dislikes']]
+            comment['comment_likes'] = len(comment['likes'])
+            comment['comment_dislikes'] = len(comment['dislikes'])
+    return topics
 
 @app.route('/forum')
 def forum():
     """API for viewing all forum topics"""
     intialize_db()
     topics = list(FORUM_DB.find())
-    return render_template('forum.html', topics=topics)
+    res = getRefinedTopics(topics)
+    print("res", res)
+    return render_template('forum.html', topics=res)
 
 
 @app.route('/forum/new', methods=['GET', 'POST'])
@@ -282,7 +381,6 @@ def get_avg_sal_titles_by_locations(jobs):
         for i in range(len(locations)):
             if count[title][i] > 0:
                 average_pay[title][i] /= count[title][i]
-    print(average_pay)
     # Convert the data to JSON for the JavaScript to use
     data = {
         "locations": locations,

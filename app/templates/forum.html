@@ -3,118 +3,188 @@
 {% block content %}
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <title>Interactive Discussion Forum</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <style>
-        .card {
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            transition: transform 0.2s ease;
+       
+        .badge {
+            background-color: #007bff;
+            color: white;
+            font-size: 0.8rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 5px;
         }
-
-        .card:hover {
-            transform: translateY(-5px);
-        }
-
-        .card-header {
+        .like-dislike {
             display: flex;
-            justify-content: space-between;
+            gap: 15px;
             align-items: center;
-            background-color: #f5f5f5;
-            padding: 10px 15px;
-            border-bottom: 1px solid #eaeaea;
         }
-
-        .card-content ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
+        .like-dislike i {
+            cursor: pointer;
+            color: gray;
         }
-
-        .card-content ul li {
-            margin: 5px 0;
-            font-size: 0.9rem;
+        .like-dislike i:hover {
+            color: #007bff;
         }
-
-        .has-text-muted {
-            color: #7a7a7a;
+        .comment {
+            margin-left: 20px;
+            border-left: 2px solid #ddd;
+            padding-left: 10px;
         }
-
-        .truncate-text {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
+        .comment-input {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .btn-comment {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 4px 5px;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-radius: 2px;
+            cursor: pointer;
+            align-self: flex-start;
+        }
+        .btn-comment:hover {
+            background-color: #0056b3;
+        }
+        textarea {
+            resize: none;
+        }
+        .discussion-topic {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .card-header {
+            background-color: #8a8d8f;
+            color: white;
         }
     </style>
 </head>
-
 <body>
-    <section class="section">
-        <div class="container">
-            <h1 class="title">Discussion Forum</h1>
-
-            <div class="field is-grouped is-grouped-right">
-                <div class="control">
-                    <a href="{{ url_for('new_topic') }}" class="button is-primary">New Topic</a>
+    <div class="container mt-5" style="background-color: white;">
+        <h1 class="mb-4">Discussion Forum</h1>
+        {% if topics %}
+            {% for topic in topics %}
+            <!-- Discussion Topic-->
+            <div class="discussion-topic" id="topic1">
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h4>{{topic['title']}}</h4>
+                    </div>
+                    <div class="card-body">
+                        <p>
+                            <strong>Author:</strong> {{topic['author']}} <span class="badge">{{topic['author_badge']}}</span>
+                            <span class="text-muted" style="font-size: 0.9rem;">| Posted on: {{topic['timestamp']}}</span>
+                        </p>
+                        <p>{{topic['content']}}</p>
+                        <div class="like-dislike">
+                            <i class="bi bi-hand-thumbs-up" onclick="handleReaction('{{ topic._id }}', null, 'topic', 'like')"></i>
+                            <span id="{{topic._id}}-likes">{{topic['topics_likes']}}</span>
+                            <i class="bi bi-hand-thumbs-down" onclick="handleReaction('{{topic._id}}', null, 'topic', 'dislike')"></i>
+                            <span id="{{topic._id}}-dislikes">{{topic['topics_dislikes']}}</span>
+                        </div>
+                    </div>
                 </div>
-            </div>
-
-            {% if topics %}
-                <div class="columns is-multiline">
-                    {% for topic in topics %}
-                        <div class="column is-one-quarter">
-                            <div class="card">
-                                <div class="card-header">
-                                    <p class="title is-6">{{ topic['title'] }}</p>
-                                    <p class="has-text-muted is-size-7">
-                                        {{ topic['creation_time'].strftime('%d-%B-%Y') if topic.get('creation_time') else 'Unknown Date' }}
-                                    </p>
+                                  
+                <!-- Comments Section -->
+                    <div>
+                        <h5>Comments</h5>
+                        {% for comment in topic['comments'] %}
+                        <div id="topic1-comments">
+                            <div class="comment mb-3">
+                                <p>
+                                    <strong>Commenter:</strong> {{comment['commenter']}} <span class="badge">{{comment['commenter_badge']}}</span>
+                                    <span class="text-muted" style="font-size: 0.9rem;">| Commented on: {{comment['timestamp']}}</span>
+                                </p>
+                                <p>{{comment['content']}}</p>
+                                <div class="like-dislike">
+                                    <i class="bi bi-hand-thumbs-up" onclick="handleReaction('{{topic._id}}', '{{comment._cid}}', 'comment', 'like')"></i>
+                                    <span id="{{comment._cid}}-likes">{{comment['comment_likes']}}</span>
+                                    <i class="bi bi-hand-thumbs-down" onclick="handleReaction('{{topic._id}}', '{{comment._cid}}', 'comment', 'dislike')"></i>
+                                    <span id="{{comment._cid}}-dislikes">{{comment['comment_dislikes']}}</span>
                                 </div>
-                                <div class="card-content">
-                                    <p class="truncate-text">
-                                        {{ topic['content'] }}
-                                    </p>
-                                    <p class="is-size-7 has-text-weight-semibold">Created by: {{ topic['creator'] }}</p>
-                                    <p class="is-size-7">Upvotes: {{ topic['upvotes'] }} | Downvotes: {{ topic['downvotes'] }}</p>
-                                    <hr>
-                                    <p class="is-size-7 has-text-weight-semibold">Top Comments:</p>
-                                    <ul>
-                                        {% for comment in topic.get('comments', [])[:2] %}
-                                            <li>
-                                                <strong>{{ comment.get('username', 'Anonymous') }}</strong>: {{ comment.get('comment', 'No Comment') }}
-                                            </li>
-                                        {% endfor %}
-                                        {% if not topic.get('comments') %}
-                                            <li class="has-text-muted">No comments yet.</li>
-                                        {% endif %}
-                                    </ul>
-                                </div>
-                                <footer class="card-footer">
-                                    <form action="{{ url_for('upvote_post', topic_id=topic['_id']) }}" method="POST" class="card-footer-item">
-                                        <button type="submit" class="button is-small is-success">Upvote</button>
-                                    </form>
-                                    <form action="{{ url_for('downvote_post', topic_id=topic['_id']) }}" method="POST" class="card-footer-item">
-                                        <button type="submit" class="button is-small is-danger">Downvote</button>
-                                    </form>
-                                    <a href="{{ url_for('view_topic', topic_id=topic['_id']) }}" class="card-footer-item">Add Comment</a>
-                                </footer>
                             </div>
                         </div>
-                    {% endfor %}
-                </div>
-            {% else %}
+                        {% endfor %}
+                       <!-- Add Comment Section -->
+                        <div class="comment-input">
+                            <textarea id="topic1-new-comment" class="form-control mb-2" rows="3" placeholder="Add your comment here..."></textarea>
+                            <button class="btn-comment" onclick="addComment('topic1', 'The Future of AI')">
+                                <i class="bi bi-chat-left-dots"></i> Post Comment
+                            </button>
+                        </div>
+                        {% if not topic.get('comments') %}
+                            <p class="has-text-grey">No comments yet. Be the first to comment!</p>
+                        {% endif %}
+                    </div>
+            </div>
+            {% endfor %}
+        {% else %}
                 <p class="has-text-grey">No topics available. Be the first to create one!</p>
-            {% endif %}
-        </div>
-    </section>
-</body>
+        {% endif %}
+    </div>
 
+    <script>
+        // Function to handle like or dislike button
+        async function handleReaction(topicId, commentId=null, discussionType, reactionType) {
+
+            try {
+                // Send the reaction to the server
+                const response = await fetch('/forum/update_reaction', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ topicId: topicId, commentId: commentId, discussionType: discussionType, reactionType: reactionType}),
+                });
+
+                const result = await response.json();
+                if (result.error !== undefined){
+                    alert(result.error);
+                    return;
+                }
+                    
+                if (result.status === 'success') {
+                    if (discussionType === 'topic') {
+                        if (reactionType === 'like') {
+                            const likeSpan = document.getElementById(`${topicId}-likes`);
+                            likeSpan.textContent = result.data;
+                        } else if (reactionType === 'dislike') {
+                            const dislikeSpan = document.getElementById(`${topicId}-dislikes`);
+                            dislikeSpan.textContent = result.data;
+                        }
+                    } else if (discussionType === 'comment') {
+                        if (reactionType === 'like') {
+                            const likeSpan = document.getElementById(`${commentId}-likes`);
+                            likeSpan.textContent = result.data;
+                        } else if (reactionType === 'dislike') {
+                            const dislikeSpan = document.getElementById(`${commentId}-dislikes`);
+                            dislikeSpan.textContent = result.data;
+                        }
+                    }
+                } else {
+                    alert('Failed to update reaction. Please try again.');
+                }
+            } catch (error) {
+                console.error(error);
+                alert('An error occurred while updating the reaction.');
+            }
+        }
+    </script>
+</body>
 </html>
+
 {% endblock %}
