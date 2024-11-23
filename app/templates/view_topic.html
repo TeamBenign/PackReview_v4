@@ -23,7 +23,7 @@
                 <div class="feedback" style="background: rgba(0, 0, 0, 0.1);">
                     <ul>
                         {% for comment in topic['comments'] %}
-                            <li>{{ comment }}</li>
+                        <li><strong>{{ comment['username'] }}</strong>: {{ comment['comment'] }}</li>
                         {% endfor %}
                     </ul>
                 </div>
