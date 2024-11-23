@@ -417,7 +417,7 @@ def add():
             flash('Please fill out the fields.', 'error')
 
         job = {
-            "_id": form.get('job_title') + "_" + form.get('company') + "_" + form.get('locations'),
+            "_id": form.get('job_title') + "_" + form.get('company') + "_" + form.get('locations')+ "_" + form.get('username') + "_" + form.get('department'),
             "title": form.get('job_title'),
             "company": form.get('company'),
             "description": form.get('job_description'),
