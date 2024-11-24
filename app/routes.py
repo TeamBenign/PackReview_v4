@@ -26,6 +26,7 @@ from flask_paginate import Pagination, get_page_args
 from bson import ObjectId
 from app import app, DB
 from utils import get_db
+import bcrypt
 
 JOBS_DB = None
 USERS_DB = None
@@ -627,24 +628,25 @@ def login():
     """An API to help users login"""
     intialize_db()
 
-    # Check if user is already logged in
     if 'username' in session.keys() and session['username']:
         return redirect("/")
 
     if request.method == "POST":
         username = request.form.get("username")
+        password = request.form.get("password")
         user = USERS_DB.find_one({"username": username})
-        passw = request.form.get("password")
 
-        # Check if user exists and password matches
-        if user and user["password"] == passw:
+        # Verify the user exists and the password matches
+        if user and bcrypt.checkpw(password.encode('utf-8'), user["password"]):
             session["username"] = username
             return redirect("/")
-        # Provide specific error message
+
         flash("Invalid username or password.", "danger")
-        return redirect("/login")  # Redirect back to the login page
+        return redirect("/login")
 
     return render_template("login.html")
+
+
 
 
 @app.route("/signup", methods=["POST", "GET"])
@@ -659,34 +661,39 @@ def signup():
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
-        confirm_password = request.form.get(
-            "confirm_password")  # Get the confirmed password
+        confirm_password = request.form.get("confirm_password")
 
         user = USERS_DB.find_one({"username": username})
 
         # Check if passwords match
         if password != confirm_password:
-            flash("Passwords do not match!", "danger")  # Show an error message
+            flash("Passwords do not match!", "danger")
             return render_template("signup.html")
 
-        # New user
-        if not user:
-            user = {
-                "username": username,
-                "password": password,  # Consider hashing this password before storing
-                "reviews": []
-            }
-            USERS_DB.insert_one(user)
-            session["username"] = username  # Log in the user after signing up
-            return redirect("/")
+        # Check if username already exists
+        if user:
+            flash("Username already exists! Please login or use a different username.", "danger")
+            return render_template("signup.html")
 
-        # Show an error message if username is taken
-        flash(
-            "Username already exists! please login or use different username",
-            "danger")
-        return render_template("signup.html")
+        # Hash the password before storing it
+        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+
+        # Create a new user document
+        user = {
+            "username": username,
+            "password": hashed_password,  # Store the hashed password
+            "reviews": []
+        }
+        USERS_DB.insert_one(user)
+
+        session["username"] = username  # Log in the user after signing up
+        return redirect("/")
 
     return render_template("signup.html")
+
+
+
+
 
 
 @app.route('/view/<view_id>')
