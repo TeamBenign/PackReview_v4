@@ -133,6 +133,34 @@ def page_content():
                            dept_filter_entries=dept_filter_entries,
                            location_filter_entries=location_filter_entries,
                            company_filter_entries=company_filter_entries)
+def getCurrentTime():
+    """A method to get current time"""
+    return datetime.now().replace(microsecond=0).strftime("%Y-%m-%d %H:%M:%S")
+
+@app.route('/forum/add_comment', methods=['POST'])
+def add_comment():
+    """API for creating a new forum comment of a specific topic"""
+    intialize_db()
+    # Check if 'username' is in session
+    if 'username' not in session:
+        return redirect('/login')  # Redirect to login if not authenticated
+
+    if request.method == 'POST':
+        data = request.json
+        topicId, content = data['topicId'], data['content']
+        try:
+            FORUM_DB.update_one(
+                {'_id': ObjectId(topicId)},
+                {'$push': {'comments': {'_cid': str(ObjectId()),'commenter': session['username'], 'content': content, 'likes': [], 'dislikes': [], 'timestamp': getCurrentTime()}}}
+            )
+            comment = FORUM_DB.find_one({'_id': ObjectId(topicId)})['comments'][-1]
+            comment['commenter_badge'] = get_badge(comment['commenter'])
+            comment['comment_likes'] = len(comment['likes'])
+            comment['comment_dislikes'] = len(comment['dislikes'])
+            comment['timestamp'] = datetime.strptime(comment['timestamp'], "%Y-%m-%d %H:%M:%S").strftime("%A, %B %d, %Y, %I:%M %p")
+            return jsonify({'status': 'success', 'data': comment})
+        except Exception as e:
+            return jsonify({'error': str(e)})
 
 @app.route('/forum/update_reaction', methods=['POST'])
 def update_reaction():
@@ -168,27 +196,32 @@ def update_reaction():
                 return jsonify({'status': 'success', 'data': cnt})
         else:
             comments = topic['comments']
-            comment = [c for c in comments if c['_cid'] == ObjectId(commentId)][0]
+            print(comments, commentId)
+            
+            comment = [c for c in comments if c['_cid'] == commentId][0]
+            print("-----------------")
+            print(comment)
+            
             if session['username'] in comment['likes'] or session['username'] in comment['dislikes']:
                 return jsonify({'error': 'You have already reacted this comment'})
             if reactionType == 'like':
                 FORUM_DB.update_one(
-                    {'_id': ObjectId(topicId),'comments._cid': ObjectId(commentId)},
+                    {'_id': ObjectId(topicId),'comments._cid': commentId},
                     {'$addToSet': {'comments.$.likes': session['username']}}
                 )
                 topic = FORUM_DB.find_one({'_id': ObjectId(topicId)})
                 comments = topic['comments']
-                comment = [c for c in comments if c['_cid'] == ObjectId(commentId)][0]
+                comment = [c for c in comments if c['_cid'] == commentId][0]
                 cnt = len(comment['likes'])
                 return jsonify({'status': 'success', 'data': cnt})
             else:
                 FORUM_DB.update_one(
-                    {'_id': ObjectId(topicId),'comments._cid': ObjectId(commentId)},
+                    {'_id': ObjectId(topicId),'comments._cid': commentId},
                     {'$addToSet': {'comments.$.dislikes': session['username']}}
                 )
                 topic = FORUM_DB.find_one({'_id': ObjectId(topicId)})
                 comments = topic['comments']
-                comment = [c for c in comments if c['_cid'] == ObjectId(commentId)][0]
+                comment = [c for c in comments if c['_cid'] == commentId][0]
                 cnt = len(comment['dislikes'])
                 return jsonify({'status': 'success', 'data': cnt})
 
@@ -238,11 +271,10 @@ def forum():
     intialize_db()
     topics = list(FORUM_DB.find())
     res = getRefinedTopics(topics)
-    print("res", res)
     return render_template('forum.html', topics=res)
 
 
-@app.route('/forum/new', methods=['GET', 'POST'])
+@app.route('/forum/new_topic', methods=['POST'])
 def new_topic():
     """API for creating a new forum topic"""
     intialize_db()
@@ -250,19 +282,15 @@ def new_topic():
     if 'username' not in session:
         return redirect('/login')  # Redirect to login if not authenticated
 
-    if request.method == 'POST':
-        title = request.form['title']
-        content = request.form['content']
-        creator = session['username']  # Get the username of the logged-in user
-        creation_time = datetime.utcnow()
-        FORUM_DB.insert_one(
-            {'title': title, 'content': content, 'comments': [], 'creator': creator,
-            'creation_time': creation_time,
-            'upvotes': 0,
-            'downvotes': 0})
-        return redirect(url_for('forum'))
-    return render_template('new_topic.html')
-
+    title = request.form['topic_title']
+    content = request.form['topic_description']
+    creator = session['username']  # Get the username of the logged-in user
+    FORUM_DB.insert_one(
+        {'title': title, 'content': content, 'comments': [], 'author': creator,
+        'timestamp': getCurrentTime(), 'likes': [], 'dislikes': []
+        }
+    )
+    return redirect(url_for('forum'))
 
 @app.route('/forum/<topic_id>', methods=['GET', 'POST'])
 def view_topic(topic_id):

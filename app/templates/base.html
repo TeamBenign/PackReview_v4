@@ -25,7 +25,7 @@
                         <ul class="nav">
                             {% if session['username'] %}
                             <li class="nav-item">
-                                <a class="nav-link" href="/dashboard">Hello, {{ session['username'] }}</a>
+                                <a class="nav-link" href="/dashboard">Dashboard ({{ session['username'] }})</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/">Home</a>
@@ -41,17 +41,6 @@
                               </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/logout">Logout</a>
-                            </li>
-                            
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="userMenu" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    User Menu
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
-                                    <a class="dropdown-item" href="/logout">Logout</a>
-                                    <a class="dropdown-item" href="/profile">Profile</a>
-                                    <a class="dropdown-item" href="/dashboard">Dashboard</a>
-                                </div>
                             </li>
                             {% else %}
                             <li class="nav-item">
