@@ -16,7 +16,7 @@ Together, let’s empower students to make better career choices on campus while
 
 New Badges
 
-[![codecov](https://codecov.io/gh/NCSU-SE-2024/PackReview_v3/graph/badge.svg?token=IAgSDGwaDv)](https://codecov.io/gh/NCSU-SE-2024/PackReview_v3)
+[![codecov](https://codecov.io/gh/TeamBenign/PackReview_v4/graph/badge.svg?token=ZLD95A15SC)](https://codecov.io/gh/TeamBenign/PackReview_v4)
 [![Pylint](https://github.com/TeamBenign/PackReview_v4/actions/workflows/pylint.yml/badge.svg)](https://github.com/TeamBenign/PackReview_v4/actions/workflows/pylint.yml)
 [![Python Flask Application](https://github.com/TeamBenign/PackReview_v4/actions/workflows/test-app.yml/badge.svg)](https://github.com/TeamBenign/PackReview_v4/actions/workflows/test-app.yml)
 [![Run tests and upload coverage](https://github.com/TeamBenign/PackReview_v4/actions/workflows/codecov.yml/badge.svg)](https://codecov.io/gh/TeamBenign/PackReview_v4)
