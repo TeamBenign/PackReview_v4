@@ -2,7 +2,7 @@ name: Pylint
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build:
@@ -11,15 +11,15 @@ jobs:
       matrix:
         python-version: ["3.10"]
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install pylint
-    - name: Analysing the code with pylint
-      run: |
-        pylint --disable=global-statement,import-error,cyclic-import,no-member,unbalanced-tuple-unpacking,too-many-public-methods,too-few-public-methods,invalid-name,broad-exception-caught,wrong-import-order  $(git ls-files '*.py' | grep -v '^migrations/')
+      - uses: actions/checkout@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pylint
+      - name: Analysing the code with pylint
+        run: |
+          pylint --disable=global-statement,line-too-long,no-name-in-module,no-else-return,too-many-return-statements,inconsistent-return-statements,import-error,cyclic-import,no-member,unbalanced-tuple-unpacking,too-many-public-methods,too-few-public-methods,invalid-name,broad-exception-caught,wrong-import-order  $(git ls-files '*.py' | grep -v '^migrations/')

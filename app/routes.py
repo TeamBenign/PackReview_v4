@@ -152,13 +152,20 @@ def add_comment():
         try:
             FORUM_DB.update_one(
                 {'_id': ObjectId(topicId)},
-                {'$push': {'comments': {'_cid': str(ObjectId()),'commenter': session['username'], 'content': content, 'likes': [], 'dislikes': [], 'timestamp': getCurrentTime()}}}
+                {'$push': {
+                    'comments': {'_cid': str(ObjectId()),'commenter': session['username'], 
+                                 'content': content, 'likes': [], 'dislikes': [], 
+                                 'timestamp': getCurrentTime()}
+                        }
+                }
             )
             comment = FORUM_DB.find_one({'_id': ObjectId(topicId)})['comments'][-1]
             comment['commenter_badge'] = get_badge(comment['commenter'])
             comment['comment_likes'] = len(comment['likes'])
             comment['comment_dislikes'] = len(comment['dislikes'])
-            comment['timestamp'] = datetime.strptime(comment['timestamp'], "%Y-%m-%d %H:%M:%S").strftime("%A, %B %d, %Y, %I:%M %p")
+            comment['timestamp'] = datetime.strptime(
+                                    comment['timestamp'],
+                                    "%Y-%m-%d %H:%M:%S").strftime("%A, %B %d, %Y, %I:%M %p")
             return jsonify({'status': 'success', 'data': comment})
         except Exception as e:
             return jsonify({'error': str(e)})
@@ -173,7 +180,8 @@ def update_reaction():
 
     if request.method == 'POST':
         data = request.json
-        topicId, commentId, discussionType, reactionType = data['topicId'], data['commentId'], data['discussionType'], data['reactionType']
+        topicId, commentId = data['topicId'], data['commentId']
+        discussionType, reactionType = data['discussionType'], data['reactionType']
         topic = FORUM_DB.find_one({'_id': ObjectId(topicId)})
         if discussionType == 'topic':
             if session['username'] in topic['likes'] or session['username'] in topic['dislikes']:
@@ -197,13 +205,10 @@ def update_reaction():
                 return jsonify({'status': 'success', 'data': cnt})
         else:
             comments = topic['comments']
-            print(comments, commentId)
-            
+
             comment = [c for c in comments if c['_cid'] == commentId][0]
-            print("-----------------")
-            print(comment)
-            
-            if session['username'] in comment['likes'] or session['username'] in comment['dislikes']:
+            if (session['username'] in comment['likes'] or
+                session['username'] in comment['dislikes']):
                 return jsonify({'error': 'You have already reacted this comment'})
             if reactionType == 'like':
                 FORUM_DB.update_one(
@@ -248,7 +253,8 @@ def getRefinedTopics(topics):
     for topic in topics:
         # Add badge for the author
         topic['author_badge'] = get_badge(topic['author'])
-        topic['timestamp'] = datetime.strptime(topic['timestamp'], "%Y-%m-%d %H:%M:%S").strftime("%A, %B %d, %Y, %I:%M %p")
+        topic['timestamp'] = datetime.strptime(topic['timestamp'],
+                            "%Y-%m-%d %H:%M:%S").strftime("%A, %B %d, %Y, %I:%M %p")
         topic['topics_likes'] = len(topic['likes'])
         topic['topics_dislikes'] = len(topic['dislikes'])
 
@@ -259,7 +265,8 @@ def getRefinedTopics(topics):
         # Process comments
         for comment in topic['comments']:
             comment['commenter_badge'] = get_badge(comment['commenter'])
-            comment['timestamp'] = datetime.strptime(comment['timestamp'], "%Y-%m-%d %H:%M:%S").strftime("%A, %B %d, %Y, %I:%M %p")
+            comment['timestamp'] = datetime.strptime(comment['timestamp'],
+                                    "%Y-%m-%d %H:%M:%S").strftime("%A, %B %d, %Y, %I:%M %p")
             comment['likes'] = [{'user': user, 'badge': get_badge(user)} for user in comment['likes']]
             comment['dislikes'] = [{'user': user, 'badge': get_badge(user)} for user in comment['dislikes']]
             comment['comment_likes'] = len(comment['likes'])
@@ -582,7 +589,7 @@ def add():
             flash('Please fill out the fields.', 'error')
 
         job = {
-            "_id": form.get('job_title') + "_" + form.get('company') + "_" + form.get('locations')+ "_" + form.get('username') + "_" + form.get('department'),
+            "_id": form.get('job_title') + "_" + form.get('company') + "_" + form.get('locations')+ "_" + session['username'] + "_" + form.get('department'),
             "title": form.get('job_title'),
             "company": form.get('company'),
             "description": form.get('job_description'),
@@ -613,7 +620,7 @@ def add():
             USERS_DB.update_one({"username": session['username']}, {
                                 "$set": {"reviews": reviews}})
 
-    return redirect('/')
+    return redirect("/myjobs")
 
 
 @app.route('/logout')
