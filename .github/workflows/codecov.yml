@@ -57,6 +57,4 @@ jobs:
       - name: Upload results to Codecov
         uses: codecov/codecov-action@v5
         with:
-          verbose: true
-        env:
-          token: 41aae62b-b6b1-40f4-b304-cbf45de14fb8
+          token: ${{ secrets.CODECOV_TOKEN }}
