@@ -21,12 +21,18 @@ and company.
 from collections import Counter
 from pymongo.errors import PyMongoError
 from datetime import datetime
+from collections import defaultdict
+import csv
+import os
 from flask import render_template, request, redirect, session, flash, url_for, jsonify
 from flask_paginate import Pagination, get_page_args
 from bson import ObjectId
 from app import app, DB
+from app.gemini_chat import get_gemini_feedback
+from app.recommendation import recommend_jobs
 from utils import get_db
 import bcrypt
+import textwrap
 
 JOBS_DB = None
 USERS_DB = None
@@ -60,6 +66,11 @@ def process_jobs(job_list):
         processed.append(job)
     return processed
 
+
+def get_job_by_id(id):
+    """A method to get all jobs for required user"""
+    all_jobs = list(JOBS_DB.find({"_id": id}))
+    return process_jobs(all_jobs)
 
 def get_all_jobs():
     """A method to get all jobs for required user"""
@@ -97,7 +108,38 @@ def review():
     # if not ('username' in session.keys() and session['username']):
     #     return redirect("/")
     # entries = get_all_jobs()
-    return render_template('review-page.html', entry='')
+    print("here")
+    review_id = request.args.get('review_id')
+    
+    if review_id:
+        review_ids = review_id.split(",")
+        print(review_ids)
+        jobs = [get_job_by_id(id.strip()) for id in review_ids]
+        jobs = [job for sublist in jobs for job in sublist]
+    else: jobs = get_all_jobs()
+    print(jobs)
+    return render_template('review-page.html', jobs=jobs)
+
+@app.route('/job_recommendations')
+def job_recommendations():
+    """
+    An API for the recommendation page
+    """
+    intialize_db()
+    if 'username' not in session or not session['username']:
+        flash('Please log in first to see recommended reviews.', "danger")
+        return redirect('/login')
+    # if not ('username' in session.keys() and session['username']):
+    #     return redirect("/")
+    # entries = get_all_jobs()
+    entries = get_all_jobs()
+
+    #get top 10 recommendations
+    recommended_reviews = recommend_jobs(entries, session['username'], 10)
+    if recommended_reviews:
+        jobs = transform_jobs(recommended_reviews)
+    
+    return render_template('review-page.html', jobs=recommended_reviews)
 
 
 # view all
@@ -587,7 +629,7 @@ def add():
 
         if missing_fields:
             flash('Please fill out the fields.', 'error')
-
+        print(form.get('recommendation'))
         job = {
             "_id": form.get('job_title') + "_" + form.get('company') + "_" + form.get('locations')+ "_" + session['username'] + "_" + form.get('department'),
             "title": form.get('job_title'),
@@ -787,3 +829,68 @@ def update_review():
     except PyMongoError as e:
         print("Error: ", e)
         return "An error occurred", 500
+
+
+# Function to query Gemini or other AI models
+def query_gemini_model(user_message):
+    """
+    Send the review texts and user message to Gemini and get the response.
+    """
+    tmp_csv_file_for_gemini = os.path.join("tmp", "reviews", "tmp_review.txt")
+    job_reviews = get_all_jobs()
+    dict_to_csv(job_reviews, tmp_csv_file_for_gemini)
+    
+    response_text = get_gemini_feedback(tmp_csv_file_for_gemini, user_message)
+    if response_text is None:
+        return "Error: Couldn't fetch response from Gemini."
+    else:
+        return response_text
+
+# Function to chunk large review texts
+def chunk_text(text, chunk_size=1500):
+    return textwrap.wrap(text, chunk_size)
+
+# Route to handle chat messages
+@app.route('/get_gemini_response', methods=['POST'])
+def get_gemini_response():
+    data = request.get_json()
+    user_message = data.get('message')
+    
+    ai_message, ids = query_gemini_model(user_message)
+    print(ids)
+    review_url = url_for('review', review_id=ids)
+    ai_response = f'{ai_message}\n\nClick <a href="{review_url}">here</a> to see the review details.'
+    return jsonify({"ai_message": ai_response})
+
+def dict_to_csv(data, csv_path):
+    os.makedirs(os.path.dirname(csv_path), exist_ok=True)
+    print(os.path.dirname(csv_path))
+    # File name for the output CSV
+    output_file = csv_path
+
+    # Writing the dictionary to a CSV file
+    with open(output_file, mode="w", newline="") as file:
+        writer = csv.DictWriter(file, fieldnames=data[0].keys())
+        writer.writeheader()  
+        writer.writerows(data)
+
+    print(f"Data has been written to {output_file}")
+
+def transform_jobs(jobs):
+    grouped_jobs = defaultdict(lambda: {"other_attributes": []})
+
+    for job in jobs:
+        key = (job['title'], job['company'], job['locations'], job['department'])
+        other_attributes = {k: v for k, v in job.items() if k not in {'title', 'company', 'locations', 'department'}}
+        
+        if "title" not in grouped_jobs[key]:  # Initialize main attributes
+            grouped_jobs[key]["title"] = job["title"]
+            grouped_jobs[key]["company"] = job["company"]
+            grouped_jobs[key]["locations"] = job["locations"]
+            grouped_jobs[key]["department"] = job["department"]
+        
+        # Add the other attributes to the list
+        grouped_jobs[key]["other_attributes"].append(other_attributes)
+
+    return list(grouped_jobs.values())
+

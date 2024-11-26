@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Listings</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <script>
+        // Function to generate the URL with other attributes encoded as a query string
+        function generateReviewURL(job) {
+            // Convert the job's other attributes to a JSON string and encode it
+            const encodedAttributes = encodeURIComponent(JSON.stringify(job.other_attributes));
+            // Construct the URL for the review endpoint
+            const reviewURL = `/review?data=${encodedAttributes}`;
+            return reviewURL;
+        }
+        // Array of jobs data (can be passed from backend)
+    
+        // Function to calculate the average rating for a job
+        function averageRating(job) {
+            const totalRating = job.other_attributes.reduce((acc, curr) => acc + curr.rating, 0);
+            const average = totalRating / job.other_attributes.length;
+            return average.toFixed(1); // Round to 1 decimal place
+        }
+    </script>
+</head>
+
+<body>
+    <section class="section">
+        <div class="container">
+            <h1 class="title">Job Listings</h1>
+
+            <!-- Loop through the jobs array -->
+            {% for job in jobs %}
+            <div class="columns is-multiline">
+                <!-- Job Card -->
+                <div class="column is-one-third" v-for="job in jobs">
+                    <div class="card">
+                        <header class="card-header">
+                            <p class="card-header-title">
+                                {{ job.title }} - {{ job.company }}
+                            </p>
+                        </header>
+                        <div class="card-content">
+                            <div class="content">
+                                <strong>Location:</strong> {{ job.locations }}<br>
+                                <strong>Department:</strong> {{ job.department }}<br>
+                                <strong>Salary:</strong> ${{ job.other_attributes[0].hourly_pay }}<br>
+                                <strong>Average Rating:</strong> ${averageRating(job)}/ 5<br>
+                            </div>
+                        </div>
+                        <footer class="card-footer">
+                            <!-- Send the job's other attributes via a URL -->
+                            <a href="#" class="card-footer-item" 
+                               :href="generateReviewURL(job)">Send Review</a>
+                        </footer>
+                    </div>
+                </div>
+                <!-- End Job Card -->
+            </div>
+            {% endfor %}
+
+        </div>
+    </section>
+
+    <script>
+        
+
+        // Populate the job cards on page load
+        window.onload = () => {
+            const container = document.querySelector('.container');
+            const jobCards = jobs.map(job => `
+                <div class="column is-one-third">
+                    <div class="card">
+                        <header class="card-header">
+                            <p class="card-header-title">${job.title} - ${job.company}</p>
+                        </header>
+                        <div class="card-content">
+                            <div class="content">
+                                <strong>Location:</strong> ${job.locations}<br>
+                                <strong>Department:</strong> ${job.department}<br>
+                                <strong>Salary:</strong> $${job.other_attributes[0].hourly_pay}<br>
+                                <strong>Average Rating:</strong> ${averageRating(job)} / 5<br>
+                            </div>
+                        </div>
+                        <footer class="card-footer">
+                            <a href="${generateReviewURL(job)}" class="card-footer-item">Send Review</a>
+                        </footer>
+                    </div>
+                </div>
+            `).join('');
+            container.innerHTML += jobCards;
+        }
+    </script>
+</body>
+
+</html>
+
+{% endblock %}
