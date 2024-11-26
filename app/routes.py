@@ -477,7 +477,7 @@ def get_web_statistics(jobs, users):
         "total_companies": len(Counter(job['company'] for job in jobs)),
         "total_titles": len(Counter(titles)),
         "total_locations": len(Counter(locations)),
-        'avg_ratings': sum(ratings) / len(ratings) if ratings else 0,
+        'avg_ratings': round((sum(ratings) / len(ratings)),2) if ratings else 0,
         'total_users': len(users)
     }
     return web_stat

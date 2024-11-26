@@ -20,7 +20,7 @@ New Badges
 [![Pylint](https://github.com/TeamBenign/PackReview_v4/actions/workflows/pylint.yml/badge.svg)](https://github.com/TeamBenign/PackReview_v4/actions/workflows/pylint.yml)
 [![Python Flask Application](https://github.com/TeamBenign/PackReview_v4/actions/workflows/test-app.yml/badge.svg)](https://github.com/TeamBenign/PackReview_v4/actions/workflows/test-app.yml)
 [![Run tests and upload coverage](https://github.com/TeamBenign/PackReview_v4/actions/workflows/codecov.yml/badge.svg)](https://codecov.io/gh/TeamBenign/PackReview_v4)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14026707.svg)](https://doi.org/10.5281/zenodo.14026707)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14226353.svg)](https://doi.org/10.5281/zenodo.14226353)
 <a href="https://github.com/TeamBenign/PackReview_v4/graphs/contributors" alt="Contributors"><img src = "https://img.shields.io/github/contributors/TeamBenign/PackReview_v4"/></a>
 [![Python Style Checker|autopep8](https://github.com/TeamBenign/PackReview_v4/actions/workflows/autopep8.yml/badge.svg)](https://github.com/TeamBenign/PackReview_v4/actions/workflows/autopep8.yml)
 <a href="https://github.com/TeamBenign/PackReview_v4" alt="Repo Size"><img src="https://img.shields.io/github/repo-size/TeamBenign/PackReview_v4"/></a>
