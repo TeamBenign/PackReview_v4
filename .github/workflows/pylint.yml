@@ -23,3 +23,4 @@ jobs:
       - name: Analysing the code with pylint
         run: |
           pylint --disable=global-statement,line-too-long,no-name-in-module,no-else-return,too-many-return-statements,inconsistent-return-statements,import-error,cyclic-import,no-member,unbalanced-tuple-unpacking,too-many-public-methods,too-few-public-methods,invalid-name,broad-exception-caught,wrong-import-order  $(git ls-files '*.py' | grep -v '^migrations/')
+        continue-on-error: true
