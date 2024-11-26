@@ -32,11 +32,9 @@ def get_db(is_test=False):
     """
     with open(os.path.join(sys.path[0], "config.ini"), "r", encoding="utf-8") as f:
         content = f.readlines()
-
+    password = "kishan123"
     mongo_uri = (
-        "mongodb+srv://anishd1910:"
-        f"{content[0].strip()}@cluster0.oagwk.mongodb.net/"
-        "?retryWrites=true&w=majority&appName=Cluster0"
+        f"mongodb+srv://kishan:{password}@cluster0.fdzgd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
     )
     with MongoClient(mongo_uri) as client:
         client = MongoClient(mongo_uri)
