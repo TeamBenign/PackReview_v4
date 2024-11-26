@@ -18,6 +18,7 @@ New Badges
 
 [![codecov](https://codecov.io/gh/TeamBenign/PackReview_v4/graph/badge.svg?token=ZLD95A15SC)](https://codecov.io/gh/TeamBenign/PackReview_v4)
 [![Pylint](https://github.com/TeamBenign/PackReview_v4/actions/workflows/pylint.yml/badge.svg)](https://github.com/TeamBenign/PackReview_v4/actions/workflows/pylint.yml)
+[![Bandit](https://github.com/TeamBenign/PackReview_v4/actions/workflows/bandit.yml/badge.svg)](https://github.com/TeamBenign/PackReview_v4/actions/workflows/bandit.yml)
 [![Python Flask Application](https://github.com/TeamBenign/PackReview_v4/actions/workflows/test-app.yml/badge.svg)](https://github.com/TeamBenign/PackReview_v4/actions/workflows/test-app.yml)
 [![Run tests and upload coverage](https://github.com/TeamBenign/PackReview_v4/actions/workflows/codecov.yml/badge.svg)](https://codecov.io/gh/TeamBenign/PackReview_v4)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14226353.svg)](https://doi.org/10.5281/zenodo.14226353)
