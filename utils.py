@@ -32,7 +32,7 @@ def get_db(is_test=False):
     """
     with open(os.path.join(sys.path[0], "config.ini"), "r", encoding="utf-8") as f:
         content = f.readlines()
-    password = "kishan123"
+    password = ""
     mongo_uri = (
         f"mongodb+srv://kishan:{password}@cluster0.fdzgd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
     )

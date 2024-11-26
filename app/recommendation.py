@@ -3,17 +3,13 @@ import pandas as pd
 
 def recommend_jobs(reviews, target_user, top_n=5):
     df = pd.DataFrame(reviews)
-    
-    df['normalized_score'] = 0.5 * (df['rating'] / 5) + 0.5 * (df['recommendation'] / 10)
-    
+    df['normalized_score'] = 0.5 * (df['rating'].astype(int) / 5) + 0.5 * (df['recommendation'].astype(int) / 10)
     # Create a user-job matrix
     user_job_matrix = df.pivot_table(
-        index='author', columns='_id', values='normalized_score'
+        index='author', columns='id', values='normalized_score'
     )
-    
     # Fill NaN values with 0 (unrated jobs)
     user_job_matrix = user_job_matrix.fillna(0)
-    
     # Compute cosine similarity between users
     user_similarity = cosine_similarity(user_job_matrix)
     user_similarity_df = pd.DataFrame(
@@ -21,9 +17,14 @@ def recommend_jobs(reviews, target_user, top_n=5):
     )
     
     # Find similar users to the target user
-    similar_users = user_similarity_df[target_user].sort_values(ascending=False)
+    similar_users = None
+    try:
+        similar_users = user_similarity_df[target_user].sort_values(ascending=False)
+    except:
+        return None
     # Get jobs rated by similar users that the target user hasn't rated
     target_user_ratings = user_job_matrix.loc[target_user]
+    print(target_user_ratings)
     unrated_jobs = target_user_ratings[target_user_ratings == 0].index
     
     # Calculate predicted scores for unrated jobs
@@ -48,24 +49,8 @@ def recommend_jobs(reviews, target_user, top_n=5):
     
     # Return the full job dicts for the recommended job IDs
     recommended_jobs = [
-        review for review in reviews if review['_id'] in recommended_job_ids
+        review for review in reviews if review['id'] in recommended_job_ids
     ]
     
     return recommended_jobs
 
-# Example usage
-reviews = [
-    {'author': 1, '_id': 'A', 'rating': 4, 'recommendation': 8},
-    {'author': 1, '_id': 'B', 'rating': 5, 'recommendation': 9},
-    {'author': 2, '_id': 'A', 'rating': 3, 'recommendation': 7},
-    {'author': 2, '_id': 'C', 'rating': 4, 'recommendation': 6},
-    {'author': 3, '_id': 'B', 'rating': 4, 'recommendation': 9},
-    {'author': 3, '_id': 'C', 'rating': 5, 'recommendation': 10},
-    {'author': 3, '_id': 'D', 'rating': 3, 'recommendation': 6},
-]
-
-target_user = 1
-top_n = 2
-
-recommended_jobs = recommend_jobs(reviews, target_user, top_n)
-print("Recommended jobs for user", target_user, ":", recommended_jobs)

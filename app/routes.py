@@ -18,6 +18,7 @@ topics in a forum section.
 and company.
 - Top Jobs: Provides a view of the top jobs sorted by user ratings and recommendations.
 """
+from collections import defaultdict
 import csv
 import os
 from flask import render_template, request, redirect, session, flash, url_for, jsonify
@@ -25,6 +26,7 @@ from flask_paginate import Pagination, get_page_args
 from bson import ObjectId
 from app import app, DB
 from app.gemini_chat import get_gemini_feedback
+from app.recommendation import recommend_jobs
 from utils import get_db
 import textwrap
 
@@ -107,6 +109,27 @@ def review():
     else: jobs = get_all_jobs()
     print(jobs)
     return render_template('review-page.html', jobs=jobs)
+
+@app.route('/job_recommendations')
+def job_recommendations():
+    """
+    An API for the recommendation page
+    """
+    intialize_db()
+    if 'username' not in session or not session['username']:
+        flash('Please log in first to see recommended reviews.', "danger")
+        return redirect('/login')
+    # if not ('username' in session.keys() and session['username']):
+    #     return redirect("/")
+    # entries = get_all_jobs()
+    entries = get_all_jobs()
+
+    #get top 10 recommendations
+    recommended_reviews = recommend_jobs(entries, session['username'], 10)
+    if recommended_reviews:
+        jobs = transform_jobs(recommended_reviews)
+    
+    return render_template('review-page.html', jobs=recommended_reviews)
 
 
 # view all
@@ -566,4 +589,22 @@ def dict_to_csv(data, csv_path):
         writer.writerows(data)
 
     print(f"Data has been written to {output_file}")
+
+def transform_jobs(jobs):
+    grouped_jobs = defaultdict(lambda: {"other_attributes": []})
+
+    for job in jobs:
+        key = (job['title'], job['company'], job['locations'], job['department'])
+        other_attributes = {k: v for k, v in job.items() if k not in {'title', 'company', 'locations', 'department'}}
+        
+        if "title" not in grouped_jobs[key]:  # Initialize main attributes
+            grouped_jobs[key]["title"] = job["title"]
+            grouped_jobs[key]["company"] = job["company"]
+            grouped_jobs[key]["locations"] = job["locations"]
+            grouped_jobs[key]["department"] = job["department"]
+        
+        # Add the other attributes to the list
+        grouped_jobs[key]["other_attributes"].append(other_attributes)
+
+    return list(grouped_jobs.values())
 
