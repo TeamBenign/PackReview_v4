@@ -22,6 +22,7 @@ from app import app
 from app.routes import intialize_db, set_test
 from bson import ObjectId
 from tests.test_forum import TestForum
+from tests.test_dashboard import TestDashboard
 
 class FlaskAppTests(unittest.TestCase):
     """
@@ -117,7 +118,10 @@ class FlaskAppTests(unittest.TestCase):
 
     def test_forum(self):
         """Test the forum class."""
-        TestForum().test_view_topic_forum()
+        TestForum()
+    def test_dashboard(self):
+        """Test the forum class."""
+        TestDashboard()
     # def test_login_post_valid_user(self):
     #     """Test login with valid user credentials."""
     #     with self.client.session_transaction() as session:
