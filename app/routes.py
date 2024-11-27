@@ -694,13 +694,12 @@ def signup():
         password = request.form.get("password")
         confirm_password = request.form.get("confirm_password")
 
-        user = USERS_DB.find_one({"username": username})
-
         # Check if passwords match
         if password != confirm_password:
             flash("Passwords do not match!", "danger")
             return render_template("signup.html")
-
+        
+        user = USERS_DB.find_one({"username": username})
         # Check if username already exists
         if user:
             flash("Username already exists! Please login or use a different username.", "danger")
