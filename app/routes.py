@@ -138,6 +138,7 @@ def job_recommendations():
     
     return render_template('review-page.html', jobs=recommended_reviews)
 
+
 def getCurrentTime():
     """A method to get current time"""
     return datetime.now().replace(microsecond=0).strftime("%Y-%m-%d %H:%M:%S")
