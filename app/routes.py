@@ -526,12 +526,10 @@ def page_content_post():
     if request.method == 'POST':
         form = request.form
         search_title = form.get('search')
-        print("search is", search_title)
         # filter_entries = get_all_jobs()
         if search_title.strip() == '':
             entries = get_all_jobs()
         else:
-            print("s entered")
             entries = process_jobs(JOBS_DB.find(
                 {"title": "/" + search_title + "/"}))
         dept_filter_entries = JOBS_DB.distinct("department")
@@ -545,15 +543,12 @@ def page_content_post():
         company_filter_title = form.getlist("company_filter")
 
         if company_filter_title and dept_filter_title:
-            print("dept filter is", dept_filter_title)
             entries = process_jobs(JOBS_DB.find({"company": {
                 "$in": company_filter_title}, "department": {"$in": dept_filter_title}}))
         elif dept_filter_title and not company_filter_title:
-            print("location filter is", dept_filter_title)
             entries = process_jobs(JOBS_DB.find(
                 {"department": {"$in": dept_filter_title}}))
         elif company_filter_title and not dept_filter_title:
-            print("company filter is", company_filter_title)
             entries = process_jobs(JOBS_DB.find(
                 {"company": {"$in": company_filter_title}}))
         page, per_page, offset = get_page_args(
