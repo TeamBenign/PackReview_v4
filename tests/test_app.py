@@ -188,6 +188,10 @@ class FlaskAppTests(unittest.TestCase):
         response = self.client.get(f'/upvote/{job_id}')
         self.assertEqual(response.status_code, 302)
 
+    def test_pagination(self):
+        """Test pagination on pageContent."""
+        response = self.client.get('/pageContent?page=1&per_page=10')
+        self.assertEqual(response.status_code, 200)
 
     def test_delete_review(self):
         """Test deleting a job review."""
@@ -307,6 +311,11 @@ class FlaskAppTests(unittest.TestCase):
         # with self.assertRaises(ValueError):
         #     self.client.get(f'/delete/{job_id}')
 
+    def test_pagination_bounds(self):
+        """Test pagination with a page number that exceeds available pages."""
+        response = self.client.get('/pageContent?page=999&per_page=10')
+        # Assuming you handle this case
+        self.assertEqual(response.status_code, 200)
 
     def test_edit_review(self):
         """Test editing a job review."""
@@ -453,7 +462,35 @@ class FlaskAppTests(unittest.TestCase):
         response = self.client.get('/')
         assert response.status_code == 200
 
+    def test_page_content_route(self):
+        """
+        Test the page content route with a POST request to verify successful
+        response (status code 200) for valid data.
+        """
+        response = self.client.post(
+            '/pageContentPost',
+            data={
+                "search": "Setup"})
+        assert response.status_code == 200
 
+    def test_add_post_route(self):
+        """
+        Test the add post route with a POST request to ensure the submission
+        of a new job post is successful (status code 200).
+        """
+        response = self.client.post('/pageContentPost', data={
+            "job_title": "1",
+            "job_description": "2",
+            "department": "3",
+            "locations": "4",
+            "hourly_pay": "5",
+            "benefits": "6",
+            "review": "7",
+            "rating": "2",
+            "recommendation": "2",
+            "search": ""
+        })
+        assert response.status_code == 200
 
     def test_signup_route(self):
         """Test the signup route for successful access (status code 200)."""
@@ -473,6 +510,19 @@ class FlaskAppTests(unittest.TestCase):
         response = self.client.get('/review')
         assert response.status_code == 302
 
+    def test_review_route(self):
+        """Test the review route for successful access (status code 200)."""
+        response = self.client.get('/pageContent')
+        assert response.status_code == 200
+
+    def test_filter_jobs_route(self):
+        """Test filtering jobs by department and company."""
+        response = self.client.post('/pageContentPost', data={
+            "search": "Engineer",
+            "dept_filter": "Engineering",
+            "company_filter": "TechCorp"
+        })
+        assert response.status_code == 200
 
     def test_view_forum_topic_route(self):
         """Test viewing a specific forum topic."""
@@ -480,6 +530,14 @@ class FlaskAppTests(unittest.TestCase):
         response = self.client.get(f'/forum/{topic_id}')
         assert response.status_code == 200
 
+    def test_my_jobs_route(self):
+        """Test viewing my jobs."""
+        with self.client as client:
+            with client.session_transaction() as session:
+                session['username'] = 'existinguser'  # Mock the session login
+
+            response = client.get('/myjobs')
+            assert response.status_code == 200
 
     def test_get_user_logged_in(self):
         """Test for logging in users."""
