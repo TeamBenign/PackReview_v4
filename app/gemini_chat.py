@@ -37,7 +37,7 @@ def get_gemini_feedback(csv_path, user_prompt):
             response_text = response.text
             output_text = re.sub(r"para 1:", "", response_text)
             match = re.search(r"\[ID_START\](.*?)\[ID_END\]", output_text)
-
+            ids_string = ""
             if match:
                 ids_string = match.group(1).strip()  # Extract and remove leading/trailing spaces
                 id
