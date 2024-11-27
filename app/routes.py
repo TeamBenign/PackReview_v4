@@ -139,6 +139,7 @@ def job_recommendations():
 
 def recommend(entries, user, top):
     return recommend_jobs(entries, user, top)
+
 # view all
 @app.route('/pageContent')
 def page_content():
