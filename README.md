@@ -1,20 +1,6 @@
-# NC State Jobs Review System: Empowering Student Voices with a Dash of Fun!
+# PackReview 4.0
 
-Welcome to the NC State Campus Job Review System, your ultimate destination for navigating the wild world of North Carolina State University campus jobs! 🎉 Curious about what it’s really like to work at the campus coffee shop or whether the library is a secret lair of stressful group projects? Well, wonder no more!
-
-Our vibrant platform allows students to discover, share, and explore honest reviews of campus jobs from fellow Wolfpack members. Think of it as Yelp for campus jobs—minus the pretentious food critics! 🍔✨ Whether you want to rave about the best job perks or spill the tea on the not-so-glamorous moments, we’ve got you covered.
-
-Feeling inspired? Dive into a treasure trove of reviews that provide invaluable insights into job responsibilities, work culture, and personal experiences. Your fellow students have been through it all, and now they’re ready to share the good, the bad, and the “did I really just do that?” moments!
-
-And hey, we know that honesty is the best policy, so we’ve got your back with complete anonymity. This means you can share your thoughts candidly, helping others make informed decisions without worrying about your boss finding out you think their coffee-making skills could use some serious help. ☕🤫
-
-Join our quirky community and upload your own review! Whether you want to brag about free snacks or vent about that one time you had to deal with a customer who thought “one pump of vanilla” was just a suggestion, your voice matters here.
-
-Together, let’s empower students to make better career choices on campus while sprinkling a bit of humor into the mix. So, get ready to laugh, learn, and land that perfect campus gig with the NC State Campus Job Review System!
-
-![alt text](https://github.com/NCSU-SE-2024/PackReview_v3/blob/main/Data/v3/HomePage.png)
-
-New Badges
+Badges with results
 
 [![codecov](https://codecov.io/gh/TeamBenign/PackReview_v4/graph/badge.svg?token=ZLD95A15SC)](https://codecov.io/gh/TeamBenign/PackReview_v4)
 [![Pylint](https://github.com/TeamBenign/PackReview_v4/actions/workflows/pylint.yml/badge.svg)](https://github.com/TeamBenign/PackReview_v4/actions/workflows/pylint.yml)
@@ -30,6 +16,22 @@ New Badges
 ![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/TeamBenign/PackReview_v4?style=plastic)
 [![Manual Build](https://img.shields.io/github/actions/workflow/status/TeamBenign/PackReview_v4/codecov.yml)](https://github.com/TeamBenign/PackReview_v4/actions)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/TeamBenign/PackReview_v4)
+
+# NC State Jobs Review System: Empowering Student Voices with a Dash of Fun!
+
+Welcome to the NC State Campus Job Review System, your ultimate destination for navigating the wild world of North Carolina State University campus jobs! 🎉 Curious about what it’s really like to work at the campus coffee shop or whether the library is a secret lair of stressful group projects? Well, wonder no more!
+
+Our vibrant platform allows students to discover, share, and explore honest reviews of campus jobs from fellow Wolfpack members. Think of it as Yelp for campus jobs—minus the pretentious food critics! 🍔✨ Whether you want to rave about the best job perks or spill the tea on the not-so-glamorous moments, we’ve got you covered.
+
+Feeling inspired? Dive into a treasure trove of reviews that provide invaluable insights into job responsibilities, work culture, and personal experiences. Your fellow students have been through it all, and now they’re ready to share the good, the bad, and the “did I really just do that?” moments!
+
+And hey, we know that honesty is the best policy, so we’ve got your back with complete anonymity. This means you can share your thoughts candidly, helping others make informed decisions without worrying about your boss finding out you think their coffee-making skills could use some serious help. ☕🤫
+
+Join our quirky community and upload your own review! Whether you want to brag about free snacks or vent about that one time you had to deal with a customer who thought “one pump of vanilla” was just a suggestion, your voice matters here.
+
+Together, let’s empower students to make better career choices on campus while sprinkling a bit of humor into the mix. So, get ready to laugh, learn, and land that perfect campus gig with the NC State Campus Job Review System!
+
+![alt text](https://github.com/NCSU-SE-2024/PackReview_v3/blob/main/Data/v3/HomePage.png)
 
 ## Pre-requisites
 
