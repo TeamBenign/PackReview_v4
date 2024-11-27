@@ -23,6 +23,7 @@ from app.routes import intialize_db, set_test
 from bson import ObjectId
 from tests.test_forum import TestForum
 from tests.test_dashboard import TestDashboard
+import json, os, csv
 
 class FlaskAppTests(unittest.TestCase):
     """
@@ -115,6 +116,57 @@ class FlaskAppTests(unittest.TestCase):
         response = self.client.get('/home')
         self.assertEqual(response.status_code, 200)
         self.assertIn(b"Home", response.data)
+    @patch('app.routes.query_gemini_model')
+    def test_get_gemini_response(self, mock_query_gemini_model):
+        """Test get_gemini_response route."""
+        mock_query_gemini_model.return_value = ("AI response", "12345")
+        data = {'message': 'Tell me about job reviews'}
+        response = self.client.post('/get_gemini_response', data=json.dumps(data), content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+        response_data = json.loads(response.data)
+        self.assertIn('AI response', response_data['ai_message'])
+        self.assertIn('Click <a href=', response_data['ai_message'])
+
+    def test_dict_to_csv(self):
+        """Test dict_to_csv function."""
+        data = [
+            {'name': 'John', 'age': 30, 'city': 'New York'},
+            {'name': 'Anna', 'age': 22, 'city': 'London'},
+            {'name': 'Mike', 'age': 32, 'city': 'San Francisco'}
+        ]
+        csv_path = 'test_output/test.csv'
+        from app.routes import dict_to_csv
+        dict_to_csv(data, csv_path)
+        self.assertTrue(os.path.exists(csv_path))
+        with open(csv_path, mode='r') as file:
+            reader = csv.DictReader(file)
+            rows = list(reader)
+            self.assertEqual(len(rows), 3)
+            self.assertEqual(rows[0]['name'], 'John')
+            self.assertEqual(rows[1]['age'], '22')
+            self.assertEqual(rows[2]['city'], 'San Francisco')
+    @patch('app.routes.get_all_jobs')
+    @patch('app.routes.recommend_jobs')
+    @patch('app.routes.transform_jobs')
+    def test_job_recommendations_logged_in(self, mock_transform_jobs, mock_recommend_jobs, mock_get_all_jobs):
+        """Test job recommendations route when user is logged in."""
+        with self.client.session_transaction() as session:
+            session['username'] = 'testuser'
+
+        mock_get_all_jobs.return_value = [{'title': 'Job1', 'company': 'Company A', 'locations': 'Location 1', 'department': 'Engineering'}]
+        mock_recommend_jobs.return_value = [{'title': 'Job1', 'company': 'Company A', 'locations': 'Location 1', 'department': 'Engineering'}]
+        mock_transform_jobs.return_value = [{'title': 'Job1', 'company': 'Company A', 'locations': 'Location 1', 'department': 'Engineering', 'other_attributes': []}]
+
+        response = self.client.get('/job_recommendations')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Job1', response.data)
+        self.assertIn(b'Company A', response.data)
+
+    def test_job_recommendations_not_logged_in(self):
+        """Test job recommendations route when user is not logged in."""
+        response = self.client.get('/job_recommendations')
+        self.assertEqual(response.status_code, 302)
+        self.assertIn('/login', response.location)
 
     def test_forum(self):
         """Test the forum class."""
