@@ -28,7 +28,7 @@ New Badges
 <a href="https://github.com/TeamBenign/PackReview_v4/blob/main/LICENSE" alt="License"><img src="https://img.shields.io/github/license/TeamBenign/PackReview_v4" /></a>
 <a href="https://github.com/TeamBenign/PackReview_v4/issues" alt="Open Issues"><img src="https://img.shields.io/github/issues-raw/TeamBenign/PackReview_v4" /></a>
 ![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/TeamBenign/PackReview_v4?style=plastic)
-<a href="https://github.com/TeamBenign/PackReview_v4/actions" alt="Build Status"><img src="https://img.shields.io/github/workflow/status/TeamBenign/PackReview_v4/Build%20main" /></a>
+[![Manual Build](https://img.shields.io/github/actions/workflow/status/TeamBenign/PackReview_v4/codecov.yml)](https://github.com/TeamBenign/PackReview_v4/actions)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/TeamBenign/PackReview_v4)
 
 ## Pre-requisites
