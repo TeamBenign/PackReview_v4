@@ -2,6 +2,7 @@ import unittest
 from unittest.mock import patch, MagicMock
 from app import app
 from app.routes import intialize_db, set_test
+import app.routes as routes
 from bson import ObjectId
 import json
 
@@ -324,6 +325,46 @@ class TestForum(unittest.TestCase):
         response = self.client.post(f'/forum/{topic_id}/downvote_post')
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.location, '/forum')
+    def test_get_web_statistics(self):
+        """Test the get_web_statistics function."""
+        jobs = [
+            {'title': 'Software Engineer', 'company': 'Company A', 'locations': 'Location 1', 'rating': 4.5},
+            {'title': 'Software Engineer', 'company': 'Company A', 'locations': 'Location 1', 'rating': 4.0},
+            {'title': 'Data Scientist', 'company': 'Company B', 'locations': 'Location 2', 'rating': 5.0},
+            {'title': 'Data Scientist', 'company': 'Company B', 'locations': 'Location 2', 'rating': 4.5},
+            {'title': 'Software Engineer', 'company': 'Company A', 'locations': 'Location 2', 'rating': 3.5}
+        ]
+        users = [
+            {'username': 'user1'},
+            {'username': 'user2'},
+            {'username': 'user3'}
+        ]
 
+        expected_output = {
+            "total_jobs": 5,
+            "total_companies": 2,
+            "total_titles": 2,
+            "total_locations": 2,
+            'avg_ratings': 4.3,
+            'total_users': 3
+        }
+
+        result = routes.get_web_statistics(jobs, users)
+        self.assertEqual(result, expected_output)
+
+    def test_get_web_statistics_empty(self):
+        """Test the get_web_statistics function with empty lists."""
+        jobs = []
+        users = []
+        expected_output = {
+            "total_jobs": 0,
+            "total_companies": 0,
+            "total_titles": 0,
+            "total_locations": 0,
+            'avg_ratings': 0,
+            'total_users': 0
+        }
+        result = routes.get_web_statistics(jobs, users)
+        self.assertEqual(result, expected_output)
 def __main__():
     unittest.main()

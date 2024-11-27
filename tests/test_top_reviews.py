@@ -1,6 +1,7 @@
 import unittest
 from unittest.mock import patch
 from app import app
+from app.routes import process_jobs, get_all_users
 
 
 class TestTopJobsRoute(unittest.TestCase):
@@ -40,6 +41,41 @@ class TestTopJobsRoute(unittest.TestCase):
             # Check if the mock functions were called
             mock_initialize_db.assert_called_once()  # Ensure the database initialization function was called once
             mock_get_all_jobs.assert_called_once()  
+class TestProcessJobs(unittest.TestCase):
+    def test_process_jobs(self):
+        """Test the process_jobs function."""
+        job_list = [
+            {"_id": "123", "title": "Software Engineer"},
+            {"_id": "456", "title": "Data Scientist"}
+        ]
+
+        expected_output = [
+            {"id": "123", "title": "Software Engineer"},
+            {"id": "456", "title": "Data Scientist"}
+        ]
+
+        result = process_jobs(job_list)
+        self.assertEqual(result, expected_output)
+
+class TestGetAllUsers(unittest.TestCase):
+    @patch('app.routes.USERS_DB.find')
+    @patch('app.routes.process_jobs')
+    def test_get_all_users(self, mock_process_jobs, mock_find):
+        """Test the get_all_users function."""
+        mock_find.return_value = [
+            {"_id": "123", "username": "user1"},
+            {"_id": "456", "username": "user2"}
+        ]
+
+        mock_process_jobs.return_value = [
+            {"id": "123", "username": "user1"},
+            {"id": "456", "username": "user2"}
+        ]
+
+        result = get_all_users()
+        self.assertEqual(result, mock_process_jobs.return_value)
+        mock_find.assert_called_once()
+        mock_process_jobs.assert_called_once_with(list(mock_find.return_value))
 
 if __name__ == '__main__':
     unittest.main()

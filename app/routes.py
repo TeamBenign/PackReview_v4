@@ -87,8 +87,6 @@ def get_my_jobs(username):
     """A method to get all jobs for required user"""
     intialize_db()
     user = USERS_DB.find_one({"username": username})
-    if user is None:
-        pass
 
     reviews = user['reviews']
     return process_jobs(JOBS_DB.find({"_id": {'$in': reviews}}))
