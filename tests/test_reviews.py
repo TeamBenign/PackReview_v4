@@ -1,9 +1,11 @@
 import unittest
 from unittest.mock import patch, MagicMock
+from pymongo.errors import PyMongoError
 
 from app import app
 from app.routes import get_job_by_id
 import app.routes as routes
+
 class TestGetJobById(unittest.TestCase):
     def setUp(self):
         # Configure the Flask test client
@@ -92,6 +94,78 @@ class TestGetJobById(unittest.TestCase):
             response = client.get('/review')
             
             self.assertEqual(response.status_code, 302)  # Redirect expected
+    @patch('app.routes.JOBS_DB.find_one')
+    @patch('app.routes.intialize_db')
+    def test_update_review_success(self, mock_initialize_db, mock_find_one):
+        """Test updating a job review successfully."""
+        mock_find_one.return_value = {"_id": "123", "title": "Software Engineer"}
 
+        response = self.app.get('/api/updateReview?id=123')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Software Engineer', response.data)
+        mock_find_one.assert_called_once_with({"_id": "123"})
+
+    @patch('app.routes.JOBS_DB.find_one')
+    @patch('app.routes.intialize_db')
+    def test_update_review_not_found(self, mock_initialize_db, mock_find_one):
+        """Test updating a job review that does not exist."""
+        mock_find_one.return_value = None
+
+        response = self.app.get('/api/updateReview?id=123')
+        self.assertEqual(response.status_code, 404)
+        self.assertIn(b'Review not found', response.data)
+        mock_find_one.assert_called_once_with({"_id": "123"})
+
+    @patch('app.routes.JOBS_DB.find_one')
+    @patch('app.routes.intialize_db')
+    def test_update_review_invalid_id(self, mock_initialize_db, mock_find_one):
+        """Test updating a job review with an invalid ID."""
+        mock_find_one.side_effect = KeyError("Invalid ID")
+
+        response = self.app.get('/api/updateReview?id=invalid_id')
+        self.assertEqual(response.status_code, 400)
+        self.assertIn(b'Invalid ID provided', response.data)
+
+    @patch('app.routes.JOBS_DB.find_one')
+    @patch('app.routes.intialize_db')
+    def test_update_review_db_error(self, mock_initialize_db, mock_find_one):
+        """Test updating a job review with a database error."""
+        mock_find_one.side_effect = PyMongoError("Database error")
+
+        response = self.app.get('/api/updateReview?id=123')
+        self.assertEqual(response.status_code, 500)
+        self.assertIn(b'An error occurred', response.data)
+    def test_get_avg_sal_titles_by_locations(self):
+        """Test the get_avg_sal_titles_by_locations function."""
+        jobs = [
+            {'title': 'Software Engineer', 'company': 'Company A', 'locations': 'Location 1', 'hourly_pay': 100},
+            {'title': 'Software Engineer', 'company': 'Company A', 'locations': 'Location 1', 'hourly_pay': 110},
+            {'title': 'Data Scientist', 'company': 'Company B', 'locations': 'Location 2', 'hourly_pay': 120},
+            {'title': 'Data Scientist', 'company': 'Company B', 'locations': 'Location 2', 'hourly_pay': 130},
+            {'title': 'Software Engineer', 'company': 'Company A', 'locations': 'Location 2', 'hourly_pay': 105}
+        ]
+
+        expected_output = {
+            "locations": ['Location 1', 'Location 2'],
+            "titles": ['Software Engineer', 'Data Scientist'],
+            "average_pay": {
+                'Software Engineer': [105.0, 105.0],
+                'Data Scientist': [0, 125.0]
+            }
+        }
+
+        result = routes.get_avg_sal_titles_by_locations(jobs)
+        self.assertEqual(result, expected_output)
+
+    def test_get_avg_sal_titles_by_locations_empty(self):
+        """Test the get_avg_sal_titles_by_locations function with an empty list."""
+        jobs = []
+        expected_output = {
+            "locations": [],
+            "titles": [],
+            "average_pay": {}
+        }
+        result = routes.get_avg_sal_titles_by_locations(jobs)
+        self.assertEqual(result, expected_output)
 if __name__ == '__main__':
     unittest.main()

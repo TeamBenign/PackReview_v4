@@ -386,7 +386,6 @@ def top_jobs():
                             or 0) + int(job.get("rating", 0) or 0),
         reverse=True
     )[:10]
-    print(top_job)
     return render_template('top_jobs.html', jobs=top_job)
 
 
