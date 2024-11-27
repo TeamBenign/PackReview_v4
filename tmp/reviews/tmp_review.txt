@@ -14,3 +14,7 @@ software engineer intern,Apple,adsfk,California,adslf,56,dfs,dsf,0,7,user1,0,sof
 intern,Microsoft,dad,California,ddsf,35,dsf,dfsdf,4,8,user1,0,intern_Microsoft_California_user1_ddsf
 software engineer intern,Microsoft,dsaf,California,safds,65,fdsf,dsf,3,6,user1,0,software engineer intern_Microsoft_California_user1_safds
 software engineer intern,Microsoft,zcc,NY,dfs,77,fdg,dsfds,5,9,user1,0,software engineer intern_Microsoft_NY_user1_dfs
+Web Developer,Oracle,Good,VA,Development,40,HI,Good,5,5,test,0,Web Developer_Oracle_VA
+System Admin,Google,"system modification, system analysis, migrations",California,Systems,50,Bonus,"This job pays quite well, vacations are good and you dont have to work in the weekends",2,0,kishan,0,System Admin_Google_California
+software engineer,google,"Software Development, Web Development",VA,Development,30,Bonus,No,1,0,kishan,0,software engineer_google_VA
+Software Developer,NVidia,Responsible for software development of chip,New York,Development,10,Health Insurance,"Good place, good food",1,0,test,0,Software Developer_NVidia_New York

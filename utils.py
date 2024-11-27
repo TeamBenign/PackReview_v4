@@ -35,8 +35,7 @@ def get_db(is_test=False):
         content = f.readlines()
     password = quote_plus(content[0].strip())
     mongo_uri = (
-        f"mongodb+srv://root:{password}@cluster0.dqpqx.mongodb.net/"
-        "?retryWrites=true&w=majority&appName=Cluster0"
+        f"mongodb+srv://kishan:kishan123@cluster0.fdzgd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
     )
     with MongoClient(mongo_uri) as client:
         client = MongoClient(mongo_uri)

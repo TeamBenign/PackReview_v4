@@ -50,7 +50,7 @@ jobs:
 
       - name: Run tests and collect coverage
         run: |
-          coverage run -m unittest tests/test_app.py
+          coverage run --source=tests -m unittest discover -s tests/
           coverage report
           coverage xml
 
