@@ -47,7 +47,7 @@ You can refer [INSTALL.md](https://github.com/TeamBenign/PackReview_v4/blob/main
 
 ## Poster
 
-![alt text](https://github.com/NCSU-SE-2024/PackReview_v3/blob/main/Data/v4/PackReview_v4.png)
+![alt text](https://github.com/TeamBenign/PackReview_v4/blob/main/Data/v4/PackReview_v4.png)
 
 ## Contribution Code of Conduct
 
@@ -59,7 +59,7 @@ The rules listed below are to be followed by the ones who will be contributing t
 
 ### Code Coverage Screenshot
 
-![alt text](https://github.com/NCSU-SE-2024/PackReview_v3/blob/main/Data/v4/codecov.png)
+![alt text](https://github.com/TeamBenign/PackReview_v4/blob/main/Data/v4/codecov.png)
 
 ### Video demonstrating the old functionalities
 

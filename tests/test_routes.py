@@ -201,6 +201,94 @@ class TestGetUser(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.get_json(), 'testuser')
 
+class TestAddComment(unittest.TestCase):
+    def setUp(self):
+        """Set up test client."""
+        self.app = app.test_client()
+        self.app.testing = True
+
+    def test_add_comment_not_logged_in(self):
+        """Test adding a comment when the user is not logged in."""
+        response = self.app.post('/forum/add_comment', json={
+            'topicId': '674601b9b7f9ec52b94d45e7',
+            'content': 'This is a test comment'
+        })
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.location, '/login')
+
+    def test_add_vote_not_logged_in(self):
+        """Test adding a vote when the user is not logged in."""
+        response = self.app.post('/forum/674601b9b7f9ec52b94d45e7/upvote_post', json={
+            'topicId': '674601b9b7f9ec52b94d45e7',
+            'content': 'This is a test comment'
+        })
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.location, '/login')
+
+    def test_down_vote_not_logged_in(self):
+        """Test adding a vote when the user is not logged in."""
+        response = self.app.post('/forum/674601b9b7f9ec52b94d45e7/downvote_post', json={
+            'topicId': '674601b9b7f9ec52b94d45e7',
+            'content': 'This is a test comment'
+        })
+        # response2 = self.app.post('/forum/674601b9b7f9ec52b94d45e7', json={
+        #     'topicId': '674601b9b7f9ec52b94d45e7',
+        #     'content': 'This is a test comment'
+        # })
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.location, '/login')
+
+    @patch('app.routes.FORUM_DB.update_one')
+    @patch('app.routes.FORUM_DB.find_one')
+    def test_add_comment_exception(self, mock_find_one, mock_update_one):
+        """Test adding a comment when an exception occurs."""
+        with self.app.session_transaction() as sess:
+            sess['username'] = 'testuser'
+
+        mock_update_one.side_effect = PyMongoError("Database error")
+
+        response = self.app.post('/forum/add_comment', json={
+            'topicId': '674601b9b7f9ec52b94d45e7',
+            'content': 'This is a test comment'
+        })
+        self.assertEqual(response.status_code, 200)
+        response_data = response.get_json()
+        self.assertIn('error', response_data)
+        self.assertEqual(response_data['error'], 'Database error')
+class TestPageContentPost(unittest.TestCase):
+    def setUp(self):
+        """Set up test client."""
+        self.app = app.test_client()
+        self.app.testing = True
+
+    @patch('app.routes.get_all_jobs')
+    @patch('app.routes.process_jobs')
+    @patch('app.routes.JOBS_DB.find')
+    @patch('app.routes.JOBS_DB.distinct')
+    @patch('app.routes.get_page_args')
+    def test_page_content_post_pagination(self, mock_get_page_args, mock_distinct, mock_find, mock_process_jobs, mock_get_all_jobs):
+        """Test the pagination condition in page_content_post."""
+        mock_get_page_args.return_value = (1, 10, 0)
+        mock_get_all_jobs.return_value = [{'title': 'Job1', 'company': 'Company1', 'locations': 'Location1', 'department': 'Dept1'}]
+        mock_distinct.side_effect = [['Dept1'], ['Location1'], ['Company1']]
+        mock_find.return_value = [{'title': 'Job1', 'company': 'Company1', 'locations': 'Location1', 'department': 'Dept1'}]
+        mock_process_jobs.return_value = [{'title': 'Job1', 'company': 'Company1', 'locations': 'Location1', 'department': 'Dept1'}]
+
+        response = self.app.post('/pageContentPost', data={
+            'search': '',
+            'dept_filter': '',
+            'company_filter': ''
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Job1', response.data)
+        self.assertIn(b'Company1', response.data)
+        self.assertIn(b'Location1', response.data)
+        self.assertIn(b'Dept1', response.data)
+
+    def test_page_content_post_jsonify(self):
+        """Test the return jsonify condition in page_content_post."""
+        response = self.app.get('/pageContentPost')
+        self.assertEqual(response.get_json(), None)
 
 if __name__ == '__main__':
     unittest.main()
