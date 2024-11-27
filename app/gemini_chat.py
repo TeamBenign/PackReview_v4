@@ -15,7 +15,7 @@ import numpy as np
 import os
 import google.generativeai as genai
         
-API_KEY = "" #add gemini API key
+API_KEY = "AIzaSyBvVbnHMiCIN143GgN6P1u4w7iBbGucb0E" #add gemini API key
 
 def get_gemini_feedback(csv_path, user_prompt):
     if csv_path:

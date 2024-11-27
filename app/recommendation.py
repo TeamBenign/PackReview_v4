@@ -2,7 +2,12 @@ from sklearn.metrics.pairwise import cosine_similarity
 import pandas as pd
 
 def recommend_jobs(reviews, target_user, top_n=5):
+    if not reviews: 
+        return reviews
+    if top_n<0:
+        raise ValueError(f"top {top_n} is not permitted")
     df = pd.DataFrame(reviews)
+    df = df.dropna(subset=['rating', 'recommendation'])
     df['normalized_score'] = 0.5 * (df['rating'].astype(int) / 5) + 0.5 * (df['recommendation'].astype(int) / 10)
     # Create a user-job matrix
     user_job_matrix = df.pivot_table(

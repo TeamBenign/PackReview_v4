@@ -108,12 +108,10 @@ def review():
     # if not ('username' in session.keys() and session['username']):
     #     return redirect("/")
     # entries = get_all_jobs()
-    print("here")
     review_id = request.args.get('review_id')
     
     if review_id:
         review_ids = review_id.split(",")
-        print(review_ids)
         jobs = [get_job_by_id(id.strip()) for id in review_ids]
         jobs = [job for sublist in jobs for job in sublist]
     else: jobs = get_all_jobs()
