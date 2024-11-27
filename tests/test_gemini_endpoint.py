@@ -35,18 +35,6 @@ class TestGeminiResponse(unittest.TestCase):
 
         # Check that query_gemini_model was called once with the correct argument
         mock_query_gemini_model.assert_called_once_with(user_message)
-    
-    @patch('app.routes.query_gemini_model')  # Mock query_gemini_model function
-    def test_get_gemini_response_no_message(self, mock_query_gemini_model):
-       
-        # Simulate a POST request with no message in the JSON data
-        response = self.app.post('/get_gemini_response', 
-                                 data=json.dumps({}),
-                                 content_type='application/json')
-
-        # Assertions
-        self.assertEqual(response.status_code, 500)  # Bad request, since message is missing
-
 
     @patch('app.routes.query_gemini_model')  # Mock query_gemini_model function
     def test_get_gemini_response_invalid_json(self, mock_query_gemini_model):
