@@ -822,11 +822,14 @@ def query_gemini_model(user_message):
     job_reviews = get_all_jobs()
     dict_to_csv(job_reviews, tmp_csv_file_for_gemini)
     
-    response_text = get_gemini_feedback(tmp_csv_file_for_gemini, user_message)
+    response_text = query_gemini(tmp_csv_file_for_gemini, user_message)
     if response_text is None:
         return "Error: Couldn't fetch response from Gemini."
     else:
         return response_text
+     
+def query_gemini(tmp_csv_file_for_gemini, user_message):
+    return get_gemini_feedback(tmp_csv_file_for_gemini, user_message)
 
 # Function to chunk large review texts
 def chunk_text(text, chunk_size=1500):
