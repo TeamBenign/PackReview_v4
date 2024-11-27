@@ -14,7 +14,10 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bulma.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="{{url_for('static', filename='/css/style.css')}}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}" />
+
     <style>
+         
         .status {
             font-style: italic;
             color: gray;
@@ -47,11 +50,10 @@
 
 <body>
     <section class="section">
-        <div class="container" style="background-color: white;">
-            <h1 class="title has-text-centered has-text-primary mb-6" >Reviews</h1>
-           
+        <div class="container">
+            <h1 class="title" style="color: white;">Reviews</h1>
             <!-- Job Table -->
-            <div class="table-container">
+            <div class="table-container" style="background-color: white;">
                 <div class="table-wrapper" style="overflow-x: auto; padding-bottom: 1em;">
                     <table id="jobTable" class="table is-striped is-hoverable is-fullwidth">
                         <thead>
