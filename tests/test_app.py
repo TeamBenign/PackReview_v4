@@ -21,7 +21,7 @@ from unittest.mock import patch, MagicMock
 from app import app
 from app.routes import intialize_db, set_test
 from bson import ObjectId
-
+from tests.test_forum import TestForum
 
 class FlaskAppTests(unittest.TestCase):
     """
@@ -103,7 +103,7 @@ class FlaskAppTests(unittest.TestCase):
             'password': 'password123',
             'confirm_password': 'password123'
         })
-
+        
     def tearDown(self):
         """Tear down test case, stop all patches."""
         set_test(False)
@@ -115,6 +115,9 @@ class FlaskAppTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(b"Home", response.data)
 
+    def test_forum(self):
+        """Test the forum class."""
+        TestForum().test_view_topic_forum()
     # def test_login_post_valid_user(self):
     #     """Test login with valid user credentials."""
     #     with self.client.session_transaction() as session:
