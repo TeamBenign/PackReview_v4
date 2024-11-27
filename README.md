@@ -47,7 +47,7 @@ You can refer [INSTALL.md](https://github.com/TeamBenign/PackReview_v4/blob/main
 
 ## Poster
 
-![alt text](https://github.com/NCSU-SE-2024/PackReview_v3/blob/main/Data/v3/Group47_Project2_Poster.png)
+![alt text](https://github.com/NCSU-SE-2024/PackReview_v3/blob/main/Data/v4/PackReview_v4.png)
 
 ## Contribution Code of Conduct
 
@@ -57,25 +57,17 @@ The rules listed below are to be followed by the ones who will be contributing t
 - It is recommended to delete the branch as soon as it is merged to the main branch to avoid stale branches in the repository.
 - It is encouraged to add name tags such as "feature-" or "patch-" in the branches if it is used to add code patches or features in the project.
 
-### Test Run Screenshot
-
-![alt text](https://github.com/NCSU-SE-2024/PackReview_v3/blob/main/Data/v3/TestRun.png)
-
 ### Code Coverage Screenshot
 
-![alt text](https://github.com/NCSU-SE-2024/PackReview_v3/blob/main/Data/v3/CoverageReport.png)
-
-### Discord Channel Screenshot
-
-![alt_text](https://github.com/NCSU-SE-2024/PackReview_v3/blob/main/Data/v3/DiscordChannel.png)
+![alt text](https://github.com/NCSU-SE-2024/PackReview_v3/blob/main/Data/v4/codecov.png)
 
 ### Video demonstrating the old functionalities
 
-https://user-images.githubusercontent.com/60925790/205790268-41892a26-7dfa-4d52-a326-848212b1e4fe.mp4
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/aQfVzQs_QlE/0.jpg)](https://www.youtube.com/watch?v=aQfVzQs_QlE)
 
 ### Video demonstrating the new functionalities
 
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/aQfVzQs_QlE/0.jpg)](https://www.youtube.com/watch?v=aQfVzQs_QlE)
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/aQfVzQs_QlE/0.jpg)](https://drive.google.com/drive/folders/1QH4vsYF4v75NQ6Ar04XaPhKxO1Khd0ex?usp=sharing)
 
 # Quick look at the newly added features
 
