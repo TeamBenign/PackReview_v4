@@ -69,6 +69,30 @@ The rules listed below are to be followed by the ones who will be contributing t
 
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/aQfVzQs_QlE/0.jpg)](https://drive.google.com/drive/folders/1QH4vsYF4v75NQ6Ar04XaPhKxO1Khd0ex?usp=sharing)
 
+## contributions' policy
+
+Give a pull a request with appropriate change
+
+## Project’s publications
+
+None
+
+## Third party publications that refer to our project
+
+None
+
+## recommended citation for your software
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14226353.svg)](https://doi.org/10.5281/zenodo.14226353)
+
+## Funding
+
+No funding from the govt and private org
+
+## Announcements of the deprecation of components, APIs
+
+None
+
 # Quick look at the newly added features
 
 - Top Job Picks for Enhanced Discovery: Users can now explore a curated list of the most highly rated job opportunities based on reviews and recommendations. This feature guides users toward top-rated positions, providing an efficient way to discover high-quality job opportunities at a glance.
