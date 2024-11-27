@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch, MagicMock
 from app.gemini_chat import get_gemini_feedback  # Replace with the actual module name
-
+from app.routes import query_gemini_model, chunk_text
 
 class TestGeminiFeedback(unittest.TestCase):
 
@@ -110,6 +110,38 @@ class TestGeminiFeedback(unittest.TestCase):
         # Assert
         self.assertEqual(response_text, "The work culture is great.")
         self.assertEqual(ids_string, "1, 2")
+    
+    # @patch('app.gemini_chat.get_gemini_feedback')
+    # @patch('app.routes.dict_to_csv')
+    # @patch('app.routes.get_all_jobs')
+    # def test_query_gemini_model(self, mock_get_all_jobs, mock_dict_to_csv, mock_get_gemini_feedback):
+    #     """Test the query_gemini_model function."""
+    #     user_message = "Tell me about job reviews"
+    #     mock_get_all_jobs.return_value = [
+    #         {'title': 'Software Engineer', 'company': 'Company A', 'locations': 'Location 1', 'rating': 4.5},
+    #         {'title': 'Data Scientist', 'company': 'Company B', 'locations': 'Location 2', 'rating': 5.0}
+    #     ]
+    #     mock_get_gemini_feedback.return_value = "para 1: Great job reviews. para 2: [ID_START] 1, 2 [ID_END]"
 
+    #     result = query_gemini_model(user_message)
+    #     self.assertIn("Based on", result[0])
+    # Test Case 5: Test chunk_text function
+    def test_chunk_text(self):
+        """Test the chunk_text function."""
+        text = "This is a long text that needs to be chunked into smaller pieces."
+        chunk_size = 10
+        expected_output = [
+            "This is a",
+            "long text",
+            "that needs",
+            "to be",
+            "chunked",
+            "into",
+            "smaller",
+            "pieces."
+        ]
+
+        result = chunk_text(text, chunk_size)
+        self.assertEqual(result, expected_output)
 if __name__ == "__main__":
     unittest.main()

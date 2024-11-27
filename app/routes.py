@@ -782,16 +782,20 @@ def delete(delete_id):
 @app.route('/api/getUser')
 def get_user():
     """Retrieve the username from the session if available."""
-    try:
-        if 'username' in session and session['username']:
-            return jsonify(session['username'])
-        return jsonify('')
-    except KeyError as e:
-        print("KeyError: ", e)
-        return jsonify(''), 500
-    except PyMongoError as e:
-        print("Error: ", e)
-        return jsonify(''), 500
+
+    if 'username' in session and session['username']:
+        return jsonify(session['username'])
+    return jsonify('')
+    # try:
+    #     if 'username' in session and session['username']:
+    #         return jsonify(session['username'])
+    #     return jsonify('')
+    # except KeyError as e:
+    #     print("KeyError: ", e)
+    #     return jsonify(''), 500
+    # except PyMongoError as e:
+    #     print("Error: ", e)
+    #     return jsonify(''), 500
 
 
 @app.route('/api/updateReview')
