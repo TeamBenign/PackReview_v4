@@ -14,7 +14,10 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bulma.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="{{url_for('static', filename='/css/style.css')}}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}" />
+
     <style>
+         
         .status {
             font-style: italic;
             color: gray;
@@ -32,16 +35,25 @@
                 opacity: 1;
             }
         }
+
+        /* Increase Bootstrap modal z-index */
+        .modal {
+            z-index: 1050 !important;
+        }
+
+        /* Ensure Bulma modals have lower z-index */
+        .modal.is-active {
+            z-index: 1040 !important;
+        }
     </style>
 </head>
 
 <body>
     <section class="section">
-        <div class="container" style="background-color: white;">
-            <h1 class="title has-text-centered has-text-primary mb-6" >Reviews</h1>
-           
+        <div class="container">
+            <h1 class="title" style="color: white;">Top Reviews</h1>
             <!-- Job Table -->
-            <div class="table-container">
+            <div class="table-container" style="background-color: white;">
                 <div class="table-wrapper" style="overflow-x: auto; padding-bottom: 1em;">
                     <table id="jobTable" class="table is-striped is-hoverable is-fullwidth">
                         <thead>
@@ -92,18 +104,92 @@
             </div>
         </div>
     </section>
+     <!-- Bootstrap Modal for Job Information Submission -->
+  <div class="modal fade" id="jobSubmissionModal" tabindex="-1" role="dialog" aria-labelledby="jobSubmissionModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="jobSubmissionModalLabel">Add reviews</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="jobForm" method="post" action="/add">
+                    <div class="form-group">
+                        <label for="job_title">Job Title</label>
+                        <input type="text" class="form-control" id="job_title" name="job_title" placeholder="e.g., Software Engineer" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="company">Company</label>
+                        <input type="text" class="form-control" id="company" name="company" placeholder="e.g., Google" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="locations">Location</label>
+                        <input type="text" class="form-control" id="locations" name="locations" placeholder="e.g., New York, NY" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="job_description">Job Description</label>
+                        <textarea class="form-control" id="job_description" name="job_description" rows="3" placeholder="e.g., Responsible for developing web applications..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="department">Department</label>
+                        <input type="text" class="form-control" id="department" name="department" placeholder="e.g., Engineering">
+                    </div>
+                    <div class="form-group">
+                        <label for="hourly_pay">Hourly Pay</label>
+                        <input type="number" class="form-control" id="hourly_pay" name="hourly_pay" step="0.01" placeholder="e.g., 25.00" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="benefits">Benefits</label>
+                        <textarea class="form-control" id="benefits" name="benefits" rows="2" placeholder="e.g., Health insurance, 401(k)"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="review">Review</label>
+                        <textarea class="form-control" id="review" name="review" rows="3" placeholder="e.g., Great work culture and growth opportunities..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="rating">Rating</label>
+                        <div class="star-rating">
+                            <i class="far fa-star" data-value="1"></i>
+                            <i class="far fa-star" data-value="2"></i>
+                            <i class="far fa-star" data-value="3"></i>
+                            <i class="far fa-star" data-value="4"></i>
+                            <i class="far fa-star" data-value="5"></i>
+                            <input type="hidden" id="rating" name="rating" value="0">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="recommendation">Recommendation (0-10)</label>
+                        <input type="range" class="form-control-range" id="recommendation" name="recommendation" min="0" max="10" value="0" oninput="this.nextElementSibling.value = this.value">
+                        <output>0</output>
+                        <small class="form-text text-muted">0 means Very Bad, 10 means Very Good</small>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" form="jobForm">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
     <!-- Floating Add Review Button -->
     <div style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
-        <a href="{{ url_for('review') }}" 
+        <a href="javascript:void(0);" 
            class="button is-primary is-large is-rounded is-light has-shadow"
            aria-label="Add Review" 
            title="Add Review"
+           data-toggle="modal" 
+           data-target="#jobSubmissionModal"
            style="text-decoration: none;">
             <span class="icon is-medium">
                 <i class="fas fa-plus"></i>
             </span>
         </a>
     </div>
+   
+
     <!-- Chat Button (Trigger for Modal) -->
     <div style="position: fixed; bottom: 100px; right: 20px; z-index: 1000;">
         <button id="openChatBtn" class="button is-info is-large is-rounded is-light has-shadow">
@@ -144,6 +230,12 @@
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script>
         $(document).ready(function () {
+            $('.star-rating i').on('click', function() {
+                var rating = $(this).data('value');
+                $('#rating').val(rating);
+                $('.star-rating i').removeClass('fas').addClass('far');
+                $(this).prevAll().addBack().removeClass('far').addClass('fas');
+            });
             // Initialize DataTable with column filters and sorting enabled
             var table = $('#jobTable').DataTable({
                 orderCellsTop: true,
@@ -151,7 +243,8 @@
                 responsive: true,  // Enable responsiveness
                 autoWidth: false,
                 pageLength: 10,  // Set the number of rows per page (adjust as needed)
-                lengthMenu: [5, 10, 25, 50, 100]
+                lengthMenu: [5, 10, 25, 50, 100,
+                order: []
             });
 
             // Apply search functionality to each column filter

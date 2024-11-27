@@ -115,7 +115,6 @@ def review():
         jobs = [get_job_by_id(id.strip()) for id in review_ids]
         jobs = [job for sublist in jobs for job in sublist]
     else: jobs = get_all_jobs()
-    print(jobs)
     return render_template('review-page.html', jobs=jobs)
 
 @app.route('/job_recommendations')
@@ -139,41 +138,6 @@ def job_recommendations():
     
     return render_template('review-page.html', jobs=recommended_reviews)
 
-
-# view all
-@app.route('/pageContent')
-def page_content():
-    """An API for the user to view all the reviews entered"""
-    intialize_db()
-    entries = get_all_jobs()
-    dept_filter_entries = JOBS_DB.distinct("department")
-    location_filter_entries = JOBS_DB.distinct("locations")
-    # title_filter_entries = JOBS_DB.distinct("title")
-    company_filter_entries = JOBS_DB.distinct("company")
-
-    # pagination
-
-    # print(entries)
-    page, per_page, offset = get_page_args(
-        page_parameter="page", per_page_parameter="per_page")
-    total = len(entries)
-
-    if not page or not per_page:
-        offset = 0
-        per_page = 10
-        pagination_entries = entries[offset: offset + per_page]
-    else:
-        pagination_entries = entries[offset: offset + per_page]
-        # print("ELSE!!!")
-
-    pagination = Pagination(page=page, per_page=per_page,
-                            total=total, css_framework='bootstrap4')
-
-    return render_template('page_content.html', entries=pagination_entries, page=page,
-                           per_page=per_page, pagination=pagination,
-                           dept_filter_entries=dept_filter_entries,
-                           location_filter_entries=location_filter_entries,
-                           company_filter_entries=company_filter_entries)
 def getCurrentTime():
     """A method to get current time"""
     return datetime.now().replace(microsecond=0).strftime("%Y-%m-%d %H:%M:%S")
@@ -402,24 +366,10 @@ def myjobs():
     # Check if 'username' is in session
     if 'username' not in session:
         return redirect('/login')  # Redirect to login if not authenticated
-
+    
     entries = get_my_jobs(session['username'])
-    page, per_page, offset = get_page_args(
-        page_parameter="page", per_page_parameter="per_page")
-    total = len(entries)
-
-    if not page or not per_page:
-        offset = 0
-        per_page = 10
-        pagination_entries = entries[offset: offset + per_page]
-    else:
-        pagination_entries = entries[offset: offset + per_page]
-
-    pagination = Pagination(page=page, per_page=per_page,
-                            total=total, css_framework='bootstrap4')
-
-    return render_template('myjobs.html', entries=pagination_entries, page=page,
-                           per_page=per_page, pagination=pagination)
+    
+    return render_template('myjobs.html', jobs=entries)
 
 
 # Get the top jobs
@@ -435,6 +385,7 @@ def top_jobs():
                             or 0) + int(job.get("rating", 0) or 0),
         reverse=True
     )[:10]
+    print(top_job)
     return render_template('top_jobs.html', jobs=top_job)
 
 
@@ -535,64 +486,7 @@ def dashboard():
                            ratings=ratings,
                            rating_counts=rating_counts)
 
-@app.route('/pageContentPost', methods=['POST'])
-def page_content_post():
-    """An API for the user to view specific reviews depending on the job title"""
-    intialize_db()
-    if request.method == 'POST':
-        form = request.form
-        search_title = form.get('search')
-        print("search is", search_title)
-        # filter_entries = get_all_jobs()
-        if search_title.strip() == '':
-            entries = get_all_jobs()
-        else:
-            print("s entered")
-            entries = process_jobs(JOBS_DB.find(
-                {"title": "/" + search_title + "/"}))
-        dept_filter_entries = JOBS_DB.distinct("department")
-        location_filter_entries = JOBS_DB.distinct("locations")
-        # title_filter_entries = JOBS_DB.distinct("title")
-        company_filter_entries = JOBS_DB.distinct("company")
 
-        dept_filter_title = form.getlist("dept_filter")
-        # location_filter_title = form.getlist("location_filter")
-        # title_filter_title = form.getlist("title_filter")
-        company_filter_title = form.getlist("company_filter")
-
-        if company_filter_title and dept_filter_title:
-            print("dept filter is", dept_filter_title)
-            entries = process_jobs(JOBS_DB.find({"company": {
-                "$in": company_filter_title}, "department": {"$in": dept_filter_title}}))
-        elif dept_filter_title and not company_filter_title:
-            print("location filter is", dept_filter_title)
-            entries = process_jobs(JOBS_DB.find(
-                {"department": {"$in": dept_filter_title}}))
-        elif company_filter_title and not dept_filter_title:
-            print("company filter is", company_filter_title)
-            entries = process_jobs(JOBS_DB.find(
-                {"company": {"$in": company_filter_title}}))
-        page, per_page, offset = get_page_args(
-            page_parameter="page", per_page_parameter="per_page")
-        total = len(entries)
-
-        if not page or not per_page:
-            offset = 0
-            per_page = 10
-            pagination_entries = entries[offset: offset + per_page]
-        else:
-            pagination_entries = entries[offset: offset + per_page]
-            # print("ELSE!!!")
-
-        pagination = Pagination(page=page, per_page=per_page,
-                                total=total, css_framework='bootstrap4')
-
-        return render_template('page_content.html', entries=pagination_entries,
-                               dept_filter_entries=dept_filter_entries,
-                               location_filter_entries=location_filter_entries,
-                               company_filter_entries=company_filter_entries, page=page,
-                               per_page=per_page, pagination=pagination)
-    return jsonify('')
 
 
 @app.route('/')
