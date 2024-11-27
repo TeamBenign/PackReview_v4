@@ -132,13 +132,13 @@ def job_recommendations():
     entries = get_all_jobs()
 
     #get top 10 recommendations
-    recommended_reviews = recommend_jobs(entries, session['username'], 10)
+    recommended_reviews = recommend(entries, session['username'], 10)
     if recommended_reviews:
-        jobs = transform_jobs(recommended_reviews)
-    
+        job = transform_jobs(recommended_reviews)
     return render_template('review-page.html', jobs=recommended_reviews)
 
-
+def recommend(entries, user, top):
+    return recommend_jobs(entries, user, top)
 # view all
 @app.route('/pageContent')
 def page_content():
@@ -520,41 +520,6 @@ def dashboard():
                            hourly_pays=hourly_pays,
                            ratings=ratings,
                            rating_counts=rating_counts)
-
-# view all
-@app.route('/pageContent')
-def page_content():
-    """An API for the user to view all the reviews entered"""
-    intialize_db()
-    entries = get_all_jobs()
-    dept_filter_entries = JOBS_DB.distinct("department")
-    location_filter_entries = JOBS_DB.distinct("locations")
-    # title_filter_entries = JOBS_DB.distinct("title")
-    company_filter_entries = JOBS_DB.distinct("company")
-
-    # pagination
-
-    # print(entries)
-    page, per_page, offset = get_page_args(
-        page_parameter="page", per_page_parameter="per_page")
-    total = len(entries)
-
-    if not page or not per_page:
-        offset = 0
-        per_page = 10
-        pagination_entries = entries[offset: offset + per_page]
-    else:
-        pagination_entries = entries[offset: offset + per_page]
-        # print("ELSE!!!")
-
-    pagination = Pagination(page=page, per_page=per_page,
-                            total=total, css_framework='bootstrap4')
-
-    return render_template('page_content.html', entries=pagination_entries, page=page,
-                           per_page=per_page, pagination=pagination,
-                           dept_filter_entries=dept_filter_entries,
-                           location_filter_entries=location_filter_entries,
-                           company_filter_entries=company_filter_entries)
  
 @app.route('/pageContentPost', methods=['POST'])
 def page_content_post():
